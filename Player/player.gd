@@ -44,25 +44,54 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
+	var targetAngle := 0.0
 	if vessel != null:
-		visual.position = position
+		visual.global_position = vessel.to_global(position)
+		targetAngle = vessel.global_rotation
 		if not vessel.get_zone_bounds().has_point(position):
-			leave_vessel()
+			transfer_to(null)
 	else:
 		visual.global_position = global_position
+		if is_on_floor():
+			for i in get_slide_collision_count():
+				var collision := get_slide_collision(i)
+				var hitVessel := collision.get_collider() as Vessel
+				if hitVessel != null and collision.get_angle(up_direction) <= floor_max_angle:
+					transfer_to(hitVessel)
+					break
+		
+	visual.rotation = lerp_angle(visual.global_rotation, targetAngle, 10.0 * delta)
 
 
-func leave_vessel() -> void:
-	var world_position := vessel.to_global(position)
-	var world_velocity := velocity.rotated(vessel.global_rotation) + vessel.current_velocity
+func transfer_to(new_vessel: Vessel) -> void:
 	
-	var world := vessel.get_parent()
-	reparent(world, false)
-	visual.reparent(world, false)
-	
-	global_position = world_position
-	velocity = world_velocity
-	visual.rotation = 0
-	vessel = null
+	var worldPos := global_position
+	var worldVel := velocity
+	if vessel != null:
+		worldPos = vessel.to_global(position)
+		worldVel = velocity.rotated(vessel.global_rotation) + vessel.current_velocity
 	
 	
+	if new_vessel != null:
+		reparent(new_vessel.zone, false)
+		
+		position = new_vessel.to_local(worldPos)
+		velocity = (worldVel - new_vessel.current_velocity).rotated(-new_vessel.global_rotation)
+	
+	else:
+		var world := get_tree().current_scene
+		reparent(world, false)
+		global_position = worldPos
+		velocity = worldVel
+		
+	
+	vessel = new_vessel
+	reset_physics_interpolation()
+
+func find_vessel_to_board() -> Vessel:
+	for v: Vessel in get_tree().get_nodes_in_group("vessels"):
+		var localPos := v.to_local(global_position)
+		var localVel := (velocity - v.current_velocity).rotated(-v.global_rotation)
+		if v.get_zone_bounds().grow(-8).has_point(localPos) and localVel.y >= 0:
+			return v
+	return null

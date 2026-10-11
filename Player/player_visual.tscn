@@ -7,6 +7,3 @@
 [node name="Sprite2D" type="Sprite2D" parent="."]
 scale = Vector2(0.125, 0.125)
 texture = ExtResource("2_8j7k5")
-
-[node name="Camera2D" type="Camera2D" parent="."]
-position_smoothing_enabled = true
