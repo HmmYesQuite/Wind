@@ -5,11 +5,19 @@ class_name  Vessel
 @onready var zone_hull: TileMapLayer = $Zone/ZoneHull
 @onready var zone: SubViewport = $Zone
 @onready var props: Node2D = $Props
+@export var hoverStrength: float = 20.0
+@export var hoverDamping: float = 6.0
+@export var rightingStrength: float = 8.0
+@export var rightingDamping: float = 3.0
+@export var bobHeight: float = 5.0
+@export var bobSpeed: float = 1.0
+@export var windSpeed: float = 0.0
+@export var windDrag: float = 1.0
 
-var startY: float
+var targetY: float
 var time: float = 0.0
 
-var last_position: Vector2 # For getting ship Vel, needed maybe for player momentum
+
 var current_velocity:Vector2 = Vector2.ZERO
 
 var collisionPolys: Array[CollisionPolygon2D] = []
@@ -18,20 +26,16 @@ var collisionPolys: Array[CollisionPolygon2D] = []
 func _ready() -> void:
 	add_to_group("vessels")
 	zone_hull.tile_map_data = hull.tile_map_data # Copies every tile from the visible Hull into the ZoneHull
-	startY = position.y
-	last_position = global_position
+	targetY = global_position.y
 	
 	rebuild_collision()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	time += delta
-	position.y = startY + sin(time) * 5
-	rotation = sin(time*0.75) * 0.1
+	pass
 	
-	current_velocity = (global_position - last_position) / delta
-	last_position = global_position # End of vel calc
+	
 
 func get_zone_bounds() -> Rect2:
 	var tile_rect := zone_hull.get_used_rect() # smallest rect that fits tiles
@@ -55,3 +59,23 @@ func rebuild_collision() -> void:
 			poly.position = hull.map_to_local(cell)
 			add_child(poly)
 			collisionPolys.append(poly)
+
+
+func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	var dt := state.step
+	time += dt
+	var vel := state.linear_velocity
+	
+	
+	var bobTarget := targetY + sin(time * bobSpeed) * bobHeight
+	var heightError := bobTarget - state.transform.origin.y
+	vel.y += (heightError * hoverStrength - vel.y * hoverDamping) * dt
+	vel -= state.total_gravity * dt
+	
+	vel.x += (windSpeed - vel.x) * windDrag * dt
+	
+	state.linear_velocity = vel
+	var tilt := state.transform.get_rotation()
+	state.angular_velocity += (-tilt * rightingStrength - state.angular_velocity * rightingDamping) * dt
+	
+	current_velocity = state.linear_velocity

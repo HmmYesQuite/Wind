@@ -48,6 +48,7 @@ target = NodePath("../PlayerVisual")
 
 [node name="Vessel2" parent="." instance=ExtResource("2_xto7t")]
 position = Vector2(115, 29)
+bobHeight = 10.0
 
 [node name="PlayerVisual" parent="." instance=ExtResource("2_wav5q")]
 position = Vector2(0, -8)

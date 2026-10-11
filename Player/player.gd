@@ -13,6 +13,9 @@ const ACCEL = 400.0
 const JUMP_STRENGTH = 128.0
 @export var jump_bias: float = 0.5 # 0 is relative to ship 1 is relative to world
 
+@export var leaveDelay: float = 0.05
+var airTime: float = 0.0
+
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
@@ -24,6 +27,7 @@ func _physics_process(delta: float) -> void:
 	velocity.x += gravity.x * delta
 
 	# Handle jump.
+	var jumped := false
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		var vesselUp := Vector2.UP
 		var worldUp := Vector2.UP
@@ -32,6 +36,7 @@ func _physics_process(delta: float) -> void:
 		var jumpDir := vesselUp.lerp(worldUp, jump_bias).normalized()
 		velocity.y = 0
 		velocity += jumpDir * JUMP_STRENGTH
+		jumped = true
 
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
@@ -48,8 +53,15 @@ func _physics_process(delta: float) -> void:
 	if vessel != null:
 		visual.global_position = vessel.to_global(position)
 		targetAngle = vessel.global_rotation
-		if not vessel.get_zone_bounds().has_point(position):
+		
+		if is_on_floor():
+			airTime = 0.0
+		else:
+			airTime += delta
+		
+		if jumped or airTime > leaveDelay or not vessel.get_zone_bounds().has_point(position):
 			transfer_to(null)
+		
 	else:
 		visual.global_position = global_position
 		if is_on_floor():
