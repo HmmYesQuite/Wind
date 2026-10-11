@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=4 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=6 format=4 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="TileSet" uid="uid://cfjw2fd8k4mdc" path="res://Assets/wind_tileset.tres" id="1_gtnvv"]
 [ext_resource type="PackedScene" uid="uid://3nwhxsafyu0m" path="res://Player/player_visual.tscn" id="2_wav5q"]
 [ext_resource type="PackedScene" uid="uid://35xtu3rt1vfy" path="res://Vessel/vessel.tscn" id="2_xto7t"]
 [ext_resource type="PackedScene" uid="uid://bpxb0g7d6yyyg" path="res://Player/player_body.tscn" id="4_uhyyw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xto7t"]
+size = Vector2(1024, 32)
 
 [node name="Level" type="Node2D"]
 
@@ -20,7 +23,22 @@ tile_set = ExtResource("1_gtnvv")
 [node name="PlayerVisual" parent="Vessel/Props" index="0" instance=ExtResource("2_wav5q")]
 position = Vector2(0, -8)
 
-[node name="PlayerBody" parent="Vessel/Zone" index="1" node_paths=PackedStringArray("visual") instance=ExtResource("4_uhyyw")]
+[node name="PlayerBody" parent="Vessel/Zone" index="1" node_paths=PackedStringArray("visual", "vessel") instance=ExtResource("4_uhyyw")]
 visual = NodePath("../../Props/PlayerVisual")
+vessel = NodePath("../..")
+
+[node name="StaticBody2D" type="StaticBody2D" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="StaticBody2D"]
+custom_minimum_size = Vector2(1024, 32)
+offset_left = -512.0
+offset_top = 48.0
+offset_right = 512.0
+offset_bottom = 80.0
+color = Color(0, 0, 0, 0.52156866)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
+position = Vector2(0, 64)
+shape = SubResource("RectangleShape2D_xto7t")
 
 [editable path="Vessel"]
