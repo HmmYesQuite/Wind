@@ -15,6 +15,9 @@ const JUMP_STRENGTH = 128.0
 
 @export var leaveDelay: float = 0.05
 var airTime: float = 0.0
+@export var solidGrace: float = 0.1
+
+@export var playerWeight: float = 20
 
 
 func _physics_process(delta: float) -> void:
@@ -49,16 +52,21 @@ func _physics_process(delta: float) -> void:
 
 	move_and_slide()
 	
+	if is_on_floor():
+		airTime = 0.0
+	else:
+		airTime += delta
+	
+	set_collision_layer_value(4, vessel == null and airTime < solidGrace)
+	
 	var targetAngle := 0.0
 	if vessel != null:
 		visual.global_position = vessel.to_global(position)
 		targetAngle = vessel.global_rotation
 		
 		if is_on_floor():
-			airTime = 0.0
-		else:
-			airTime += delta
-		
+			vessel.apply_force(Vector2(0, playerWeight), vessel.to_global(position) - vessel.global_position)
+
 		if jumped or airTime > leaveDelay or not vessel.get_zone_bounds().has_point(position):
 			transfer_to(null)
 		
