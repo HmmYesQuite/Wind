@@ -25,6 +25,7 @@ var collisionPolys: Array[CollisionPolygon2D] = []
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_to_group("vessels")
+	zone_hull.tile_set = hull.tile_set
 	zone_hull.tile_map_data = hull.tile_map_data # Copies every tile from the visible Hull into the ZoneHull
 	targetY = global_position.y
 	

@@ -19,6 +19,11 @@ var airTime: float = 0.0
 
 @export var playerWeight: float = 20
 
+func _ready() -> void:
+	if vessel == null:
+		var zoneNode := get_parent()
+		if zoneNode is SubViewport and zoneNode.get_parent() is Vessel:
+			vessel = zoneNode.get_parent()
 
 func _physics_process(delta: float) -> void:
 	# Add the gravity.
