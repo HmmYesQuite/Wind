@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=4 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=9 format=4 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="TileSet" uid="uid://cfjw2fd8k4mdc" path="res://Assets/wind_tileset.tres" id="1_gtnvv"]
 [ext_resource type="PackedScene" uid="uid://bg5jdjxvsjmeg" path="res://Vessel/Ships/ShipBasic.tscn" id="2_uhyyw"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bpxb0g7d6yyyg" path="res://Player/player_body.tscn" id="4_uhyyw"]
 [ext_resource type="Script" uid="uid://bxnxdpijivibl" path="res://Player/camera_follow.gd" id="5_uhyyw"]
 [ext_resource type="PackedScene" uid="uid://dvn6h0drsqwdo" path="res://Vessel/Ships/ShipBasicLong.tscn" id="6_t80w2"]
+[ext_resource type="PackedScene" uid="uid://d0xly8337ln0s" path="res://Vessel/Ships/PlatformFloating.tscn" id="7_8a2b0"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_xto7t"]
 size = Vector2(1024, 32)
@@ -43,7 +44,7 @@ visual = NodePath("../../../PlayerVisual")
 vessel = NodePath("../..")
 
 [node name="Vessel2" parent="." instance=ExtResource("6_t80w2")]
-position = Vector2(132, 33)
+position = Vector2(103, 14)
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
 process_physics_priority = 10
@@ -53,5 +54,8 @@ target = NodePath("../PlayerVisual")
 
 [node name="PlayerVisual" parent="." instance=ExtResource("2_wav5q")]
 position = Vector2(0, -8)
+
+[node name="Vessel3" parent="." instance=ExtResource("7_8a2b0")]
+position = Vector2(44, 13)
 
 [editable path="Vessel"]
