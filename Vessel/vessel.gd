@@ -17,10 +17,14 @@ class_name  Vessel
 var targetY: float
 var time: float = 0.0
 
+@export var proxyRange: float = 200.0
+var proxies: Dictionary = {}
 
 var current_velocity:Vector2 = Vector2.ZERO
 
 var collisionPolys: Array[CollisionPolygon2D] = []
+
+var propCount: int = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -34,7 +38,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
-	pass
+	update_proxies()
 	
 	
 
@@ -80,3 +84,40 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	state.angular_velocity += (-tilt * rightingStrength - state.angular_velocity * rightingDamping) * dt
 	
 	current_velocity = state.linear_velocity
+	
+func make_proxy(source: Vessel) -> AnimatableBody2D:
+	var proxy := AnimatableBody2D.new()
+	proxy.sync_to_physics = false
+	proxy.collision_layer = 2
+	proxy.collision_mask = 0
+	proxy.set_meta("source", source)
+	for poly in source.collisionPolys:
+		proxy.add_child(poly.duplicate())
+	zone.add_child(proxy)
+	return proxy
+	
+func clear_proxies() -> void:
+	for proxy in proxies.values():
+		proxy.queue_free()
+	proxies.clear()
+	
+
+func update_proxies() -> void:
+	if propCount == 0:
+		if not proxies.is_empty():
+			clear_proxies()
+		return
+	
+	for other: Vessel in get_tree().get_nodes_in_group("vessels"):
+		if other == self:
+			continue
+		var inRange := global_position.distance_to(other.global_position) < proxyRange
+		if inRange and not proxies.has(other):
+			proxies[other] = make_proxy(other)
+		elif not inRange and proxies.has(other):
+			proxies[other].queue_free()
+			proxies.erase(other)
+	
+	var toLocal := global_transform.affine_inverse()
+	for other in proxies:
+		proxies[other].transform = toLocal * other.global_transform

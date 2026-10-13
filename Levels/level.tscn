@@ -29,7 +29,7 @@ offset_left = -512.0
 offset_top = 48.0
 offset_right = 512.0
 offset_bottom = 80.0
-color = Color(0, 0, 0, 0.52156866)
+color = Color(0, 0, 0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 position = Vector2(0, 64)
@@ -57,5 +57,12 @@ position = Vector2(0, -8)
 
 [node name="Vessel3" parent="." instance=ExtResource("7_8a2b0")]
 position = Vector2(44, 13)
+
+[node name="Vessel4" parent="." instance=ExtResource("7_8a2b0")]
+position = Vector2(-45, 16)
+rightingStrength = 1.0
+
+[node name="Vessel5" parent="." instance=ExtResource("2_uhyyw")]
+position = Vector2(-91, -2)
 
 [editable path="Vessel"]
