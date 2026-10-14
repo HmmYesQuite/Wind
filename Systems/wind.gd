@@ -1,12 +1,12 @@
 extends Node
 
-var windScale: float = 10.0 # switching to 0 toggles off for debug
+var windScale: float = 0.1 # switching to 0 toggles off for debug
 var maxWindSpeed: float = 40.0
 
 var windMapSize: float = 0.002
 var directionBoost: float = 1.5
 
-var morphSpeed: float = 10.0
+var morphSpeed: float = 4.0
 
 var time: float = 0.0
 
