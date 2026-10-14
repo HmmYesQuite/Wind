@@ -11,7 +11,7 @@ class_name  Vessel
 @export var rightingDamping: float = 3.0
 @export var bobHeight: float = 5.0
 @export var bobSpeed: float = 1.0
-@export var windSpeed: float = 0.0
+
 @export var windDrag: float = 1.0
 
 var targetY: float
@@ -77,7 +77,8 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	vel.y += (heightError * hoverStrength - vel.y * hoverDamping) * dt
 	vel -= state.total_gravity * dt
 	
-	vel.x += (windSpeed - vel.x) * windDrag * dt
+	var wind: Vector2 = Wind.get_wind_at(state.transform.origin)
+	vel.x += (wind.x -vel.x) * windDrag *dt
 	
 	state.linear_velocity = vel
 	var tilt := state.transform.get_rotation()
