@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=3 uid="uid://f8r7fnholr8n"]
+
+[ext_resource type="Script" uid="uid://cpwywdx57xyoa" path="res://Props/Crate/crate.gd" id="1_twtwc"]
+[ext_resource type="Texture2D" uid="uid://buo7gs8xsvhld" path="res://Assets/WindTileSet.png" id="2_gio73"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3d65w"]
+size = Vector2(8, 8)
+
+[node name="Crate" type="CharacterBody2D"]
+process_priority = 1
+collision_layer = 4
+collision_mask = 3
+script = ExtResource("1_twtwc")
+playerWeight = 5.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_3d65w")
+
+[node name="Visual" type="Node2D" parent="."]
+
+[node name="Sprite2D" type="Sprite2D" parent="Visual"]
+texture_filter = 1
+texture = ExtResource("2_gio73")
+region_enabled = true
+region_rect = Rect2(0, 16, 8, 8)

@@ -48,7 +48,7 @@ visual = NodePath("../../../PlayerVisual")
 vessel = NodePath("../..")
 
 [node name="Vessel2" parent="." instance=ExtResource("6_t80w2")]
-position = Vector2(103, 14)
+position = Vector2(150, -8)
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
 process_physics_priority = 10
@@ -60,17 +60,17 @@ target = NodePath("../PlayerVisual")
 position = Vector2(0, -8)
 
 [node name="Vessel3" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(44, 13)
+position = Vector2(93, 4)
 
 [node name="Vessel4" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(-45, 16)
+position = Vector2(-53, 5)
 rightingStrength = 1.0
 
 [node name="Vessel5" parent="." instance=ExtResource("2_uhyyw")]
-position = Vector2(-91, -2)
+position = Vector2(-105, -7)
 
 [node name="Vessel6" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(177, 14)
+position = Vector2(217, 3)
 
 [node name="Rope" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
 position = Vector2(139, 18)
@@ -82,5 +82,15 @@ ropeLength = 0.0
 stiffness = 40.0
 damping = 8.0
 sagSegments = 12
+
+[node name="Vessel7" parent="." instance=ExtResource("7_8a2b0")]
+position = Vector2(55, 11)
+
+[node name="Rope2" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
+position = Vector2(-86, -3)
+vesselA = NodePath("../Vessel5")
+tileA = Vector2i(2, 0)
+vesselB = NodePath("../Vessel4")
+tileB = Vector2i(-1, 0)
 
 [editable path="Vessel"]
