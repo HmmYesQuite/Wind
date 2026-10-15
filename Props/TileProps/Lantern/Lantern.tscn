@@ -1,0 +1,19 @@
+[gd_scene load_steps=4 format=3 uid="uid://cvpqbls6w4ifh"]
+
+[ext_resource type="Script" uid="uid://bdnejctewij0q" path="res://Props/TileProps/Lantern/lantern.gd" id="1_l086v"]
+[ext_resource type="Texture2D" uid="uid://buo7gs8xsvhld" path="res://Assets/WindTileSet.png" id="2_l086v"]
+[ext_resource type="Script" uid="uid://xo00r8vmyh4o" path="res://Systems/Interaction/interactable.gd" id="3_60trt"]
+
+[node name="Lantern" type="Node2D"]
+position = Vector2(-4, -4)
+script = ExtResource("1_l086v")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_l086v")
+region_enabled = true
+region_rect = Rect2(0, 16, 8, 8)
+
+[node name="Interactable" type="Node2D" parent="."]
+script = ExtResource("3_60trt")
+promptText = "Toggle"

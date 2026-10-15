@@ -70,7 +70,7 @@ rightingStrength = 1.0
 position = Vector2(-91, -2)
 
 [node name="Vessel6" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(184, 14)
+position = Vector2(177, 14)
 
 [node name="Rope" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
 position = Vector2(139, 18)
@@ -78,5 +78,9 @@ vesselA = NodePath("../Vessel2")
 tileA = Vector2i(4, 0)
 vesselB = NodePath("../Vessel6")
 tileB = Vector2i(-2, 0)
+ropeLength = 0.0
+stiffness = 40.0
+damping = 8.0
+sagSegments = 12
 
 [editable path="Vessel"]
