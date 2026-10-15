@@ -17,6 +17,9 @@ var airTime: float = 0.0
 var visualOffset: Vector2 = Vector2.ZERO
 var forceLeave: bool = false
 
+@export var killHeight : float = 500.0
+
+
 
 func _ready() -> void:
 	
@@ -138,7 +141,10 @@ func _physics_process(delta: float) -> void:
 	
 	visualOffset = visualOffset.lerp(Vector2.ZERO, clamp(stepSmoothing * delta, 0.0, 1.0))
 	visual.global_rotation = lerp_angle(visual.global_rotation, targetAngle, 10.0 * delta)
-
+	
+	if vessel == null and global_position.y > killHeight:
+		fell_out_of_world()
+	
 
 func move_prop(delta: float) -> void:
 	if is_on_floor():
@@ -149,4 +155,10 @@ func detach_visual() -> void:
 	
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_PREDELETE and is_instance_valid(visual):
-		visual.queue_free()
+		if is_instance_valid(visual):
+			visual.queue_free()
+		if is_instance_valid(vessel):
+			vessel.propCount -= 1
+
+func fell_out_of_world() -> void:
+	queue_free()

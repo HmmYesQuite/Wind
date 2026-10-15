@@ -33,3 +33,7 @@ func move_prop(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, direction * SPEED, ACCEL * delta)
 	elif is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
+
+
+func fell_out_of_world() -> void:
+	get_tree().reload_current_scene()

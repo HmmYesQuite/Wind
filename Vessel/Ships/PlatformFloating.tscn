@@ -1,12 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d0xly8337ln0s"]
+[gd_scene load_steps=2 format=3 uid="uid://d0xly8337ln0s"]
 
 [ext_resource type="PackedScene" uid="uid://35xtu3rt1vfy" path="res://Vessel/vessel.tscn" id="1_uxq5m"]
-[ext_resource type="PackedScene" uid="uid://f8r7fnholr8n" path="res://Props/Crate/Crate.tscn" id="2_rx3o8"]
 
 [node name="Vessel" instance=ExtResource("1_uxq5m")]
 
 [node name="Hull" parent="." index="0"]
 tile_map_data = PackedByteArray(0, 0, 254, 255, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 255, 255, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 3, 0, 0, 0, 0, 0)
-
-[node name="Crate" parent="Zone" index="1" instance=ExtResource("2_rx3o8")]
-position = Vector2(8, 0)
