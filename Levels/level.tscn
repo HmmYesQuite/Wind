@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=12 format=4 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="TileSet" uid="uid://cfjw2fd8k4mdc" path="res://Assets/wind_tileset.tres" id="1_gtnvv"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://dvn6h0drsqwdo" path="res://Vessel/Ships/ShipBasicLong.tscn" id="6_t80w2"]
 [ext_resource type="PackedScene" uid="uid://d0xly8337ln0s" path="res://Vessel/Ships/PlatformFloating.tscn" id="7_8a2b0"]
 [ext_resource type="PackedScene" uid="uid://bw48oqp6gj2tj" path="res://Props/Rope/rope.tscn" id="8_ecu0b"]
+[ext_resource type="Script" uid="uid://cg71sca4yrow3" path="res://Systems/Atmosphere/cloud_layer.gd" id="11_ugh17"]
 
 [node name="Level" type="Node2D"]
 
@@ -84,5 +85,19 @@ vesselA = NodePath("../Vessel5")
 tileA = Vector2i(2, 0)
 vesselB = NodePath("../Vessel4")
 tileB = Vector2i(-1, 0)
+
+[node name="CloudLayer" type="Node2D" parent="."]
+z_index = -1
+position = Vector2(0, 170)
+scale = Vector2(0.4, 0.4)
+script = ExtResource("11_ugh17")
+cloudTexture = ExtResource("3_vx8ih")
+waveLength = 240.0
+
+[node name="Vessel8" parent="." instance=ExtResource("7_8a2b0")]
+position = Vector2(32, 130)
+
+[node name="Vessel9" parent="." instance=ExtResource("6_t80w2")]
+position = Vector2(-45, 130)
 
 [editable path="Vessel"]

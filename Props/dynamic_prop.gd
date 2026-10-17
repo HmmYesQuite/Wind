@@ -17,7 +17,7 @@ var airTime: float = 0.0
 var visualOffset: Vector2 = Vector2.ZERO
 var forceLeave: bool = false
 
-@export var killHeight : float = 500.0
+@export var killHeight : float = 1000.0
 
 
 
