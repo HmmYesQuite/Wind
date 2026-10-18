@@ -3,6 +3,13 @@ class_name  CloudField
 
 @export var cloudTextures: Array[Texture2D]= []
 
+@export var cloudLayers: Array[int] = []
+
+@export var randomFlip: bool = false
+@export var maxTilt: float = 2.0
+@export var tintColor: Color = Color.WHITE
+@export_range(0.0, 1.0) var tintAmount: float = 0.0
+
 @export var cloudCount: int = 24
 @export var heightRange: Vector2 = Vector2(-160, 40)
 
@@ -22,6 +29,7 @@ class_name  CloudField
 @export var farDrift: float = 0.15
 @export var farFade: float = 0.8
 @export var farZ: int = -9
+
 
 class Cloud:
 	var sprite: Sprite2D
@@ -46,6 +54,8 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
+	
+	modulate = Color.WHITE.lerp(tintColor, tintAmount)
 	var camera := get_viewport().get_camera_2d()
 	if camera == null or cloudTextures.is_empty():
 		return
@@ -72,13 +82,25 @@ func _physics_process(delta: float) -> void:
 
 
 func respawn(cloud: Cloud, camPos: Vector2, viewSize: Vector2, side: float) -> void:
-	cloud.depth = 1.0 - pow(randf(), depthBias)
+	
+	var index := randi_range(0, cloudTextures.size() - 1)
+	var layer := -1
+	if index < cloudLayers.size():
+		layer = cloudLayers[index]
+	var t := 1.0 - pow(randf(), depthBias)
+	if layer >= 0 and layer <= 2:
+		cloud.depth = (layer + t) / 3.0
+	else:
+		cloud.depth = t
+	
+	
 	cloud.parallax = lerpf(nearParallax, farParallax, cloud.depth)
 	cloud.drift = lerpf(nearDrift, farDrift, cloud.depth)
 	
 	var sprite := cloud.sprite
-	sprite.texture = cloudTextures.pick_random()
-	sprite.flip_h = randf() < 0.5
+	sprite.texture = cloudTextures[index]
+	sprite.flip_h = randomFlip and randf() < 0.5
+	sprite.rotation_degrees = randf_range(-maxTilt, maxTilt)
 	var cloudScale := lerpf(nearScale, farScale, cloud.depth)
 	sprite.scale = Vector2(cloudScale, cloudScale)
 	sprite.modulate = Color.WHITE.lerp(skyColor, cloud.depth * farFade)

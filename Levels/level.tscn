@@ -1,10 +1,12 @@
-[gd_scene load_steps=12 format=4 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=14 format=4 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="TileSet" uid="uid://cfjw2fd8k4mdc" path="res://Assets/wind_tileset.tres" id="1_gtnvv"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
 [ext_resource type="PackedScene" uid="uid://bg5jdjxvsjmeg" path="res://Vessel/Ships/ShipBasic.tscn" id="2_uhyyw"]
 [ext_resource type="PackedScene" uid="uid://3nwhxsafyu0m" path="res://Player/player_visual.tscn" id="2_wav5q"]
+[ext_resource type="Texture2D" uid="uid://bor7xkmy66j5s" path="res://Assets/Clouds/Cloud1.png" id="3_dvejp"]
 [ext_resource type="Texture2D" uid="uid://bj1t1ecc31uqr" path="res://Assets/cloud-3d.webp" id="3_vx8ih"]
+[ext_resource type="Texture2D" uid="uid://dblqy5pv4elpq" path="res://Assets/Clouds/Cloud2.png" id="4_3hgmi"]
 [ext_resource type="PackedScene" uid="uid://bpxb0g7d6yyyg" path="res://Player/player_body.tscn" id="4_uhyyw"]
 [ext_resource type="Script" uid="uid://bxnxdpijivibl" path="res://Player/camera_follow.gd" id="5_uhyyw"]
 [ext_resource type="PackedScene" uid="uid://dvn6h0drsqwdo" path="res://Vessel/Ships/ShipBasicLong.tscn" id="6_t80w2"]
@@ -29,7 +31,10 @@ tile_set = ExtResource("1_gtnvv")
 
 [node name="CloudField" type="Node2D" parent="Atmosphere"]
 script = ExtResource("2_t2u7g")
-cloudTextures = Array[Texture2D]([ExtResource("3_vx8ih")])
+cloudTextures = Array[Texture2D]([ExtResource("3_dvejp"), ExtResource("4_3hgmi")])
+cloudLayers = Array[int]([0, 0])
+cloudCount = 12
+depthBias = 3.0
 windMultiplier = 5.0
 
 [node name="Vessel" parent="." instance=ExtResource("2_uhyyw")]
