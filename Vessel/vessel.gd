@@ -14,6 +14,8 @@ class_name  Vessel
 
 @export var windDrag: float = 1.0
 
+@export var massPerTile: float = 0.10
+
 var targetY: float
 var time: float = 0.0
 
@@ -64,6 +66,7 @@ func rebuild_collision() -> void:
 			poly.position = hull.map_to_local(cell)
 			add_child(poly)
 			collisionPolys.append(poly)
+	mass = maxf(1.0, collisionPolys.size() * massPerTile)
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
@@ -94,6 +97,7 @@ func make_proxy(source: Vessel) -> AnimatableBody2D:
 	proxy.set_meta("source", source)
 	for poly in source.collisionPolys:
 		proxy.add_child(poly.duplicate())
+	proxy.transform = global_transform.affine_inverse() * source.global_transform
 	zone.add_child(proxy)
 	return proxy
 	

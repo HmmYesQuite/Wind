@@ -37,6 +37,8 @@ func _ready() -> void:
 		
 func transfer_to(new_vessel: Vessel) -> void:
 	
+	
+	
 	if vessel != null:
 		vessel.propCount -= 1
 	
