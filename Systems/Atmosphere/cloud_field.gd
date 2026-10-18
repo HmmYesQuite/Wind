@@ -17,6 +17,10 @@ class_name  CloudField
 @export var windMultiplier: float = 4.0
 @export var skyColor: Color =Color(0.55, 0.7, 0.85)
 
+@export var maxBlur: float = 3.0
+@export var frontBlur: float = 2.0
+var blurShader := preload("res://Systems/Atmosphere/cloud_blur.gdshader")
+
 @export_group("Near (depth 0)")
 @export var nearScale: float = 1.0
 @export var nearParallax: float = 0.7
@@ -29,6 +33,16 @@ class_name  CloudField
 @export var farDrift: float = 0.15
 @export var farFade: float = 0.8
 @export var farZ: int = -9
+
+
+@export_group("Front Overlay")
+@export_range(0.0, 1.0) var frontChance: float = 0.1
+@export var frontParallax: float = 1.3
+@export var frontScale: float = 1.3
+@export_range(0.0, 1.0) var frontAlpha: float = 0.5
+@export var frontZ: int = 10
+
+
 
 
 class Cloud:
@@ -47,6 +61,11 @@ func _ready() -> void:
 	for i in cloudCount:
 		var cloud := Cloud.new()
 		cloud.sprite = Sprite2D.new()
+		
+		var blurMaterial := ShaderMaterial.new()
+		blurMaterial.shader = blurShader
+		cloud.sprite.material = blurMaterial
+		
 		cloud.sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		add_child(cloud.sprite)
 		clouds.append(cloud)
@@ -97,14 +116,34 @@ func respawn(cloud: Cloud, camPos: Vector2, viewSize: Vector2, side: float) -> v
 	cloud.parallax = lerpf(nearParallax, farParallax, cloud.depth)
 	cloud.drift = lerpf(nearDrift, farDrift, cloud.depth)
 	
+	var isFront := layer <= 0 and randf() < frontChance
+	
+	
+	if isFront:
+		cloud.parallax = frontParallax
+		cloud.drift = nearDrift
+	
+	
+	
 	var sprite := cloud.sprite
 	sprite.texture = cloudTextures[index]
 	sprite.flip_h = randomFlip and randf() < 0.5
 	sprite.rotation_degrees = randf_range(-maxTilt, maxTilt)
+	
+	
 	var cloudScale := lerpf(nearScale, farScale, cloud.depth)
-	sprite.scale = Vector2(cloudScale, cloudScale)
+	
 	sprite.modulate = Color.WHITE.lerp(skyColor, cloud.depth * farFade)
 	sprite.z_index = int(round(lerpf(float(nearZ), float(farZ), cloud.depth)))
+	var blur := cloud.depth * maxBlur
+	if isFront:
+		cloudScale = frontScale
+		sprite.modulate = Color(1, 1, 1, frontAlpha)
+		sprite.z_index = frontZ
+		blur = frontBlur
+	sprite.material.set_shader_parameter("blurSize", blur)
+	sprite.scale = Vector2(cloudScale, cloudScale)
+	
 	
 	var drawnX: float
 	if side == 0.0:
