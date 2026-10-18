@@ -95,9 +95,19 @@ cloudTexture = ExtResource("3_vx8ih")
 waveLength = 240.0
 
 [node name="Vessel8" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(32, 130)
+position = Vector2(28, 131)
 
 [node name="Vessel9" parent="." instance=ExtResource("6_t80w2")]
-position = Vector2(-45, 130)
+position = Vector2(-39, 131)
+
+[node name="Vessel10" parent="." instance=ExtResource("2_uhyyw")]
+position = Vector2(85, 126)
+
+[node name="Rope3" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
+position = Vector2(39, 135)
+vesselA = NodePath("../Vessel8")
+tileA = Vector2i(1, 0)
+vesselB = NodePath("../Vessel10")
+tileB = Vector2i(-3, 0)
 
 [editable path="Vessel"]
