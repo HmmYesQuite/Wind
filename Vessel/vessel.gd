@@ -11,9 +11,7 @@ class_name  Vessel
 @export var rightingDamping: float = 3.0
 @export var bobHeight: float = 5.0
 @export var bobSpeed: float = 1.0
-
 @export var windDrag: float = 1.0
-
 @export var massPerTile: float = 0.10
 
 var targetY: float
@@ -23,7 +21,6 @@ var time: float = 0.0
 var proxies: Dictionary = {}
 
 var current_velocity:Vector2 = Vector2.ZERO
-
 var collisionPolys: Array[CollisionPolygon2D] = []
 
 var propCount: int = 0

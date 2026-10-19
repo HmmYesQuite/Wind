@@ -44,7 +44,6 @@ var blurShader := preload("res://Systems/Atmosphere/cloud_blur.gdshader")
 
 
 
-
 class Cloud:
 	var sprite: Sprite2D
 	var basePos: Vector2
