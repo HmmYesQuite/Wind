@@ -5,7 +5,6 @@
 [ext_resource type="PackedScene" uid="uid://bg5jdjxvsjmeg" path="res://Vessel/Ships/ShipBasic.tscn" id="2_uhyyw"]
 [ext_resource type="PackedScene" uid="uid://3nwhxsafyu0m" path="res://Player/player_visual.tscn" id="2_wav5q"]
 [ext_resource type="Texture2D" uid="uid://bor7xkmy66j5s" path="res://Assets/Clouds/Cloud1.png" id="3_dvejp"]
-[ext_resource type="Texture2D" uid="uid://bj1t1ecc31uqr" path="res://Assets/cloud-3d.webp" id="3_vx8ih"]
 [ext_resource type="Texture2D" uid="uid://dblqy5pv4elpq" path="res://Assets/Clouds/Cloud2.png" id="4_3hgmi"]
 [ext_resource type="PackedScene" uid="uid://bpxb0g7d6yyyg" path="res://Player/player_body.tscn" id="4_uhyyw"]
 [ext_resource type="Script" uid="uid://bxnxdpijivibl" path="res://Player/camera_follow.gd" id="5_uhyyw"]
@@ -17,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://bw48oqp6gj2tj" path="res://Props/Rope/rope.tscn" id="8_ecu0b"]
 [ext_resource type="Script" uid="uid://cg71sca4yrow3" path="res://Systems/Atmosphere/cloud_layer.gd" id="11_ugh17"]
 [ext_resource type="PackedScene" uid="uid://3nbrule747dv" path="res://UI/pause_menu.tscn" id="17_jjxhf"]
+[ext_resource type="PackedScene" uid="uid://dicdxsu4um2k6" path="res://UI/hotbar_ui.tscn" id="17_lybtp"]
 
 [node name="Level" type="Node2D"]
 
@@ -102,7 +102,7 @@ z_index = -1
 position = Vector2(0, 170)
 scale = Vector2(0.4, 0.4)
 script = ExtResource("11_ugh17")
-cloudTexture = ExtResource("3_vx8ih")
+cloudTexture = ExtResource("4_3hgmi")
 waveLength = 240.0
 
 [node name="Vessel8" parent="." instance=ExtResource("7_8a2b0")]
@@ -122,5 +122,7 @@ vesselB = NodePath("../Vessel10")
 tileB = Vector2i(-3, 0)
 
 [node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
+
+[node name="HotbarUI" parent="." instance=ExtResource("17_lybtp")]
 
 [editable path="Vessel"]

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=3 format=3 uid="uid://dqtb3st4pnp5a"]
+
+[ext_resource type="Texture2D" uid="uid://gshj0ey0gavl" path="res://Assets/icon.svg" id="1_owvqg"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_ttuqq"]
+
+[resource]
+script = ExtResource("1_ttuqq")
+itemName = "Fishing Rod"
+icon = ExtResource("1_owvqg")
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

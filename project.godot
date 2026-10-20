@@ -17,8 +17,9 @@ config/icon="res://Assets/icon.svg"
 
 [autoload]
 
-Wind="*res://Systems/wind.gd"
-WindDebug="*res://Systems/wind_debug.gd"
+Wind="*res://Systems/Wind/wind.gd"
+WindDebug="*res://Systems/Wind/wind_debug.gd"
+Hotbar="*res://Systems/Inventory/hotbar.gd"
 
 [display]
 
@@ -31,6 +32,12 @@ window/stretch/mode="canvas_items"
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
+
+[file_customization]
+
+folder_colors={
+"res://Systems/Inventory/": "orange"
+}
 
 [input]
 
