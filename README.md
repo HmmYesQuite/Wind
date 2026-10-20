@@ -1,7 +1,7 @@
 Submission for Terra Hackathon.
 WASD to move around.
 E to interact.
-Esc to open the pause menu.
+Esc to open the pause menu. (FYI: I accidently hid the menu screen when I shipped the project, so it won't show up visually. Sorry for the inconvenience. I will try to update it.)
 You can jump from platform to platform.
 The platforms have physics on them, so walking on one side will tilt it in that direction.
 Falling off will reset you after a second.
