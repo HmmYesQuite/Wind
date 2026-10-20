@@ -9,7 +9,7 @@ var selectedIndex: int = 0
 
 func _ready() -> void:
 	slots.resize(slotCount)
-	add_item(preload("res://Items/fishing_rod.tres"))
+	add_item(preload("res://Items/FishingRod/fishing_rod.tres"))
 	add_item(preload("res://Items/debug_item.tres"))
 	
 

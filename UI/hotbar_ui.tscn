@@ -7,7 +7,7 @@ layer = 5
 script = ExtResource("1_83sp5")
 
 [node name="Slots" type="HBoxContainer" parent="."]
-anchors_preset = -1
+anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5

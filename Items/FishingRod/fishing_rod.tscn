@@ -1,0 +1,27 @@
+[gd_scene load_steps=2 format=3 uid="uid://cgjdqvqqom0cu"]
+
+[ext_resource type="Script" uid="uid://b7xhxrxvbl2re" path="res://Items/FishingRod/fishing_rod.gd" id="1_1n8et"]
+
+[node name="FishingRod" type="Node2D"]
+script = ExtResource("1_1n8et")
+
+[node name="Rod" type="Line2D" parent="."]
+points = PackedVector2Array(0, 0, 10, -8)
+width = 1.0
+
+[node name="Tip" type="Marker2D" parent="."]
+position = Vector2(10, -8)
+
+[node name="Line" type="Line2D" parent="."]
+top_level = true
+points = PackedVector2Array(0, 0)
+width = 1.0
+default_color = Color(0.4, 0.324, 0.24800001, 1)
+
+[node name="Hook" type="Polygon2D" parent="."]
+top_level = true
+position = Vector2(-0.04235077, 0.093990326)
+scale = Vector2(0.12499905, 0.125)
+color = Color(0.61, 0.61, 0.61, 1)
+polygon = PackedVector2Array(-7.9999924, -7.999996, 8.000008, -7.999996, 8.000008, 8.000004, -7.9999924, 8.000004)
+uv = PackedVector2Array(-104.000015, -64, -88.000015, -64, -88.000015, -48, -104.000015, -48)
