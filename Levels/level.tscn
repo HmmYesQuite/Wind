@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=20 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
@@ -17,6 +17,8 @@
 [ext_resource type="Script" uid="uid://cg71sca4yrow3" path="res://Systems/Atmosphere/cloud_layer.gd" id="11_ugh17"]
 [ext_resource type="PackedScene" uid="uid://3nbrule747dv" path="res://UI/pause_menu.tscn" id="17_jjxhf"]
 [ext_resource type="PackedScene" uid="uid://dicdxsu4um2k6" path="res://UI/hotbar_ui.tscn" id="17_lybtp"]
+[ext_resource type="PackedScene" uid="uid://bmdt172c4p7nh" path="res://Props/Debris/debris.tscn" id="18_8hqpc"]
+[ext_resource type="Resource" uid="uid://dq0mn4g7kkjoa" path="res://Items/debug_item.tres" id="19_jmcc3"]
 
 [node name="Level" type="Node2D"]
 
@@ -35,7 +37,7 @@ texture = ExtResource("1_dvejp")
 script = ExtResource("2_t2u7g")
 cloudTextures = Array[Texture2D]([ExtResource("3_dvejp"), ExtResource("4_3hgmi"), ExtResource("5_vmy0u"), ExtResource("6_jjxhf"), ExtResource("7_lybtp")])
 cloudLayers = Array[int]([0, 0, 1, 1, 1])
-tintColor = Color(0.15480001, 0.7189598, 0.86, 1)
+tintColor = Color(0.50366473, 0.8746536, 0.98890525, 1)
 tintAmount = 0.1
 cloudCount = 8
 depthBias = 6.0
@@ -52,7 +54,7 @@ visual = NodePath("../../../PlayerVisual")
 vessel = NodePath("../..")
 
 [node name="Vessel2" parent="." instance=ExtResource("6_t80w2")]
-position = Vector2(154, -3)
+position = Vector2(160, 0)
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
 process_physics_priority = 10
@@ -64,7 +66,7 @@ target = NodePath("../PlayerVisual")
 position = Vector2(0, -8)
 
 [node name="Vessel3" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(93, 4)
+position = Vector2(98, 5)
 
 [node name="Vessel4" parent="." instance=ExtResource("7_8a2b0")]
 position = Vector2(-53, 5)
@@ -74,7 +76,7 @@ rightingStrength = 1.0
 position = Vector2(-101, -7)
 
 [node name="Vessel6" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(214, 2)
+position = Vector2(220, 3)
 
 [node name="Rope" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
 position = Vector2(191, 1)
@@ -88,7 +90,7 @@ damping = 8.0
 sagSegments = 12
 
 [node name="Vessel7" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(55, 11)
+position = Vector2(61, 12)
 
 [node name="Rope2" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
 position = Vector2(-86, -3)
@@ -124,5 +126,13 @@ tileB = Vector2i(-3, 0)
 [node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
 
 [node name="HotbarUI" parent="." instance=ExtResource("17_lybtp")]
+
+[node name="Debris" parent="." instance=ExtResource("18_8hqpc")]
+position = Vector2(-24, 176)
+itemData = ExtResource("19_jmcc3")
+
+[node name="Debris2" parent="." instance=ExtResource("18_8hqpc")]
+position = Vector2(42, 163)
+itemData = ExtResource("19_jmcc3")
 
 [editable path="Vessel"]

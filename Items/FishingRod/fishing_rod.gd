@@ -24,11 +24,14 @@ enum State { READY, CAST }
 @export var windEffect: float = 8.0
 @export var sagSegments: int = 10
 
+@export var snagRadius: float = 6.0
+
 var state: State = State.READY
 var hookPos: Vector2 = Vector2.ZERO
 var hookVel: Vector2 = Vector2.ZERO
 var lineLength: float = 0.0
 var canReel: bool = false
+var hooked: Debris = null
 
 var previousTarget: Node2D = null
 
@@ -65,6 +68,12 @@ func _physics_process(delta: float) -> void:
 		lineLength = minf(lineLength + lowerSpeed * delta, maxLineLength)
 	
 	simulate(delta, mouse)
+	
+	if hooked == null:
+		try_snag()
+	else:
+		hooked.global_position = hookPos + Vector2(0, 4)
+	
 	update_line()
 
 
@@ -102,6 +111,15 @@ func simulate(delta: float, mouse: Vector2) -> void:
 	hook.global_position = hookPos
 
 func end_cast() -> void:
+	
+	# Need to change when proper inventory is added, also need to account for stuff like chests and crates
+	if hooked != null:
+		if hooked.itemData != null and Hotbar.add_item(hooked.itemData):
+			hooked.queue_free()
+		else:
+			hooked.hooked = false
+		hooked = null
+	
 	state = State.READY
 	line.visible = false
 	hook.visible = false
@@ -128,7 +146,7 @@ func follow_hook_with_camera() -> void:
 		return
 	previousTarget = camera.target
 	camera.target = hook
-	
+
 
 func restore_camera() -> void:
 	var camera = get_viewport().get_camera_2d()
@@ -139,4 +157,15 @@ func restore_camera() -> void:
 
 
 func _exit_tree() -> void:
+	if hooked != null and is_instance_valid(hooked):
+		hooked.hooked = false
 	restore_camera()
+
+
+func try_snag() -> void:
+	for node in get_tree().get_nodes_in_group("debris"):
+		var debris := node as Debris
+		if debris != null and not debris.hooked and debris.global_position.distance_to(hookPos) <= snagRadius:
+			hooked = debris
+			debris.hooked = true
+			return
