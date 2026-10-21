@@ -15,6 +15,7 @@ class_name Debris
 var layer: CloudLayer = null
 var time: float = 0.0
 var hooked: bool = false
+var velocityX: float = 0.0
 
 
 func _ready() -> void:
@@ -24,6 +25,8 @@ func _ready() -> void:
 		itemSprite.texture = itemData.icon
 		var iconSize := itemData.icon.get_size()
 		itemSprite.scale = Vector2.ONE * (itemSize / maxf(iconSize.x, iconSize.y))
+	reset_physics_interpolation()
+	itemSprite.reset_physics_interpolation()
 
 
 func _physics_process(delta: float) -> void:
@@ -36,7 +39,7 @@ func _physics_process(delta: float) -> void:
 			return
 	
 	var wind: Vector2 = Wind.get_wind_at(global_position)
-	global_position.x += wind.x * windDrift * delta
+	global_position.x += (velocityX + wind.x * windDrift) * delta
 	global_position.y = layer.get_surface_y(global_position.x) - floatHeight + sin(time * bobSpeed) * bobAmount
 
 
