@@ -25,6 +25,8 @@ enum State { READY, CAST }
 @export var sagSegments: int = 10
 
 @export var snagRadius: float = 6.0
+@export var attachSpeed: float = 12.0
+@export var attachDuration: float = 0.2
 
 var state: State = State.READY
 var hookPos: Vector2 = Vector2.ZERO
@@ -32,6 +34,8 @@ var hookVel: Vector2 = Vector2.ZERO
 var lineLength: float = 0.0
 var canReel: bool = false
 var hooked: Debris = null
+var attachOffset: Vector2 = Vector2.ZERO
+var attachTime: float = 0.0
 
 var previousTarget: Node2D = null
 
@@ -72,8 +76,12 @@ func _physics_process(delta: float) -> void:
 	if hooked == null:
 		try_snag()
 	else:
-		hooked.global_position = hookPos + Vector2(0, 4)
-	
+		var hangPos := hookPos + Vector2(0, 4)
+		attachTime = minf(attachTime + delta, attachDuration)
+		var t := attachTime / attachDuration
+		var settle := 1.0 - pow(1.0 - t, 3.0)
+		hooked.global_position = hangPos + attachOffset * (1.0 - settle)
+			
 	update_line()
 
 
@@ -168,4 +176,6 @@ func try_snag() -> void:
 		if debris != null and not debris.hooked and debris.global_position.distance_to(hookPos) <= snagRadius:
 			hooked = debris
 			debris.hooked = true
+			attachOffset = debris.global_position - (hookPos + Vector2(0, 4))
+			attachTime = 0.0
 			return
