@@ -131,5 +131,6 @@ tileB = Vector2i(-3, 0)
 [node name="DebrisSpawner" type="Node2D" parent="."]
 script = ExtResource("18_jmcc3")
 items = Array[ExtResource("19_fw3l5")]([ExtResource("19_jmcc3")])
+maxDebris = 4
 
 [editable path="Vessel"]

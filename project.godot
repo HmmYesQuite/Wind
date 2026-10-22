@@ -39,6 +39,7 @@ folder_colors={
 "res://Assets/": "purple",
 "res://Player/": "blue",
 "res://Props/Debris/": "gray",
+"res://Systems/Atmosphere/": "teal",
 "res://Systems/Inventory/": "orange"
 }
 

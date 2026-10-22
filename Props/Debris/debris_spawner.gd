@@ -11,6 +11,9 @@ class_name DebrisSpawner
 @export var windResponse: float = 1.0
 @export var despawnDistance: float = 500.0
 
+@export var depthMin: float = 6.0
+@export var depthMax: float = 30.0
+
 var spawned: Array[Debris] = []
 var timer: float = 1.0
 
@@ -48,6 +51,9 @@ func spawn(campPos: Vector2, halfView: float) -> void:
 	debris.itemData = items.pick_random()
 	debris.velocityX = -side * randf_range(driftSpeedMin, driftSpeedMax)
 	debris.windDrift = windResponse
+	
+	debris.floatHeight = -randf_range(depthMin, depthMax)
+	
 	debris.position = to_local(Vector2(x, layer.get_surface_y(x) - 8.0))
 	add_child(debris)
 	spawned.append(debris)

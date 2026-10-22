@@ -21,11 +21,30 @@ var cloudSlots: Array[int] =[]
 @export var windMultiplier: float = 2.0
 
 @export_group("Debug")
-@export var debugDraw: bool = true
+@export var debugDraw: bool = false
+
+@export_group("Depth")
+@export var backParallax: float = 0.75
+@export var backRise: float = 14.0
+@export var backScale: float = 0.65
+@export var backFade: float = 0.45
+@export var fadeColor: Color = Color(0.55, 0.75, 0.95)
+
+@export_group("Body")
+@export var bodyDepth: float = 60.0
+@export var bodyTopColor: Color = Color(0.85, 0.91, 0.95)
+@export var bodyBottomColor: Color = Color(0.12, 0.6, 0.93)
+@export var rimColor: Color = Color(1, 1, 1, 0.8)
+
 
 var noise: = FastNoiseLite.new()
 var time: float = 0.0
 var driftOffset: float = 0.0
+
+var cloudDepths: Array[float] = []
+var rng := RandomNumberGenerator.new()
+var body := Polygon2D.new()
+var rim := Line2D.new()
 
 
 func _ready() -> void:
@@ -33,6 +52,13 @@ func _ready() -> void:
 	noise.noise_type = FastNoiseLite.TYPE_SIMPLEX_SMOOTH
 	noise.seed = randi()
 	noise.frequency = 1.0
+	
+	body.z_index = -3
+	add_child(body)
+	rim.z_index = -2
+	rim.width = 1.0 / absf(global_scale.y)
+	rim.default_color = rimColor
+	add_child(rim)
 
 
 func _physics_process(delta: float) -> void:
@@ -42,6 +68,8 @@ func _physics_process(delta: float) -> void:
 		driftOffset += wind.x * windMultiplier * delta
 	
 	update_clouds()
+	
+	update_body()
 	
 	if debugDraw:
 		queue_redraw()
@@ -87,7 +115,7 @@ func _draw() -> void:
 func get_visible_range() -> Vector2:
 	if infiniteWidth:
 		var camera := get_viewport().get_camera_2d()
-		var halfView := get_viewport_rect().size.x / camera.zoom.x / 2.0
+		var halfView := get_viewport_rect().size.x / camera.zoom.x / 2.0 / backParallax
 		var centerX := camera.get_screen_center_position().x
 		return Vector2(centerX - halfView - cloudSpacing, centerX + halfView + cloudSpacing)
 	return Vector2(global_position.x - width / 2.0, global_position.x + width / 2.0)
@@ -107,15 +135,64 @@ func update_clouds() -> void:
 			add_child(sprite)
 			clouds.append(sprite)
 			cloudSlots.append(-999999)
+			cloudDepths.append(0.0)
 		
+	var camX := get_viewport(). get_camera_2d().get_screen_center_position().x
 	var firstSlot := int(floor(visibleRange.x / cloudSpacing))
+	
+	var needsSort := false
+	
 	for k in clouds.size():
 		var slot := firstSlot + k
 		var i := posmod(slot, clouds.size())
 		var x := slot * cloudSpacing
 		var sprite := clouds[i]
-		sprite.global_position = Vector2(x, get_surface_y(x))
-		sprite.visible = x <= visibleRange.y
-		if cloudSlots[i] != slot:
+		
+		var isNew := cloudSlots[i] != slot
+		if isNew:
+			needsSort = true
 			cloudSlots[i] = slot
+			rng.seed = hash(slot)
+			var depth := rng.randf()
+			cloudDepths[i] = depth
+			sprite.scale = Vector2.ONE * lerpf(1.0, backScale, depth) * rng.randf_range(0.9, 1.1)
+			sprite.modulate = Color.WHITE.lerp(fadeColor, depth * backFade)
+			sprite.z_index = int(round(lerpf(1.0, -1.0, depth)))
 			sprite.reset_physics_interpolation()
+		
+		var d := cloudDepths[i]
+		var parallax := lerpf(1.0, backParallax, d)
+		var drawX := camX + (x - camX) * parallax
+		sprite.global_position = Vector2(drawX, get_surface_y(x) - d * backRise)
+		sprite.visible = x <= visibleRange.y
+		if isNew:
+			sprite.reset_physics_interpolation()
+		
+		if needsSort:
+			var order := range(clouds.size())
+			order.sort_custom(func(a, b): return cloudDepths[a] > cloudDepths[b])
+			for n in order.size():
+				move_child(clouds[order[n]], n)
+
+
+func update_body() -> void:
+	if get_viewport().get_camera_2d() == null:
+		return
+	var visibleRange := get_visible_range()
+	var top := PackedVector2Array()
+	var x := visibleRange.x
+	while x <= visibleRange.y:
+		top.append(to_local(Vector2(x, get_surface_y(x))))
+		x += 6.0
+	
+	var shape := top.duplicate()
+	var colors := PackedColorArray()
+	for p in top:
+		colors.append(bodyTopColor)
+	for j in range(top.size() - 1, -1, -1):
+		shape.append(to_local(Vector2(to_global(top[j]).x, global_position.y + bodyDepth)))
+		colors.append(bodyBottomColor)
+	
+	body.polygon = shape
+	body.vertex_colors = colors
+	rim.points = top
