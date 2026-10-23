@@ -18,25 +18,28 @@ var layer: CloudLayer = null
 var time: float = 0.0
 var hooked: bool = false
 var velocityX: float = 0.0
-
-
+var swaySpeed: float = 1.0
 
 
 func _ready() -> void:
 	add_to_group("debris")
 	time = randf() * TAU
+	swaySpeed = randf_range(0.5, 1.5)
 	if itemData != null and itemData.icon != null:
-		itemSprite.texture = itemData.icon
-		var iconSize := itemData.icon.get_size()
-		itemSprite.scale = Vector2.ONE * (itemSize / maxf(iconSize.x, iconSize.y))
+		
+		if itemData.worldSpaceTexture != null:
+			itemSprite.texture = itemData.worldSpaceTexture
+			itemSprite.scale = Vector2.ONE
+		else:
+			itemSprite.texture = itemData.icon
+			var iconSize := itemData.icon.get_size()
+			itemSprite.scale = Vector2.ONE * (itemSize / maxf(iconSize.x, iconSize.y))
+		
+		
+		
 	reset_physics_interpolation()
 	itemSprite.reset_physics_interpolation()
 	
-	
-	
-	
-	reset_physics_interpolation()
-	itemSprite.reset_physics_interpolation()
 
 
 func _physics_process(delta: float) -> void:
@@ -59,9 +62,14 @@ func _physics_process(delta: float) -> void:
 	var targetY := layer.get_surface_y(global_position.x) - floatHeight + sin(time * bobSpeed) * bobAmount
 	
 	global_position.y = lerpf(global_position.y, targetY, clampf(settleSpeed * delta, 0.0,  1.0))
-	rotation = sin(time * 0.9) * swayAmount
+	rotation = sin(time * swaySpeed) * swayAmount
 	
-	#put a tint on the inside clouds
+	
+	z_index = -2
+	var inside := clampf(-floatHeight/ layer.bodyDepth, 0.0, 1.0)
+	itemSprite.modulate = Color.WHITE.lerp(layer.bodyBottomColor, 0.25 + inside * 0.45)
+	itemSprite.modulate.a = lerpf(0.9, 0.5, inside)
+	
 
 
 
@@ -77,7 +85,3 @@ func find_layer_below() -> CloudLayer:
 			best = candidate
 			bestY = surface
 	return best
-
-
-
-		

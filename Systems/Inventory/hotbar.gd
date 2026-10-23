@@ -2,7 +2,7 @@ extends Node
 
 signal changed
 
-var slotCount: int = 3
+var slotCount: int = 9
 var slots: Array[ItemData] = []
 var selectedIndex: int = 0
 
@@ -11,6 +11,7 @@ func _ready() -> void:
 	slots.resize(slotCount)
 	add_item(preload("res://Items/FishingRod/fishing_rod.tres"))
 	add_item(preload("res://Items/debug_item.tres"))
+	add_item(preload("res://Items/TEST Food/Apple.tres"))
 	
 
 func _unhandled_input(event: InputEvent) -> void:

@@ -63,7 +63,13 @@ func _physics_process(delta: float) -> void:
 	var reeling := canReel and Input.is_action_pressed("use_item")
 	
 	if reeling:
-		lineLength -= reelSpeed * delta
+		
+		if hooked != null and hooked.itemData != null:
+			lineLength -= (reelSpeed * delta) / hooked.itemData.weight
+		else:
+			lineLength -= (reelSpeed * delta)
+		
+		
 		if lineLength <= minLineLength:
 			end_cast()
 			return

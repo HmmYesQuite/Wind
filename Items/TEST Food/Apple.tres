@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://dtx210dfmeff4"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_cv26m"]
+[ext_resource type="Texture2D" uid="uid://binuwqe53prwj" path="res://Assets/Tile Sets/Foods_free.png" id="1_i05uc"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_e1hoc"]
+atlas = ExtResource("1_i05uc")
+region = Rect2(0, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_cv26m")
+itemName = "Apple"
+icon = SubResource("AtlasTexture_e1hoc")
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"
