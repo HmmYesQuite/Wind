@@ -4,6 +4,9 @@ class_name CloudLayer
 @export var infiniteWidth: bool = true
 @export var width: float = 640.0
 
+@export var clearRadius: float = 10.0
+@export var fadeRadius: float = 100.0
+
 @export_group("Clouds")
 @export var cloudTexture: Texture2D
 @export var cloudSpacing: float = 24.0
@@ -32,9 +35,9 @@ var cloudSlots: Array[int] =[]
 
 @export_group("Body")
 @export var bodyDepth: float = 60.0
-@export var bodyTopColor: Color = Color(0.85, 0.91, 0.95)
-@export var bodyBottomColor: Color = Color(0.12, 0.6, 0.93)
-@export var rimColor: Color = Color(1, 1, 1, 0.8)
+@export var bodyTopColor: Color = Color(0.85, 0.91, 0.95, 0.5)
+@export var bodyBottomColor: Color = Color(0.12, 0.6, 0.93, 0.5)
+@export var rimColor: Color = Color(1, 1, 1, 0)
 
 
 var noise: = FastNoiseLite.new()
@@ -45,6 +48,9 @@ var cloudDepths: Array[float] = []
 var rng := RandomNumberGenerator.new()
 var body := Polygon2D.new()
 var rim := Line2D.new()
+
+var visiblePoint: Vector2
+var visibleAmount: float
 
 
 func _ready() -> void:
@@ -164,6 +170,11 @@ func update_clouds() -> void:
 		var parallax := lerpf(1.0, backParallax, d)
 		var drawX := camX + (x - camX) * parallax
 		sprite.global_position = Vector2(drawX, get_surface_y(x) - d * backRise)
+		
+		var distance := sprite.global_position.distance_to(visiblePoint)
+		var fade := lerpf(0.15, 1.0, smoothstep(clearRadius, fadeRadius, distance))
+		sprite.modulate.a = lerpf(1.0, fade, visibleAmount)
+		
 		sprite.visible = x <= visibleRange.y
 		if isNew:
 			sprite.reset_physics_interpolation()

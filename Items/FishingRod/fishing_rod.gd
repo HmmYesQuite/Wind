@@ -1,4 +1,5 @@
 extends Node2D
+class_name FishingRod
 
 enum State { READY, CAST }
 
@@ -28,6 +29,8 @@ enum State { READY, CAST }
 @export var attachSpeed: float = 12.0
 @export var attachDuration: float = 0.2
 
+@export var revealSpeed: float = 3.0
+
 var state: State = State.READY
 var hookPos: Vector2 = Vector2.ZERO
 var hookVel: Vector2 = Vector2.ZERO
@@ -48,6 +51,16 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	
+	var visibleTarget := 1.0 if state == State.CAST else 0.0
+	for node in get_tree().get_nodes_in_group("cloudLayers"):
+		var layer := node as CloudLayer
+		if layer == null:
+			continue
+		layer.visiblePoint = hookPos
+		layer.visibleAmount = move_toward(layer.visibleAmount, visibleTarget, revealSpeed * delta)
+	
+	
 	if state == State.READY:
 		var side := signf(get_global_mouse_position().x - global_position.x)
 		if side != 0.0:

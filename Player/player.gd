@@ -8,6 +8,9 @@ const ACCEL = 400.0
 const JUMP_STRENGTH = 128.0
 @export var jump_bias: float = 0.5 # 0 is relative to ship 1 is relative to world
 
+@export var interactionMoveSpeed: float = 0.5
+@export var interactionJumpSpeed: float = 0.5
+
 
 func move_prop(delta: float) -> void:
 	
@@ -23,6 +26,12 @@ func move_prop(delta: float) -> void:
 		velocity = flyInput * flySpeed
 		return
 	
+	var moveScale := 1.0
+	var jumpScale := 1.0
+	var fishingRod := visual.get_node("Hand").held as FishingRod
+	if fishingRod != null and fishingRod.state == FishingRod.State.CAST:
+		moveScale *= interactionMoveSpeed
+		jumpScale *= interactionJumpSpeed
 	
 	# Jumping
 	if Input.is_action_just_pressed("jump") and is_on_floor():
@@ -32,14 +41,14 @@ func move_prop(delta: float) -> void:
 			worldUp = Vector2.UP.rotated(-vessel.global_rotation)
 		var jumpDir := vesselUp.lerp(worldUp, jump_bias).normalized()
 		velocity.y = 0
-		velocity += jumpDir * JUMP_STRENGTH
+		velocity += jumpDir * JUMP_STRENGTH * jumpScale
 		forceLeave = true
 		
 	
 	# Walking
 	var direction := Input.get_axis("move_left", "move_right")
 	if direction:
-		velocity.x = move_toward(velocity.x, direction * SPEED, ACCEL * delta)
+		velocity.x = move_toward(velocity.x, direction * SPEED * moveScale, ACCEL * delta)
 	elif is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
 
