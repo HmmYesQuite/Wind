@@ -56,7 +56,7 @@ func rebuild() -> void:
 			var itemCount := Label.new()
 			itemCount.text = str(count)
 			itemCount.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_KEEP_SIZE, 2)
-			itemCount.add_theme_font_size_override("font_size", 4)
+			itemCount.add_theme_font_size_override("font_size", 8)
 			itemCount.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
 			itemCount.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM # Change to actual position later bc alligment dosnt allways look right.
 			slot.add_child(itemCount)

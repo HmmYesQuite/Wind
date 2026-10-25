@@ -44,6 +44,10 @@ folder_colors={
 "res://Systems/Inventory/": "orange"
 }
 
+[gui]
+
+theme/custom_font="uid://commswmkru1yv"
+
 [input]
 
 move_left={
