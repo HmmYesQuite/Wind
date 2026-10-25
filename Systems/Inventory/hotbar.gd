@@ -4,14 +4,18 @@ signal changed
 
 var slotCount: int = 9
 var slots: Array[ItemData] = []
+var counts: Array[int] = []
 var selectedIndex: int = 0
 
 
 func _ready() -> void:
 	slots.resize(slotCount)
+	counts.resize(slotCount)
 	add_item(preload("res://Items/FishingRod/fishing_rod.tres"))
-	add_item(preload("res://Items/debug_item.tres"))
+	
 	add_item(preload("res://Items/TEST Food/Apple.tres"))
+	add_item(preload("res://Items/TEST Food/Apple.tres"))
+	
 	
 
 func _unhandled_input(event: InputEvent) -> void:
@@ -23,8 +27,19 @@ func _unhandled_input(event: InputEvent) -> void:
 
 
 func add_item(item: ItemData) -> bool:
+	
+	for i in counts.size():
+		if slots[i] == item:
+			if counts[i] > 0 and counts[i] < item.maxStack:
+				counts[i] += 1
+				slots[i] = item
+				changed.emit()
+				return true
+	
+	
 	for i in slots.size():
 		if slots[i] == null:
+			counts[i] = 1
 			slots[i] = item
 			changed.emit()
 			return true

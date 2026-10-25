@@ -31,7 +31,12 @@ func rebuild() -> void:
 	for child in slotsBox.get_children():
 		child.queue_free()
 	for i in Hotbar.slots.size():
+		
+		
 		var slot := Panel.new()
+		var count := Hotbar.counts[i]
+		
+		
 		slot.custom_minimum_size = Vector2(slotSize, slotSize)
 		slot.size_flags_vertical = Control.SIZE_SHRINK_END
 		var style := selectedStyle if i == Hotbar.selectedIndex else normalStyle
@@ -47,5 +52,13 @@ func rebuild() -> void:
 			icon.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_KEEP_SIZE, 2)
 			slot.add_child(icon)
 		
+		if count > 1:
+			var itemCount := Label.new()
+			itemCount.text = str(count)
+			itemCount.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT, Control.PRESET_MODE_KEEP_SIZE, 2)
+			itemCount.add_theme_font_size_override("font_size", 4)
+			itemCount.horizontal_alignment = HORIZONTAL_ALIGNMENT_RIGHT
+			itemCount.vertical_alignment = VERTICAL_ALIGNMENT_BOTTOM
+			slot.add_child(itemCount)
 		
 		slotsBox.add_child(slot)

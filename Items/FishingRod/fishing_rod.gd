@@ -68,6 +68,12 @@ func _physics_process(delta: float) -> void:
 		if Input.is_action_just_pressed("use_item"):
 			cast()
 		return
+	else:
+		
+		var dx := hookPos.x - global_position.x
+		if absf(dx) > 6: # Deadzone is 6 rn
+			scale.x = signf(dx)
+	
 	
 	var mouse := get_global_mouse_position()
 	
@@ -89,6 +95,9 @@ func _physics_process(delta: float) -> void:
 	elif Input.is_action_pressed("use_item_alt"):
 		
 		lineLength = minf(lineLength + lowerSpeed * delta, maxLineLength)
+	
+	
+	
 	
 	simulate(delta, mouse)
 	

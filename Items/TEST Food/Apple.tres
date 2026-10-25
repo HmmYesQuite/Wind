@@ -11,4 +11,5 @@ region = Rect2(0, 0, 16, 16)
 script = ExtResource("1_cv26m")
 itemName = "Apple"
 icon = SubResource("AtlasTexture_e1hoc")
+maxStack = 8
 metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

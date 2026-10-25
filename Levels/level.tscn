@@ -19,8 +19,8 @@
 [ext_resource type="PackedScene" uid="uid://dicdxsu4um2k6" path="res://UI/hotbar_ui.tscn" id="17_lybtp"]
 [ext_resource type="Script" uid="uid://bw6ecmq5tpvie" path="res://Props/Debris/debris_spawner.gd" id="18_jmcc3"]
 [ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="19_fw3l5"]
-[ext_resource type="Resource" uid="uid://dq0mn4g7kkjoa" path="res://Items/debug_item.tres" id="19_jmcc3"]
 [ext_resource type="Resource" uid="uid://dtx210dfmeff4" path="res://Items/TEST Food/Apple.tres" id="21_fw3l5"]
+[ext_resource type="Resource" uid="uid://bjjfj85lop1ut" path="res://Items/TEST Food/Pear.tres" id="21_wjjle"]
 
 [node name="Level" type="Node2D"]
 
@@ -131,7 +131,7 @@ tileB = Vector2i(-3, 0)
 
 [node name="DebrisSpawner" type="Node2D" parent="."]
 script = ExtResource("18_jmcc3")
-items = Array[ExtResource("19_fw3l5")]([ExtResource("19_jmcc3"), ExtResource("21_fw3l5")])
+items = Array[ExtResource("19_fw3l5")]([ExtResource("21_fw3l5"), ExtResource("21_wjjle")])
 maxDebris = 4
 
 [editable path="Vessel"]
