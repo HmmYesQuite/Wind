@@ -35,12 +35,20 @@ var state: State = State.READY
 var hookPos: Vector2 = Vector2.ZERO
 var hookVel: Vector2 = Vector2.ZERO
 var lineLength: float = 0.0
+var lineOut: float
 var canReel: bool = false
 var hooked: Debris = null
 var attachOffset: Vector2 = Vector2.ZERO
 var attachTime: float = 0.0
 
 var previousTarget: Node2D = null
+
+var linePointsPos: PackedVector2Array
+var oldLinePos: PackedVector2Array
+
+@export var lineGravity: float = 300.0
+@export var lineDamping: float = 0.90
+@export var lineIterations: int = 20
 
 
 func _ready() -> void:
@@ -97,20 +105,18 @@ func _physics_process(delta: float) -> void:
 		lineLength = minf(lineLength + lowerSpeed * delta, maxLineLength)
 	
 	
-	
-	
 	simulate(delta, mouse)
 	
 	if hooked == null:
 		try_snag()
 	else:
-		var hangPos := hookPos + Vector2(0, 4)
+		var hangPos := hookPos + Vector2(0, 0)
 		attachTime = minf(attachTime + delta, attachDuration)
 		var t := attachTime / attachDuration
 		var settle := 1.0 - pow(1.0 - t, 3.0)
 		hooked.global_position = hangPos + attachOffset * (1.0 - settle)
 			
-	update_line()
+	update_line(delta)
 
 
 func cast() -> void:
@@ -122,6 +128,12 @@ func cast() -> void:
 	hook.visible = true
 	lineLength = startLength
 	canReel = false
+	linePointsPos.resize(sagSegments + 1)
+	linePointsPos.fill(tip.global_position)
+	oldLinePos.resize(sagSegments + 1)
+	oldLinePos.fill(tip.global_position)
+	lineOut = 0
+	
 	follow_hook_with_camera()
 
 
@@ -162,18 +174,35 @@ func end_cast() -> void:
 	restore_camera()
 
 
-func update_line() -> void:
+func update_line(delta: float) -> void:
 	var start := tip.global_position
-	var distance := start.distance_to(hookPos)
-	var sag := 0.0
-	if distance < lineLength:
-		sag = sqrt(3.0 * distance * (lineLength - distance) / 8.0)
 	
-	var points := PackedVector2Array()
-	for i in sagSegments + 1:
-		var t := float(i) / sagSegments
-		points.append(start.lerp(hookPos, t) + Vector2(0, sag * 4.0 * t * (1.0 - t)))
-		line.points = points
+	
+	for i in range(1, sagSegments):
+		var velocity := linePointsPos[i] - oldLinePos[i]
+		oldLinePos[i] = linePointsPos[i]
+		linePointsPos[i] += velocity * lineDamping + Vector2(0, lineGravity) * delta * delta
+	
+	linePointsPos[0] = start
+	linePointsPos[sagSegments] = hookPos
+	
+	lineOut = minf(maxf(lineOut, start.distance_to(hookPos)), lineLength)
+	
+	var segmentLength := lineOut / sagSegments
+	for i in lineIterations:
+		for j in sagSegments:
+			var offset := linePointsPos[j + 1] - linePointsPos[j]
+			var dist := offset.length()
+			if dist == 0:
+				continue
+			var correction := offset * ((dist - segmentLength) / dist) * 0.5
+			linePointsPos[j] += correction
+			linePointsPos[j + 1] -= correction
+		linePointsPos[0] = start
+		linePointsPos[sagSegments] = hookPos
+	
+	
+	line.points = linePointsPos
 
 
 func follow_hook_with_camera() -> void:
@@ -204,6 +233,6 @@ func try_snag() -> void:
 		if debris != null and not debris.hooked and debris.global_position.distance_to(hookPos) <= snagRadius:
 			hooked = debris
 			debris.hooked = true
-			attachOffset = debris.global_position - (hookPos + Vector2(0, 4))
+			attachOffset = debris.global_position - (hookPos + Vector2(0, 0))
 			attachTime = 0.0
 			return
