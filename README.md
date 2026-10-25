@@ -18,3 +18,6 @@ Pressing F1 will show the wind Perlin noise
 Pressing F2 will put the player in noclip+flight mode.
 
 Most of this was set up for adding the gameplay in the next week.
+
+Font:
+https://managore.itch.io/m3x6
