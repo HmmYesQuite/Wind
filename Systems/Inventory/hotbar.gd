@@ -24,6 +24,23 @@ func _unhandled_input(event: InputEvent) -> void:
 		if index >= 0 and index < mini(slotCount, 9):
 			select(index)
 			get_viewport().set_input_as_handled()
+	
+	if event is InputEventMouseButton and event.pressed:
+		if event.button_index == MOUSE_BUTTON_WHEEL_UP:
+			
+			if selectedIndex == 0:
+				select(slotCount - 1)
+			else:
+				select(selectedIndex - 1)
+			get_viewport().set_input_as_handled()
+		elif event.button_index == MOUSE_BUTTON_WHEEL_DOWN:
+			
+			if selectedIndex + 1 >= slotCount:
+				select(0)
+			else:
+				select(selectedIndex + 1)
+			get_viewport().set_input_as_handled()
+
 
 
 func add_item(item: ItemData) -> bool:
@@ -58,7 +75,3 @@ func select(index: int) -> void:
 
 func get_selected_item() -> ItemData:
 	return slots[selectedIndex]
-	
-	
-	
-	
