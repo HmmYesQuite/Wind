@@ -13,7 +13,7 @@ func _ready() -> void:
 	restartButton.pressed.connect(restart)
 	quitButton.pressed.connect(quit)
 	if OS.has_feature("web"):
-		quitButton.visibile = false
+		quitButton.visible = false
 	
 
 func _unhandled_input(event: InputEvent) -> void:
