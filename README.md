@@ -1,23 +1,40 @@
 Submission for Terra Hackathon.
-WASD to move around.
-E to interact.
-Esc to open the pause menu. (FYI: I accidently hid the menu screen when I shipped the project, so it won't show up visually. Sorry for the inconvenience. I will try to update it.)
-You can jump from platform to platform.
-The platforms have physics on them, so walking on one side will tilt it in that direction.
-Falling off will reset you after a second.
-F1 and F2 are both debug scripts for showing a noise map and going into noclip mode.
+This is the most recent version of the Wind Demo
 
-How to run:
-Demo: https://hmmquite.itch.io/wind-demo
+Controls:
 
-Most recent devlog summary: 
-Lots of QOL changes. Like the main menu, debug buttons, resetting the player when they fall off, etc.
-Bug fixing on the physics system. Most noticeable bugs that I could find are fixed. Still need to force-test some of it.
-Lots of the artwork was improved, mainly the clouds. The clouds have their own system now and will drift in the atmosphere with the wind.
+WASD for movement
+
+E to interact with certain objects
+
+1 through 9 to select an inventory slot; using the scroll wheel works as well.
+
+Left mouse button to use an item in your inventory (the only working one is the fishing rod)
+
+To fish, use Left mouse button to pull the line in, and Right mouse button to lower the line.
+
+Esc will open the pause menu
+
 Pressing F1 will show the wind Perlin noise
+
 Pressing F2 will put the player in noclip+flight mode.
 
-Most of this was set up for adding the gameplay in the next week.
 
-Font:
-https://managore.itch.io/m3x6
+
+Most recent devlog summary:
+
+This update was mainly focused on simple gameplay systems, for example:
+
+Fishing, debris floating in the cloud layer, inventory, holding items, QoL, and more.
+
+The main addition was the fishing mechanic. Right now, holding out your fishing rod and clicking will toss out your line; holding right-click will begin to lower it down. Once you reach the cloud layer below, items will start drifting across the screen. Once you hook one of these items, you can pull it back up to the player using left-click. You will then pick up the item, and it will appear in your inventory.
+
+Items can stack if they allow it, such as apples and pears.
+
+
+
+Credits:
+
+Pixel font: https://managore.itch.io/m3x6
+
+Fruit sprite sheet: https://melancholyg.itch.io/16x16-pixel-art-food-sprites​​
