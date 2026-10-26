@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=26 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
@@ -14,12 +14,16 @@
 [ext_resource type="PackedScene" uid="uid://d0xly8337ln0s" path="res://Vessel/Ships/PlatformFloating.tscn" id="7_8a2b0"]
 [ext_resource type="Texture2D" uid="uid://koagjd41yi11" path="res://Assets/Clouds/Cloud5.png" id="7_lybtp"]
 [ext_resource type="PackedScene" uid="uid://bw48oqp6gj2tj" path="res://Props/Rope/rope.tscn" id="8_ecu0b"]
+[ext_resource type="Texture2D" uid="uid://bhtmx4blsikxa" path="res://Assets/Clouds/Cloud6.png" id="8_wjjle"]
 [ext_resource type="Script" uid="uid://cg71sca4yrow3" path="res://Systems/Atmosphere/cloud_layer.gd" id="11_ugh17"]
 [ext_resource type="PackedScene" uid="uid://3nbrule747dv" path="res://UI/pause_menu.tscn" id="17_jjxhf"]
-[ext_resource type="PackedScene" uid="uid://dicdxsu4um2k6" path="res://UI/hotbar_ui.tscn" id="17_lybtp"]
+[ext_resource type="PackedScene" path="res://UI/hotbar_ui.tscn" id="17_lybtp"]
 [ext_resource type="Script" uid="uid://bw6ecmq5tpvie" path="res://Props/Debris/debris_spawner.gd" id="18_jmcc3"]
+[ext_resource type="Texture2D" uid="uid://c060mjerlbwbd" path="res://Assets/Clouds/CloudLayer1.png" id="19_1sae0"]
 [ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="19_fw3l5"]
+[ext_resource type="Texture2D" uid="uid://dmb4kaaa0di3b" path="res://Assets/Clouds/CloudLayer2.png" id="20_r2ueb"]
 [ext_resource type="Resource" uid="uid://dtx210dfmeff4" path="res://Items/TEST Food/Apple.tres" id="21_fw3l5"]
+[ext_resource type="Texture2D" uid="uid://cuv2o5uv4bj63" path="res://Assets/Clouds/CloudLayer3.png" id="21_o8jhj"]
 [ext_resource type="Resource" uid="uid://bjjfj85lop1ut" path="res://Items/TEST Food/Pear.tres" id="21_wjjle"]
 
 [node name="Level" type="Node2D"]
@@ -37,13 +41,13 @@ texture = ExtResource("1_dvejp")
 
 [node name="CloudField" type="Node2D" parent="Atmosphere"]
 script = ExtResource("2_t2u7g")
-cloudTextures = Array[Texture2D]([ExtResource("3_dvejp"), ExtResource("4_3hgmi"), ExtResource("5_vmy0u"), ExtResource("6_jjxhf"), ExtResource("7_lybtp")])
-cloudLayers = Array[int]([0, 0, 1, 1, 1])
+cloudTextures = Array[Texture2D]([ExtResource("3_dvejp"), ExtResource("4_3hgmi"), ExtResource("5_vmy0u"), ExtResource("6_jjxhf"), ExtResource("7_lybtp"), ExtResource("8_wjjle")])
+cloudLayers = Array[int]([0, 0, 1, 1, 1, 0])
 tintColor = Color(0.50366473, 0.8746536, 0.98890525, 1)
 tintAmount = 0.1
 cloudCount = 8
 depthBias = 6.0
-windMultiplier = 5.0
+windMultiplier = 20.0
 maxBlur = 0.0
 frontBlur = 1.0
 
@@ -101,14 +105,6 @@ tileA = Vector2i(2, 0)
 vesselB = NodePath("../Vessel4")
 tileB = Vector2i(-1, 0)
 
-[node name="CloudLayer" type="Node2D" parent="."]
-z_index = -1
-position = Vector2(0, 170)
-scale = Vector2(0.4, 0.4)
-script = ExtResource("11_ugh17")
-cloudTexture = ExtResource("4_3hgmi")
-waveLength = 240.0
-
 [node name="Vessel8" parent="." instance=ExtResource("7_8a2b0")]
 position = Vector2(28, 131)
 
@@ -128,6 +124,16 @@ tileB = Vector2i(-3, 0)
 [node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
 
 [node name="HotbarUI" parent="." instance=ExtResource("17_lybtp")]
+
+[node name="CloudLayer" type="Node2D" parent="."]
+z_index = -1
+position = Vector2(0, 180)
+scale = Vector2(0.4, 0.4)
+script = ExtResource("11_ugh17")
+cloudTextures = Array[Texture2D]([ExtResource("19_1sae0"), ExtResource("20_r2ueb"), ExtResource("21_o8jhj")])
+cloudSpacing = 32.0
+cloudScale = 2.0
+waveLength = 240.0
 
 [node name="DebrisSpawner" type="Node2D" parent="."]
 script = ExtResource("18_jmcc3")

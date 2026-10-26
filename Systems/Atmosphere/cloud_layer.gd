@@ -8,8 +8,9 @@ class_name CloudLayer
 @export var fadeRadius: float = 100.0
 
 @export_group("Clouds")
-@export var cloudTexture: Texture2D
+@export var cloudTextures: Array[Texture2D]
 @export var cloudSpacing: float = 24.0
+@export var cloudScale: float = 1.0
 
 var clouds: Array[Sprite2D] = []
 var cloudSlots: Array[int] =[]
@@ -128,7 +129,7 @@ func get_visible_range() -> Vector2:
 
 
 func update_clouds() -> void:
-	if cloudTexture == null or get_viewport().get_camera_2d() == null:
+	if cloudTextures.is_empty() or get_viewport().get_camera_2d() == null:
 		return
 	var visibleRange := get_visible_range()
 	
@@ -136,7 +137,7 @@ func update_clouds() -> void:
 		var count := int(ceil((visibleRange.y - visibleRange.x) / cloudSpacing)) + 2
 		for i in count:
 			var sprite := Sprite2D.new()
-			sprite.texture = cloudTexture
+			
 			sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 			add_child(sprite)
 			clouds.append(sprite)
@@ -161,10 +162,11 @@ func update_clouds() -> void:
 			rng.seed = hash(slot)
 			var depth := rng.randf()
 			cloudDepths[i] = depth
-			sprite.scale = Vector2.ONE * lerpf(1.0, backScale, depth) * rng.randf_range(0.9, 1.1)
+			sprite.scale = Vector2.ONE * lerpf(1.0, backScale, depth) * rng.randf_range(0.9, 1.1) * cloudScale
 			sprite.modulate = Color.WHITE.lerp(fadeColor, depth * backFade)
 			sprite.z_index = int(round(lerpf(1.0, -1.0, depth)))
 			sprite.reset_physics_interpolation()
+			sprite.texture = cloudTextures[rng.randi_range(0, cloudTextures.size()-1)]
 		
 		var d := cloudDepths[i]
 		var parallax := lerpf(1.0, backParallax, d)
@@ -179,11 +181,11 @@ func update_clouds() -> void:
 		if isNew:
 			sprite.reset_physics_interpolation()
 		
-		if needsSort:
-			var order := range(clouds.size())
-			order.sort_custom(func(a, b): return cloudDepths[a] > cloudDepths[b])
-			for n in order.size():
-				move_child(clouds[order[n]], n)
+	if needsSort:
+		var order := range(clouds.size())
+		order.sort_custom(func(a, b): return cloudDepths[a] > cloudDepths[b])
+		for n in order.size():
+			move_child(clouds[order[n]], n)
 
 
 func update_body() -> void:

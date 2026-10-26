@@ -1,12 +1,16 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://dqtb3st4pnp5a"]
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://dqtb3st4pnp5a"]
 
 [ext_resource type="PackedScene" uid="uid://cgjdqvqqom0cu" path="res://Items/FishingRod/fishing_rod.tscn" id="1_vyvgi"]
-[ext_resource type="Texture2D" uid="uid://gshj0ey0gavl" path="res://Assets/icon.svg" id="2_5ltbr"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/ItemSpriteSheet.png" id="2_vyvgi"]
 [ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="3_ehkoj"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5ltbr"]
+atlas = ExtResource("2_vyvgi")
+region = Rect2(0, 0, 16, 16)
 
 [resource]
 script = ExtResource("3_ehkoj")
 itemName = "Fishing Rod"
-icon = ExtResource("2_5ltbr")
+icon = SubResource("AtlasTexture_5ltbr")
 heldScene = ExtResource("1_vyvgi")
 metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

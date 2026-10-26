@@ -15,12 +15,12 @@ enum State { READY, CAST }
 @export var aimStrength: float = 1.5
 @export var aimRange: float = 40.0
 
-@export var airDrag: float = 4
+@export var airDrag: float = 2
 @export var lowerSpeed: float = 60.0
 
 @onready var tip: Marker2D = $Tip
 @onready var line: Line2D = $Line
-@onready var hook: Polygon2D = $Hook
+@onready var hook: Sprite2D = $Hook
 
 @export var windEffect: float = 8.0
 @export var sagSegments: int = 10
@@ -40,6 +40,8 @@ var canReel: bool = false
 var hooked: Debris = null
 var attachOffset: Vector2 = Vector2.ZERO
 var attachTime: float = 0.0
+var reelVel: float = 0.0
+
 
 var previousTarget: Node2D = null
 
@@ -49,6 +51,7 @@ var oldLinePos: PackedVector2Array
 @export var lineGravity: float = 300.0
 @export var lineDamping: float = 0.90
 @export var lineIterations: int = 20
+@export var reelAccel: float = 200.0
 
 
 func _ready() -> void:
@@ -68,7 +71,6 @@ func _physics_process(delta: float) -> void:
 		layer.visiblePoint = hookPos
 		layer.visibleAmount = move_toward(layer.visibleAmount, visibleTarget, revealSpeed * delta)
 	
-	
 	if state == State.READY:
 		var side := signf(get_global_mouse_position().x - global_position.x)
 		if side != 0.0:
@@ -82,35 +84,38 @@ func _physics_process(delta: float) -> void:
 		if absf(dx) > 6: # Deadzone is 6 rn
 			scale.x = signf(dx)
 	
-	
 	var mouse := get_global_mouse_position()
 	
 	if not Input.is_action_pressed("use_item"):
 		canReel = true
 	var reeling := canReel and Input.is_action_pressed("use_item")
 	
+	var reelTarget := 0.0
+	
 	if reeling:
 		
 		if hooked != null and hooked.itemData != null:
-			lineLength -= (reelSpeed * delta) / hooked.itemData.weight
+			reelTarget = reelSpeed / hooked.itemData.weight
 		else:
-			lineLength -= (reelSpeed * delta)
+			reelTarget = reelSpeed
 		
-		
-		if lineLength <= minLineLength:
-			end_cast()
-			return
 	elif Input.is_action_pressed("use_item_alt"):
 		
 		lineLength = minf(lineLength + lowerSpeed * delta, maxLineLength)
 	
+	
+	reelVel = move_toward(reelVel, reelTarget, reelAccel * delta)
+	lineLength -= reelVel * delta
+	if lineLength <= minLineLength:
+		end_cast()
+		return
 	
 	simulate(delta, mouse)
 	
 	if hooked == null:
 		try_snag()
 	else:
-		var hangPos := hookPos + Vector2(0, 0)
+		var hangPos := hookPos + Vector2(0, 4)
 		attachTime = minf(attachTime + delta, attachDuration)
 		var t := attachTime / attachDuration
 		var settle := 1.0 - pow(1.0 - t, 3.0)
@@ -132,12 +137,15 @@ func cast() -> void:
 	linePointsPos.fill(tip.global_position)
 	oldLinePos.resize(sagSegments + 1)
 	oldLinePos.fill(tip.global_position)
+	reelVel = 0.0
 	lineOut = 0
 	
 	follow_hook_with_camera()
 
 
 func simulate(delta: float, mouse: Vector2) -> void:
+	
+	var oldPos := hookPos
 	
 	hookVel.x += clampf(mouse.x - hookPos.x, -aimRange, aimRange) * aimStrength * delta
 	
@@ -152,9 +160,9 @@ func simulate(delta: float, mouse: Vector2) -> void:
 	if offset.length() > lineLength:
 		var dir := offset.normalized()
 		hookPos = tip.global_position + dir * lineLength
-		var outward := hookVel.dot(dir)
-		if outward > 0.0:
-			hookVel -= dir * outward
+		
+	
+	hookVel = (hookPos - oldPos) / delta
 	
 	hook.global_position = hookPos
 
@@ -203,6 +211,9 @@ func update_line(delta: float) -> void:
 	
 	
 	line.points = linePointsPos
+	
+	var direction := linePointsPos[sagSegments - 1] - hookPos
+	hook.rotation = direction.angle() + (PI / 2)
 
 
 func follow_hook_with_camera() -> void:
@@ -233,6 +244,6 @@ func try_snag() -> void:
 		if debris != null and not debris.hooked and debris.global_position.distance_to(hookPos) <= snagRadius:
 			hooked = debris
 			debris.hooked = true
-			attachOffset = debris.global_position - (hookPos + Vector2(0, 0))
+			attachOffset = debris.global_position - (hookPos + Vector2(0, 4))
 			attachTime = 0.0
 			return
