@@ -1,8 +1,7 @@
-[gd_scene load_steps=26 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=23 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
-[ext_resource type="PackedScene" uid="uid://bg5jdjxvsjmeg" path="res://Vessel/Ships/ShipBasic.tscn" id="2_uhyyw"]
 [ext_resource type="PackedScene" uid="uid://3nwhxsafyu0m" path="res://Player/player_visual.tscn" id="2_wav5q"]
 [ext_resource type="Texture2D" uid="uid://bor7xkmy66j5s" path="res://Assets/Clouds/Cloud1.png" id="3_dvejp"]
 [ext_resource type="Texture2D" uid="uid://dblqy5pv4elpq" path="res://Assets/Clouds/Cloud2.png" id="4_3hgmi"]
@@ -10,10 +9,7 @@
 [ext_resource type="Script" uid="uid://bxnxdpijivibl" path="res://Player/camera_follow.gd" id="5_uhyyw"]
 [ext_resource type="Texture2D" uid="uid://wl673gvhl5fu" path="res://Assets/Clouds/Cloud3.png" id="5_vmy0u"]
 [ext_resource type="Texture2D" uid="uid://bsyqif3unxtkl" path="res://Assets/Clouds/Cloud4.png" id="6_jjxhf"]
-[ext_resource type="PackedScene" uid="uid://dvn6h0drsqwdo" path="res://Vessel/Ships/ShipBasicLong.tscn" id="6_t80w2"]
-[ext_resource type="PackedScene" uid="uid://d0xly8337ln0s" path="res://Vessel/Ships/PlatformFloating.tscn" id="7_8a2b0"]
 [ext_resource type="Texture2D" uid="uid://koagjd41yi11" path="res://Assets/Clouds/Cloud5.png" id="7_lybtp"]
-[ext_resource type="PackedScene" uid="uid://bw48oqp6gj2tj" path="res://Props/Rope/rope.tscn" id="8_ecu0b"]
 [ext_resource type="Texture2D" uid="uid://bhtmx4blsikxa" path="res://Assets/Clouds/Cloud6.png" id="8_wjjle"]
 [ext_resource type="Script" uid="uid://cg71sca4yrow3" path="res://Systems/Atmosphere/cloud_layer.gd" id="11_ugh17"]
 [ext_resource type="PackedScene" uid="uid://3nbrule747dv" path="res://UI/pause_menu.tscn" id="17_jjxhf"]
@@ -22,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://c060mjerlbwbd" path="res://Assets/Clouds/CloudLayer1.png" id="19_1sae0"]
 [ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="19_fw3l5"]
 [ext_resource type="Texture2D" uid="uid://dmb4kaaa0di3b" path="res://Assets/Clouds/CloudLayer2.png" id="20_r2ueb"]
+[ext_resource type="PackedScene" uid="uid://q5cvbkhefjp6" path="res://Vessel/Ships/starter_ship.tscn" id="21_1sae0"]
 [ext_resource type="Resource" uid="uid://dtx210dfmeff4" path="res://Items/TEST Food/Apple.tres" id="21_fw3l5"]
 [ext_resource type="Texture2D" uid="uid://cuv2o5uv4bj63" path="res://Assets/Clouds/CloudLayer3.png" id="21_o8jhj"]
 [ext_resource type="Resource" uid="uid://bjjfj85lop1ut" path="res://Items/TEST Food/Pear.tres" id="21_wjjle"]
@@ -47,20 +44,8 @@ tintColor = Color(0.50366473, 0.8746536, 0.98890525, 1)
 tintAmount = 0.1
 cloudCount = 8
 depthBias = 6.0
-windMultiplier = 20.0
 maxBlur = 0.0
 frontBlur = 1.0
-
-[node name="Vessel" parent="." instance=ExtResource("2_uhyyw")]
-position = Vector2(-1, 14)
-
-[node name="PlayerBody" parent="Vessel/Zone" index="1" node_paths=PackedStringArray("visual", "vessel") instance=ExtResource("4_uhyyw")]
-process_physics_priority = 1
-visual = NodePath("../../../PlayerVisual")
-vessel = NodePath("../..")
-
-[node name="Vessel2" parent="." instance=ExtResource("6_t80w2")]
-position = Vector2(160, 0)
 
 [node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
 process_physics_priority = 10
@@ -71,63 +56,11 @@ target = NodePath("../PlayerVisual")
 [node name="PlayerVisual" parent="." instance=ExtResource("2_wav5q")]
 position = Vector2(0, -8)
 
-[node name="Vessel3" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(98, 5)
-
-[node name="Vessel4" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(-53, 5)
-rightingStrength = 1.0
-
-[node name="Vessel5" parent="." instance=ExtResource("2_uhyyw")]
-position = Vector2(-101, -7)
-
-[node name="Vessel6" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(220, 3)
-
-[node name="Rope" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
-position = Vector2(191, 1)
-vesselA = NodePath("../Vessel2")
-tileA = Vector2i(4, 0)
-vesselB = NodePath("../Vessel6")
-tileB = Vector2i(-2, 0)
-ropeLength = 0.0
-stiffness = 40.0
-damping = 8.0
-sagSegments = 12
-
-[node name="Vessel7" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(61, 12)
-
-[node name="Rope2" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
-position = Vector2(-86, -3)
-vesselA = NodePath("../Vessel5")
-tileA = Vector2i(2, 0)
-vesselB = NodePath("../Vessel4")
-tileB = Vector2i(-1, 0)
-
-[node name="Vessel8" parent="." instance=ExtResource("7_8a2b0")]
-position = Vector2(28, 131)
-
-[node name="Vessel9" parent="." instance=ExtResource("6_t80w2")]
-position = Vector2(-39, 131)
-
-[node name="Vessel10" parent="." instance=ExtResource("2_uhyyw")]
-position = Vector2(85, 126)
-
-[node name="Rope3" parent="." node_paths=PackedStringArray("vesselA", "vesselB") instance=ExtResource("8_ecu0b")]
-position = Vector2(39, 135)
-vesselA = NodePath("../Vessel8")
-tileA = Vector2i(1, 0)
-vesselB = NodePath("../Vessel10")
-tileB = Vector2i(-3, 0)
-
-[node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
-
 [node name="HotbarUI" parent="." instance=ExtResource("17_lybtp")]
 
 [node name="CloudLayer" type="Node2D" parent="."]
 z_index = -1
-position = Vector2(0, 180)
+position = Vector2(0, 96)
 scale = Vector2(0.4, 0.4)
 script = ExtResource("11_ugh17")
 cloudTextures = Array[Texture2D]([ExtResource("19_1sae0"), ExtResource("20_r2ueb"), ExtResource("21_o8jhj")])
@@ -140,4 +73,14 @@ script = ExtResource("18_jmcc3")
 items = Array[ExtResource("19_fw3l5")]([ExtResource("21_fw3l5"), ExtResource("21_wjjle")])
 maxDebris = 4
 
-[editable path="Vessel"]
+[node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
+visible = false
+
+[node name="StarterShip" parent="." instance=ExtResource("21_1sae0")]
+
+[node name="PlayerBody" parent="StarterShip/Zone" index="1" node_paths=PackedStringArray("visual", "vessel") instance=ExtResource("4_uhyyw")]
+process_physics_priority = 1
+visual = NodePath("../../../PlayerVisual")
+vessel = NodePath("")
+
+[editable path="StarterShip"]

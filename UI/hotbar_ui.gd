@@ -30,11 +30,11 @@ func make_style(borderColor: Color, borderWidth: int) -> StyleBoxFlat:
 func rebuild() -> void:
 	for child in slotsBox.get_children():
 		child.queue_free()
-	for i in Hotbar.slots.size():
+	for i in Hotbar.container.slots.size():
 		
 		
 		var slot := Panel.new()
-		var count := Hotbar.counts[i]
+		var count := Hotbar.container.counts[i]
 		
 		
 		slot.custom_minimum_size = Vector2(slotSize, slotSize)
@@ -42,7 +42,7 @@ func rebuild() -> void:
 		var style := selectedStyle if i == Hotbar.selectedIndex else normalStyle
 		slot.add_theme_stylebox_override("panel", style)
 		
-		var item: ItemData = Hotbar.slots[i]
+		var item: ItemData = Hotbar.container.slots[i]
 		if item != null and item.icon != null:
 			var icon := TextureRect.new()
 			icon.texture = item.icon

@@ -170,7 +170,7 @@ func end_cast() -> void:
 	
 	# Need to change when proper inventory is added, also need to account for stuff like chests and crates
 	if hooked != null:
-		if hooked.itemData != null and Hotbar.add_item(hooked.itemData):
+		if hooked.itemData != null and Inventory.add_item(hooked.itemData):
 			hooked.queue_free()
 		else:
 			hooked.hooked = false

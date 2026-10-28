@@ -3,9 +3,9 @@ extends DynamicProp
 @export var flySpeed: float =120.0
 var flying: bool = false
 
-const SPEED = 64.0
+const SPEED = 48.0
 const ACCEL = 400.0
-const JUMP_STRENGTH = 128.0
+const JUMP_STRENGTH = 96.0
 @export var jump_bias: float = 0.5 # 0 is relative to ship 1 is relative to world
 
 @export var interactionMoveSpeed: float = 0.5

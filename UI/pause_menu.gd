@@ -8,6 +8,7 @@ extends CanvasLayer
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	visible = true
 	root.visible = false
 	resumeButton.pressed.connect(resume)
 	restartButton.pressed.connect(restart)

@@ -3,20 +3,22 @@ extends Node
 signal changed
 
 var slotCount: int = 9
-var slots: Array[ItemData] = []
-var counts: Array[int] = []
+var container := ItemContainer.new(slotCount)
 var selectedIndex: int = 0
 
 
 func _ready() -> void:
-	slots.resize(slotCount)
-	counts.resize(slotCount)
+	container.changed.connect(changed.emit)
 	add_item(preload("res://Items/FishingRod/fishing_rod.tres"))
 	
-	add_item(preload("res://Items/TEST Food/Apple.tres"))
-	add_item(preload("res://Items/TEST Food/Apple.tres"))
+	
+	#add_item(preload("res://Items/TEST Food/Apple.tres"))
 	
 	
+
+func add_item(item: ItemData) -> bool:
+	return container.add_item(item)
+
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event is InputEventKey and event.pressed and not event.echo:
@@ -42,29 +44,8 @@ func _unhandled_input(event: InputEvent) -> void:
 			get_viewport().set_input_as_handled()
 
 
-
-func add_item(item: ItemData) -> bool:
-	
-	for i in counts.size():
-		if slots[i] == item:
-			if counts[i] > 0 and counts[i] < item.maxStack:
-				counts[i] += 1
-				slots[i] = item
-				changed.emit()
-				return true
-	
-	
-	for i in slots.size():
-		if slots[i] == null:
-			counts[i] = 1
-			slots[i] = item
-			changed.emit()
-			return true
-	return false
-
-
 func select(index: int) -> void:
-	if index < 0 or index >= slots.size():
+	if index < 0 or index >= container.slots.size():
 		return
 	selectedIndex = index
 	changed.emit()
@@ -74,4 +55,4 @@ func select(index: int) -> void:
 
 
 func get_selected_item() -> ItemData:
-	return slots[selectedIndex]
+	return container.slots[selectedIndex]

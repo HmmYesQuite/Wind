@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://d0xly8337ln0s"]
 
-[ext_resource type="PackedScene" uid="uid://35xtu3rt1vfy" path="res://Vessel/vessel.tscn" id="1_uxq5m"]
+[ext_resource type="PackedScene" uid="uid://35xtu3rt1vfy" path="res://Vessel/Ships/vessel.tscn" id="1_uxq5m"]
 
 [node name="Vessel" instance=ExtResource("1_uxq5m")]
 

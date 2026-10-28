@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://q5cvbkhefjp6"]
+
+[ext_resource type="PackedScene" uid="uid://35xtu3rt1vfy" path="res://Vessel/Ships/vessel.tscn" id="1_v61j8"]
+
+[node name="StarterShip" instance=ExtResource("1_v61j8")]
