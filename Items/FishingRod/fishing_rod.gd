@@ -75,7 +75,7 @@ func _physics_process(delta: float) -> void:
 		var side := signf(get_global_mouse_position().x - global_position.x)
 		if side != 0.0:
 			scale.x = side
-		if Input.is_action_just_pressed("use_item"):
+		if GameInput.is_action_just_pressed("use_item"):
 			cast()
 		return
 	else:
@@ -86,9 +86,9 @@ func _physics_process(delta: float) -> void:
 	
 	var mouse := get_global_mouse_position()
 	
-	if not Input.is_action_pressed("use_item"):
+	if not GameInput.is_action_pressed("use_item"):
 		canReel = true
-	var reeling := canReel and Input.is_action_pressed("use_item")
+	var reeling := canReel and GameInput.is_action_pressed("use_item")
 	
 	var reelTarget := 0.0
 	
@@ -99,7 +99,7 @@ func _physics_process(delta: float) -> void:
 		else:
 			reelTarget = reelSpeed
 		
-	elif Input.is_action_pressed("use_item_alt"):
+	elif GameInput.is_action_pressed("use_item_alt"):
 		
 		lineLength = minf(lineLength + lowerSpeed * delta, maxLineLength)
 	

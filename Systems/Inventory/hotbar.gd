@@ -21,11 +21,13 @@ func add_item(item: ItemData) -> bool:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if GameInput.blocked: return
 	if event is InputEventKey and event.pressed and not event.echo:
 		var index: int = event.keycode - KEY_1
 		if index >= 0 and index < mini(slotCount, 9):
 			select(index)
 			get_viewport().set_input_as_handled()
+	
 	
 	if event is InputEventMouseButton and event.pressed:
 		if event.button_index == MOUSE_BUTTON_WHEEL_UP:

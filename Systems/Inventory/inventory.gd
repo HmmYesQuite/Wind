@@ -4,6 +4,7 @@ signal changed
 
 var pockets: Dictionary[String, ItemContainer] = {}
 
+
 func _ready() -> void:
 	var left := ItemContainer.new(4)
 	var right := ItemContainer.new(4)

@@ -14,15 +14,15 @@ const JUMP_STRENGTH = 96.0
 
 func move_prop(delta: float) -> void:
 	
-	if Input.is_action_just_pressed("debug_fly"):
+	if GameInput.is_action_just_pressed("debug_fly"):
 		flying = not flying
 		$CollisionShape2D.set_deferred("disabled", flying)
 		if flying and vessel != null:
 			transfer_to(null)
 	if flying:
 		var flyInput := Vector2(
-			Input.get_axis("move_left", "move_right"),
-			float(Input.is_key_pressed(KEY_S)) - float(Input.is_key_pressed(KEY_W)))
+			GameInput.get_axis("move_left", "move_right"),
+			float(GameInput.is_key_pressed(KEY_S)) - float(GameInput.is_key_pressed(KEY_W)))
 		velocity = flyInput * flySpeed
 		return
 	
@@ -34,7 +34,7 @@ func move_prop(delta: float) -> void:
 		jumpScale *= interactionJumpSpeed
 	
 	# Jumping
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if GameInput.is_action_just_pressed("jump") and is_on_floor():
 		var vesselUp := Vector2.UP
 		var worldUp := Vector2.UP
 		if vessel != null:
@@ -46,7 +46,7 @@ func move_prop(delta: float) -> void:
 		
 	
 	# Walking
-	var direction := Input.get_axis("move_left", "move_right")
+	var direction := GameInput.get_axis("move_left", "move_right")
 	if direction:
 		velocity.x = move_toward(velocity.x, direction * SPEED * moveScale, ACCEL * delta)
 	elif is_on_floor():

@@ -1,0 +1,83 @@
+[gd_scene load_steps=2 format=3 uid="uid://dwqyr2rdn3bd4"]
+
+[ext_resource type="Script" uid="uid://cvvg0y0n5t06g" path="res://UI/inventory_ui.gd" id="1_4hlgy"]
+
+[node name="InventoryUi" type="CanvasLayer"]
+layer = 5
+script = ExtResource("1_4hlgy")
+
+[node name="Root" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Panel" type="PanelContainer" parent="Root"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Tabs" type="TabContainer" parent="Root/Panel"]
+layout_mode = 2
+current_tab = 1
+
+[node name="Crafting" type="VBoxContainer" parent="Root/Panel/Tabs"]
+visible = false
+layout_mode = 2
+metadata/_tab_index = 0
+
+[node name="Label" type="Label" parent="Root/Panel/Tabs/Crafting"]
+layout_mode = 2
+text = "Recipes"
+
+[node name="Storage" type="HBoxContainer" parent="Root/Panel/Tabs"]
+layout_mode = 2
+metadata/_tab_index = 1
+
+[node name="Body" type="Control" parent="Root/Panel/Tabs/Storage"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(24, 40)
+layout_mode = 2
+
+[node name="Art" type="ColorRect" parent="Root/Panel/Tabs/Storage/Body"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.73300546, 0.7330054, 0.7330054, 1)
+
+[node name="LeftPocket" type="ColorRect" parent="Root/Panel/Tabs/Storage/Body"]
+layout_mode = 0
+offset_left = 3.0
+offset_top = 20.0
+offset_right = 9.0
+offset_bottom = 26.0
+color = Color(0.24840015, 0.24840018, 0.24840015, 1)
+
+[node name="RightPocket" type="ColorRect" parent="Root/Panel/Tabs/Storage/Body"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 20.0
+offset_right = 21.0
+offset_bottom = 26.0
+color = Color(0.24705882, 0.24705882, 0.24705882, 1)
+
+[node name="Side" type="VBoxContainer" parent="Root/Panel/Tabs/Storage"]
+layout_mode = 2
+
+[node name="PartName" type="Label" parent="Root/Panel/Tabs/Storage/Side"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Slots" type="GridContainer" parent="Root/Panel/Tabs/Storage/Side"]
+unique_name_in_owner = true
+layout_mode = 2
+columns = 4

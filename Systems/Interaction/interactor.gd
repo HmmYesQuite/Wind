@@ -29,6 +29,7 @@ func _physics_process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
+	if GameInput.blocked: return
 	if event.is_action_pressed("interact") and focused != null:
 		focused.interact(self)
 		get_viewport().set_input_as_handled()
