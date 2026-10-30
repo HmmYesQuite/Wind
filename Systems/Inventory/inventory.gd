@@ -3,11 +3,13 @@ extends Node
 signal changed
 
 var pockets: Dictionary[String, ItemContainer] = {}
+var cursor := ItemContainer.new(1)
 
 
 func _ready() -> void:
 	var left := ItemContainer.new(4)
 	var right := ItemContainer.new(4)
+	
 	
 	pockets["LeftPocket"] = left
 	pockets["RightPocket"] = right
@@ -62,3 +64,12 @@ func remove_item(item: ItemData, amount: int) -> bool:
 			break
 	
 	return true
+
+func return_cursor() -> void:
+	var item := cursor.slots[0]
+	var count := cursor.counts[0]
+	if item == null:
+		return
+	cursor.remove_item(item, count)
+	for n in count:
+		add_item(item)

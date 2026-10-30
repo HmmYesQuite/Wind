@@ -60,3 +60,30 @@ func remove_item(item: ItemData, amount: int) -> bool:
 	
 	return true
 	
+
+
+func swap(index: int, other: ItemContainer, otherIndex: int) -> void:
+	var tempItem: = slots[index]
+	var tempCount := counts[index]
+	slots[index] = other.slots[otherIndex]
+	counts[index] = other.counts[otherIndex]
+	other.slots[otherIndex] = tempItem
+	other.counts[otherIndex] = tempCount
+	changed.emit()
+	other.changed.emit()
+	
+
+func merge(index: int, other: ItemContainer, otherIndex: int) -> bool:
+	var item := slots[index]
+	if item == null or item != other.slots[otherIndex]:
+		return false
+	var moving := mini(item.maxStack - counts[index], other.counts[otherIndex])
+	if moving <= 0:
+		return false
+	counts[index] += moving
+	other.counts[otherIndex] -= moving
+	if other.counts[otherIndex] <= 0:
+		other.slots[otherIndex] = null
+	changed.emit()
+	other.changed.emit()
+	return true

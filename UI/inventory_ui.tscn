@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://dwqyr2rdn3bd4"]
+[gd_scene load_steps=4 format=3 uid="uid://dwqyr2rdn3bd4"]
 
 [ext_resource type="Script" uid="uid://cvvg0y0n5t06g" path="res://UI/inventory_ui.gd" id="1_4hlgy"]
+[ext_resource type="PackedScene" uid="uid://byfjrtqyl4q5g" path="res://UI/item_slot.tscn" id="2_l6l0t"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l6l0t"]
 
 [node name="InventoryUi" type="CanvasLayer"]
 layer = 5
@@ -13,6 +16,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Panel" type="PanelContainer" parent="Root"]
 layout_mode = 1
@@ -81,3 +85,27 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 columns = 4
+
+[node name="HotbarRow" type="HBoxContainer" parent="Root"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -14.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/separation = 2
+
+[node name="Cursor" parent="Root" instance=ExtResource("2_l6l0t")]
+unique_name_in_owner = true
+layout_mode = 0
+anchors_preset = 0
+offset_right = 18.0
+offset_bottom = 18.0
+mouse_filter = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_l6l0t")

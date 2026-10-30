@@ -38,6 +38,11 @@ func rebuild() -> void:
 		if i == Hotbar.selectedIndex:
 			slot.add_theme_stylebox_override("panel", selectedStyle)
 		slotsBox.add_child(slot)
+		slot.container = Hotbar.container
+		slot.index = i
 		slot.show_item(Hotbar.container.slots[i], Hotbar.container.counts[i])
 		
-		
+
+
+func _process(delta: float) -> void:
+	visible = not GameInput.blocked
