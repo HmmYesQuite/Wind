@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=27 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
@@ -24,6 +24,7 @@
 [ext_resource type="Resource" uid="uid://7yxu6xtpsu3k" path="res://Items/Resources/String.tres" id="21_nflnv"]
 [ext_resource type="Texture2D" uid="uid://cuv2o5uv4bj63" path="res://Assets/Clouds/CloudLayer3.png" id="21_o8jhj"]
 [ext_resource type="Resource" uid="uid://drcx6tlbby6er" path="res://Items/Resources/Rock.tres" id="21_r2ueb"]
+[ext_resource type="Resource" uid="uid://c6bi3r0yi8xmq" path="res://Items/Resources/Wood Plank.tres" id="22_o8jhj"]
 [ext_resource type="PackedScene" uid="uid://dwqyr2rdn3bd4" path="res://UI/inventory_ui.tscn" id="23_1sae0"]
 
 [node name="Level" type="Node2D"]
@@ -77,7 +78,8 @@ items = Dictionary[ExtResource("19_fw3l5"), float]({
 ExtResource("21_fw3l5"): 0.5,
 ExtResource("20_twn60"): 1.0,
 ExtResource("21_r2ueb"): 0.75,
-ExtResource("21_nflnv"): 2.0
+ExtResource("21_nflnv"): 2.0,
+ExtResource("22_o8jhj"): 0.5
 })
 spawnIntervalMax = 4.0
 

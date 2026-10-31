@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://c6bi3r0yi8xmq"]
+
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/ItemSpriteSheet.png" id="1_n4xmg"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="2_numut"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4vgmx"]
+atlas = ExtResource("1_n4xmg")
+region = Rect2(16, 16, 16, 16)
+
+[resource]
+script = ExtResource("2_numut")
+itemName = "Wood Plank"
+icon = SubResource("AtlasTexture_4vgmx")
+weight = 1.5
+maxStack = 4
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

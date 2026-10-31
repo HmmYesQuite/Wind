@@ -50,6 +50,7 @@ var previousTarget: Node2D = null
 
 var linePointsPos: PackedVector2Array
 var oldLinePos: PackedVector2Array
+var prevLinePos: PackedVector2Array
 
 @export var lineGravity: float = 300.0
 @export var lineDamping: float = 0.90
@@ -59,7 +60,6 @@ var oldLinePos: PackedVector2Array
 
 func _ready() -> void:
 	process_physics_priority = 2
-	hook.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	line.visible = false
 	hook.visible = false
 
@@ -134,6 +134,7 @@ func cast() -> void:
 	hookPos = tip.global_position
 	hookVel = Vector2(scale.x * throwSpeed, -throwUp)
 	hook.global_position = hookPos
+	hook.reset_physics_interpolation()
 	line.visible = true
 	hook.visible = true
 	lineLength = startLength
@@ -146,6 +147,8 @@ func cast() -> void:
 	lineOut = 0
 	
 	follow_hook_with_camera()
+	
+	prevLinePos = linePointsPos.duplicate()
 
 
 func simulate(delta: float, mouse: Vector2) -> void:
@@ -188,8 +191,9 @@ func end_cast() -> void:
 
 
 func update_line(delta: float) -> void:
-	var start := tip.global_position
 	
+	prevLinePos = linePointsPos.duplicate()
+	var start := tip.global_position
 	
 	for i in range(1, sagSegments):
 		var velocity := linePointsPos[i] - oldLinePos[i]
@@ -214,8 +218,6 @@ func update_line(delta: float) -> void:
 		linePointsPos[0] = start
 		linePointsPos[sagSegments] = hookPos
 	
-	
-	line.points = linePointsPos
 	
 	var direction := linePointsPos[sagSegments - 1] - hookPos
 	hook.rotation = direction.angle() + (PI / 2)
@@ -252,3 +254,12 @@ func try_snag() -> void:
 			attachOffset = debris.global_position - (hookPos + Vector2(0, 4))
 			attachTime = 0.0
 			return
+
+func _process(delta: float) -> void:
+	if state != State.CAST:
+		return
+	var t := Engine.get_physics_interpolation_fraction()
+	var points := PackedVector2Array()
+	for i in linePointsPos.size():
+		points.append(prevLinePos[i].lerp(linePointsPos[i], t))
+	line.points = points
