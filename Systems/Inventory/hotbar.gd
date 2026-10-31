@@ -2,7 +2,7 @@ extends Node
 
 signal changed
 
-var slotCount: int = 9
+var slotCount: int = 6
 var container := ItemContainer.new(slotCount)
 var selectedIndex: int = 0
 

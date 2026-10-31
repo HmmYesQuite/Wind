@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://ia630xkfjyom"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_ycy63"]
+[ext_resource type="Resource" uid="uid://dcy6x8jp2bpb2" path="res://Items/Resources/Stick.tres" id="2_i7lvy"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="2_ihm5k"]
+[ext_resource type="Resource" uid="uid://drcx6tlbby6er" path="res://Items/Resources/Rock.tres" id="3_irobw"]
+[ext_resource type="Resource" uid="uid://7yxu6xtpsu3k" path="res://Items/Resources/String.tres" id="4_1qk0g"]
+[ext_resource type="Resource" uid="uid://dqtb3st4pnp5a" path="res://Items/FishingRod/fishing_rod.tres" id="5_0x8to"]
+
+[resource]
+script = ExtResource("2_ihm5k")
+result = ExtResource("5_0x8to")
+ingredients = Dictionary[ExtResource("1_ycy63"), int]({
+ExtResource("2_i7lvy"): 2,
+ExtResource("3_irobw"): 1,
+ExtResource("4_1qk0g"): 4
+})
+metadata/_custom_type_script = "uid://ckjts2sxaj8xq"

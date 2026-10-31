@@ -21,7 +21,7 @@ position = Vector2(10, -8)
 top_level = true
 points = PackedVector2Array(0, 0)
 width = 1.0
-default_color = Color(0.4, 0.324, 0.24800001, 1)
+default_color = Color(0.5882353, 0.5372549, 0.5058824, 1)
 
 [node name="Hook" type="Sprite2D" parent="."]
 top_level = true

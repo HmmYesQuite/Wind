@@ -2,7 +2,7 @@ extends Node2D
 class_name DebrisSpawner
 
 @export var debrisScene: PackedScene = preload("res://Props/Debris/debris.tscn")
-@export var items: Array[ItemData] = []
+@export var items: Dictionary[ItemData, float] = {}
 @export var maxDebris: int = 8
 @export var spawnIntervalMin: float = 2.0
 @export var spawnIntervalMax: float = 5.0
@@ -42,13 +42,17 @@ func _physics_process(delta: float) -> void:
 
 
 func spawn(campPos: Vector2, halfView: float) -> void:
+	
 	var side := -1.0 if randf() < 0.6 else 1.0
 	var x := campPos.x + side * (halfView + 16.0)
 	var layer := layer_at(x)
 	if layer == null:
 		return
+	var item := pick_item()
+	if item == null:
+		return
 	var debris := debrisScene.instantiate() as Debris
-	debris.itemData = items.pick_random()
+	debris.itemData = item
 	debris.velocityX = -side * randf_range(driftSpeedMin, driftSpeedMax)
 	debris.windDrift = windResponse
 	
@@ -64,4 +68,15 @@ func layer_at(x: float) -> CloudLayer:
 		var candidate := node as CloudLayer
 		if candidate != null and candidate.covers_x(x):
 			return candidate
+	return null
+
+func pick_item() -> ItemData:
+	var total := 0.0
+	for item in items:
+		total += items[item]
+	var roll := randf() * total
+	for item in items:
+		if roll < items[item]:
+			return item
+		roll -= items[item]
 	return null

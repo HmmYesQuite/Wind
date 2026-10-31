@@ -8,6 +8,10 @@ const SLOT_SCENE := preload("res://UI/item_slot.tscn")
 
 @onready var hotbarRow: HBoxContainer = %HotbarRow
 @onready var cursorSlot: ItemSlot = %Cursor
+
+@export var recipes: Array[Recipe] = []
+@onready var recipeList: VBoxContainer = %Crafting
+
 var shownPart := ""
 
 
@@ -66,6 +70,24 @@ func refresh() -> void:
 		fill_slots(slotGrid, Inventory.pockets[shownPart])
 	
 	cursorSlot.show_item(Inventory.cursor.slots[0], Inventory.cursor.counts[0])
+	fill_recipes()
 
 func _process(delta: float) -> void:
 	cursorSlot.position = cursorSlot.get_global_mouse_position() - cursorSlot.size / 2
+
+func recipe_text(recipe: Recipe) -> String:
+	var text := recipe.result.itemName + ":"
+	for item in recipe.ingredients:
+		text += " %s %d/%d" % [item.itemName, Inventory.count_of(item), recipe.ingredients[item]]
+	return text
+	
+func fill_recipes() -> void:
+	for child in recipeList.get_children():
+		child.queue_free()
+	for recipe in recipes:
+		var button := Button.new()
+		button.text = recipe_text(recipe)
+		button.disabled = not Inventory.can_craft(recipe)
+		button.focus_mode = Control.FOCUS_NONE
+		button.pressed.connect(Inventory.craft.bind(recipe))
+		recipeList.add_child(button)

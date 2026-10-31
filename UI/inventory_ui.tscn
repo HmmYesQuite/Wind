@@ -1,13 +1,32 @@
-[gd_scene load_steps=4 format=3 uid="uid://dwqyr2rdn3bd4"]
+[gd_scene load_steps=9 format=3 uid="uid://dwqyr2rdn3bd4"]
 
 [ext_resource type="Script" uid="uid://cvvg0y0n5t06g" path="res://UI/inventory_ui.gd" id="1_4hlgy"]
 [ext_resource type="PackedScene" uid="uid://byfjrtqyl4q5g" path="res://UI/item_slot.tscn" id="2_l6l0t"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="2_t6nog"]
+[ext_resource type="Resource" uid="uid://ia630xkfjyom" path="res://Items/Recipes/Fishing Rod.tres" id="3_6128g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t6nog"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_bottom = 0.0
+bg_color = Color(0.3403393, 0.34033936, 0.34033918, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_6128g"]
+content_margin_left = 2.0
+content_margin_top = 2.0
+content_margin_bottom = 0.0
+bg_color = Color(0.3403393, 0.34033936, 0.34033918, 1)
+
+[sub_resource type="Theme" id="Theme_7o5sx"]
+Button/styles/hover = SubResource("StyleBoxFlat_t6nog")
+Button/styles/normal = SubResource("StyleBoxFlat_6128g")
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l6l0t"]
 
 [node name="InventoryUi" type="CanvasLayer"]
 layer = 5
 script = ExtResource("1_4hlgy")
+recipes = Array[ExtResource("2_t6nog")]([ExtResource("3_6128g")])
 
 [node name="Root" type="Control" parent="."]
 layout_mode = 3
@@ -17,6 +36,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
+theme = SubResource("Theme_7o5sx")
 
 [node name="Panel" type="PanelContainer" parent="Root"]
 layout_mode = 1
@@ -28,18 +48,15 @@ grow_vertical = 2
 
 [node name="Tabs" type="TabContainer" parent="Root/Panel"]
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 
 [node name="Crafting" type="VBoxContainer" parent="Root/Panel/Tabs"]
-visible = false
+unique_name_in_owner = true
 layout_mode = 2
 metadata/_tab_index = 0
 
-[node name="Label" type="Label" parent="Root/Panel/Tabs/Crafting"]
-layout_mode = 2
-text = "Recipes"
-
 [node name="Storage" type="HBoxContainer" parent="Root/Panel/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 

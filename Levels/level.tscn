@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=26 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
@@ -18,10 +18,12 @@
 [ext_resource type="Texture2D" uid="uid://c060mjerlbwbd" path="res://Assets/Clouds/CloudLayer1.png" id="19_1sae0"]
 [ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="19_fw3l5"]
 [ext_resource type="Texture2D" uid="uid://dmb4kaaa0di3b" path="res://Assets/Clouds/CloudLayer2.png" id="20_r2ueb"]
+[ext_resource type="Resource" uid="uid://dcy6x8jp2bpb2" path="res://Items/Resources/Stick.tres" id="20_twn60"]
 [ext_resource type="PackedScene" uid="uid://q5cvbkhefjp6" path="res://Vessel/Ships/starter_ship.tscn" id="21_1sae0"]
 [ext_resource type="Resource" uid="uid://dtx210dfmeff4" path="res://Items/TEST Food/Apple.tres" id="21_fw3l5"]
+[ext_resource type="Resource" uid="uid://7yxu6xtpsu3k" path="res://Items/Resources/String.tres" id="21_nflnv"]
 [ext_resource type="Texture2D" uid="uid://cuv2o5uv4bj63" path="res://Assets/Clouds/CloudLayer3.png" id="21_o8jhj"]
-[ext_resource type="Resource" uid="uid://bjjfj85lop1ut" path="res://Items/TEST Food/Pear.tres" id="21_wjjle"]
+[ext_resource type="Resource" uid="uid://drcx6tlbby6er" path="res://Items/Resources/Rock.tres" id="21_r2ueb"]
 [ext_resource type="PackedScene" uid="uid://dwqyr2rdn3bd4" path="res://UI/inventory_ui.tscn" id="23_1sae0"]
 
 [node name="Level" type="Node2D"]
@@ -71,8 +73,13 @@ waveLength = 240.0
 
 [node name="DebrisSpawner" type="Node2D" parent="."]
 script = ExtResource("18_jmcc3")
-items = Array[ExtResource("19_fw3l5")]([ExtResource("21_fw3l5"), ExtResource("21_wjjle")])
-maxDebris = 4
+items = Dictionary[ExtResource("19_fw3l5"), float]({
+ExtResource("21_fw3l5"): 0.5,
+ExtResource("20_twn60"): 1.0,
+ExtResource("21_r2ueb"): 0.75,
+ExtResource("21_nflnv"): 2.0
+})
+spawnIntervalMax = 4.0
 
 [node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
 

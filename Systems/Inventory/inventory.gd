@@ -16,12 +16,6 @@ func _ready() -> void:
 	
 	left.changed.connect(changed.emit)
 	right.changed.connect(changed.emit)
-	
-	var apple := preload("res://Items/TEST Food/Apple.tres")
-	for n in 10:
-		add_item(apple)
-	print(count_of(apple))
-	print(pockets["LeftPocket"].counts)
 
 
 func all_containers() -> Array[ItemContainer]:
@@ -35,12 +29,11 @@ func add_item(item: ItemData) -> bool:
 		if container.stack_item(item):
 			return true
 	
-	var order := all_containers()
 	
-	if item.heldScene == null:
-		order.push_back(order.pop_front())
 	
-	for container in order:
+	
+	
+	for container in all_containers():
 		if container.place_item(item):
 			return true
 	return false
@@ -73,3 +66,18 @@ func return_cursor() -> void:
 	cursor.remove_item(item, count)
 	for n in count:
 		add_item(item)
+
+func can_craft(recipe: Recipe) -> bool:
+	for item in recipe.ingredients:
+		var needed := recipe.ingredients[item]
+		if count_of(item) < needed:
+			return false
+	return true
+
+func craft(recipe: Recipe) -> void:
+	if not can_craft(recipe):
+		return
+	for item in recipe.ingredients:
+		remove_item(item, recipe.ingredients[item])
+	for n in recipe.resultCount:
+		add_item(recipe.result)

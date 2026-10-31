@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://dcy6x8jp2bpb2"]
+
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/ItemSpriteSheet.png" id="1_3kgor"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_4mq23"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_utnls"]
+atlas = ExtResource("1_3kgor")
+region = Rect2(16, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_4mq23")
+itemName = "Stick"
+icon = SubResource("AtlasTexture_utnls")
+weight = 0.5
+maxStack = 16
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

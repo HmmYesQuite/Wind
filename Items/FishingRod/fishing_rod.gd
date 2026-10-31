@@ -30,6 +30,9 @@ enum State { READY, CAST }
 @export var attachDuration: float = 0.2
 
 @export var revealSpeed: float = 3.0
+@export var turnSpeed: float = 8.0
+
+var facing := 1.0
 
 var state: State = State.READY
 var hookPos: Vector2 = Vector2.ZERO
@@ -62,6 +65,8 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	
+	scale.x = move_toward(scale.x, facing, turnSpeed * delta)
 	
 	var visibleTarget := 1.0 if state == State.CAST else 0.0
 	for node in get_tree().get_nodes_in_group("cloudLayers"):

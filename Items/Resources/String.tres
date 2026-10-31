@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://7yxu6xtpsu3k"]
+
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/ItemSpriteSheet.png" id="1_e7o4h"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_wsv6m"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gy62v"]
+atlas = ExtResource("1_e7o4h")
+region = Rect2(48, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_wsv6m")
+itemName = "String"
+icon = SubResource("AtlasTexture_gy62v")
+weight = 0.5
+maxStack = 16
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"
