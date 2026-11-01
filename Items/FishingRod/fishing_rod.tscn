@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cgjdqvqqom0cu"]
+[gd_scene load_steps=6 format=3 uid="uid://cgjdqvqqom0cu"]
 
 [ext_resource type="Script" uid="uid://b7xhxrxvbl2re" path="res://Items/FishingRod/fishing_rod.gd" id="1_1n8et"]
 [ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/ItemSpriteSheet.png" id="2_nfrxm"]
+[ext_resource type="Script" uid="uid://j6ki8sq4o0xr" path="res://Systems/Visuals/pixel_line.gd" id="2_np1d5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nfrxm"]
 atlas = ExtResource("2_nfrxm")
@@ -17,11 +18,12 @@ script = ExtResource("1_1n8et")
 [node name="Tip" type="Marker2D" parent="."]
 position = Vector2(10, -8)
 
-[node name="Line" type="Line2D" parent="."]
+[node name="Line" type="Node2D" parent="."]
 top_level = true
-points = PackedVector2Array(0, 0)
-width = 1.0
-default_color = Color(0.5882353, 0.5372549, 0.5058824, 1)
+script = ExtResource("2_np1d5")
+color = Color(0.69803923, 0.627451, 0.5411765, 1)
+pixelSize = 1.0
+pixelated = false
 
 [node name="Hook" type="Sprite2D" parent="."]
 top_level = true

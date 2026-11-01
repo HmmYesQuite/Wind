@@ -12,7 +12,7 @@ class_name  Rope
 @export var sagSegments: int = 12
 @export var maxTension: float = 500.0
 
-@onready var line: Line2D = $Line2D
+@onready var line: PixelLine = $Line2D
 
 var localA: Vector2
 var localB: Vector2

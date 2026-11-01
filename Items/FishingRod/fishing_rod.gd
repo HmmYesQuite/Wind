@@ -19,7 +19,7 @@ enum State { READY, CAST }
 @export var lowerSpeed: float = 60.0
 
 @onready var tip: Marker2D = $Tip
-@onready var line: Line2D = $Line
+@onready var line: PixelLine = $Line
 @onready var hook: Sprite2D = $Hook
 
 @export var windEffect: float = 8.0

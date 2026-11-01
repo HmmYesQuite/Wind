@@ -1,17 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://bw48oqp6gj2tj"]
+[gd_scene load_steps=3 format=3 uid="uid://bw48oqp6gj2tj"]
 
 [ext_resource type="Script" uid="uid://bqfqdapjn846p" path="res://Props/Rope/rope.gd" id="1_aqd8d"]
+[ext_resource type="Script" uid="uid://j6ki8sq4o0xr" path="res://Systems/Visuals/pixel_line.gd" id="2_q35xg"]
 
 [node name="Rope" type="Node2D"]
 script = ExtResource("1_aqd8d")
-tileA = null
-tileB = null
-ropeLength = null
-stiffness = null
-damping = null
-sagSegments = null
 
-[node name="Line2D" type="Line2D" parent="."]
+[node name="Line2D" type="Node2D" parent="."]
 texture_filter = 1
-width = 1.0
-default_color = Color(0.39, 0.23451999, 0.21059997, 1)
+script = ExtResource("2_q35xg")
+color = Color(0.69803923, 0.627451, 0.5411765, 1)
+pixelSize = 1.0
+pixelated = false
