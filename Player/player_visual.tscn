@@ -1,18 +1,28 @@
-[gd_scene load_steps=4 format=3 uid="uid://3nwhxsafyu0m"]
+[gd_scene load_steps=6 format=3 uid="uid://3nwhxsafyu0m"]
 
-[ext_resource type="Texture2D" uid="uid://gshj0ey0gavl" path="res://Assets/icon.svg" id="2_8j7k5"]
+[ext_resource type="Script" uid="uid://btqyov6xbx2r5" path="res://Player/player_sprite.gd" id="1_8j7k5"]
 [ext_resource type="Script" uid="uid://dme5331i3xyv5" path="res://Systems/Interaction/interactor.gd" id="2_o4tqx"]
-[ext_resource type="Script" uid="uid://pwg5ocgoikg1" path="res://Player/hand.gd" id="3_8j7k5"]
+[ext_resource type="Texture2D" uid="uid://bt6j1jpct4xqk" path="res://Assets/Player/player_walk.png" id="2_tr4dc"]
+[ext_resource type="Script" path="res://Player/hand.gd" id="3_8j7k5"]
+[ext_resource type="Texture2D" uid="uid://ddtj63qsfv4ql" path="res://Assets/Player/player_idle.png" id="3_nms5x"]
 
 [node name="PlayerVisual" type="Node2D"]
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("2_8j7k5")
+texture = ExtResource("3_nms5x")
+hframes = 2
+script = ExtResource("1_8j7k5")
+animations = Dictionary[String, Texture2D]({
+"idle": ExtResource("3_nms5x"),
+"walk": ExtResource("2_tr4dc")
+})
+speeds = Dictionary[String, float]({
+"idle": 0.25
+})
 
 [node name="Interactor" type="Node2D" parent="."]
 script = ExtResource("2_o4tqx")
 
 [node name="Hand" type="Node2D" parent="."]
-position = Vector2(5, 0)
+position = Vector2(0, 2)
 script = ExtResource("3_8j7k5")

@@ -51,6 +51,14 @@ func move_prop(delta: float) -> void:
 		velocity.x = move_toward(velocity.x, direction * SPEED * moveScale, ACCEL * delta)
 	elif is_on_floor():
 		velocity.x = move_toward(velocity.x, 0, friction * delta)
+	
+	
+	var sprite: PlayerSprite = visual.get_node("Sprite2D")
+	if direction:
+		sprite.play("walk")
+		sprite.flip_h = direction < 0
+	else:
+		sprite.play("idle")
 
 
 func fell_out_of_world() -> void:

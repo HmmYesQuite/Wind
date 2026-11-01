@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://b5ppq8nujfruu"]
+
+[ext_resource type="Texture2D" uid="uid://c71gct1hwu765" path="res://Assets/Tile Sets/UniquesSpriteSheet.png" id="1_5b5rt"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="2_o6lt1"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6i8mb"]
+atlas = ExtResource("1_5b5rt")
+region = Rect2(32, 0, 16, 16)
+
+[resource]
+script = ExtResource("2_o6lt1")
+itemName = "Unique Coin"
+icon = SubResource("AtlasTexture_6i8mb")
+unique = true
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

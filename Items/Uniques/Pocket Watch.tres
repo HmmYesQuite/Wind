@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=4 format=3 uid="uid://2rrxkygd64qi"]
+
+[ext_resource type="Texture2D" uid="uid://c71gct1hwu765" path="res://Assets/Tile Sets/UniquesSpriteSheet.png" id="1_jgj7s"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_x13jn"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tk34d"]
+atlas = ExtResource("1_jgj7s")
+region = Rect2(16, 0, 16, 16)
+
+[resource]
+script = ExtResource("1_x13jn")
+itemName = "Pockjet Watch"
+icon = SubResource("AtlasTexture_tk34d")
+weight = 2.0
+unique = true
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

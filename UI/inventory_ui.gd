@@ -68,7 +68,8 @@ func refresh() -> void:
 	if shownPart != "":
 		partName.text = shownPart
 		fill_slots(slotGrid, Inventory.pockets[shownPart])
-	
+	else:
+		partName.text = "Hover over parts of the player to open their storage."
 	cursorSlot.show_item(Inventory.cursor.slots[0], Inventory.cursor.counts[0])
 	fill_recipes()
 

@@ -16,7 +16,7 @@ region = Rect2(0, 32, 16, 16)
 script = ExtResource("1_1n8et")
 
 [node name="Tip" type="Marker2D" parent="."]
-position = Vector2(10, -8)
+position = Vector2(6, -7)
 
 [node name="Line" type="Node2D" parent="."]
 top_level = true

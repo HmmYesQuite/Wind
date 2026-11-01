@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=29 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
@@ -26,6 +26,8 @@
 [ext_resource type="Resource" uid="uid://drcx6tlbby6er" path="res://Items/Resources/Rock.tres" id="21_r2ueb"]
 [ext_resource type="Resource" uid="uid://c6bi3r0yi8xmq" path="res://Items/Resources/Wood Plank.tres" id="22_o8jhj"]
 [ext_resource type="PackedScene" uid="uid://dwqyr2rdn3bd4" path="res://UI/inventory_ui.tscn" id="23_1sae0"]
+[ext_resource type="Resource" uid="uid://2rrxkygd64qi" path="res://Items/Uniques/Pocket Watch.tres" id="23_nflnv"]
+[ext_resource type="Resource" uid="uid://b5ppq8nujfruu" path="res://Items/Uniques/Unique Coin.tres" id="24_3kmy4"]
 
 [node name="Level" type="Node2D"]
 
@@ -48,6 +50,7 @@ tintColor = Color(0.50366473, 0.8746536, 0.98890525, 1)
 tintAmount = 0.1
 cloudCount = 8
 depthBias = 6.0
+windMultiplier = 12.0
 maxBlur = 0.0
 frontBlur = 1.0
 
@@ -58,7 +61,7 @@ script = ExtResource("5_uhyyw")
 target = NodePath("../PlayerVisual")
 
 [node name="PlayerVisual" parent="." instance=ExtResource("2_wav5q")]
-position = Vector2(0, -8)
+position = Vector2(0, -12)
 
 [node name="HotbarUI" parent="." instance=ExtResource("17_lybtp")]
 
@@ -79,7 +82,9 @@ ExtResource("21_fw3l5"): 0.25,
 ExtResource("20_twn60"): 1.0,
 ExtResource("21_r2ueb"): 0.75,
 ExtResource("21_nflnv"): 2.0,
-ExtResource("22_o8jhj"): 0.5
+ExtResource("22_o8jhj"): 0.5,
+ExtResource("23_nflnv"): 0.1,
+ExtResource("24_3kmy4"): 0.1
 })
 spawnIntervalMax = 4.0
 
@@ -89,8 +94,10 @@ spawnIntervalMax = 4.0
 
 [node name="PlayerBody" parent="StarterShip/Zone" index="1" node_paths=PackedStringArray("visual") instance=ExtResource("4_uhyyw")]
 process_physics_priority = 1
+position = Vector2(0, -8)
 visual = NodePath("../../../PlayerVisual")
 
 [node name="InventoryUi" parent="." instance=ExtResource("23_1sae0")]
+visible = false
 
 [editable path="StarterShip"]
