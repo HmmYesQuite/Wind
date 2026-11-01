@@ -35,9 +35,9 @@ var cloudSlots: Array[int] =[]
 @export var fadeColor: Color = Color(0.55, 0.75, 0.95)
 
 @export_group("Body")
-@export var bodyDepth: float = 60.0
-@export var bodyTopColor: Color = Color(0.85, 0.91, 0.95, 0.5)
-@export var bodyBottomColor: Color = Color(0.12, 0.6, 0.93, 0.5)
+@export var bodyDepth: float = 96.0
+@export var bodyTopColor: Color = Color(0.85, 0.91, 0.95, 0.75)
+@export var bodyBottomColor: Color = Color(0, 0, 0, 0)
 @export var rimColor: Color = Color(1, 1, 1, 0)
 
 

@@ -1,6 +1,8 @@
 extends Node
 
 var blocked := false
+var lastMouse := Vector2.ZERO
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -24,3 +26,8 @@ func _input(event: InputEvent) -> void:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_WINDOWED)
 		else:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
+
+func get_mouse_position(node: CanvasItem) -> Vector2:
+	if not blocked:
+		lastMouse = node.get_global_mouse_position()
+	return lastMouse

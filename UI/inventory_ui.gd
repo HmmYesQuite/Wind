@@ -75,19 +75,35 @@ func refresh() -> void:
 func _process(delta: float) -> void:
 	cursorSlot.position = cursorSlot.get_global_mouse_position() - cursorSlot.size / 2
 
-func recipe_text(recipe: Recipe) -> String:
-	var text := recipe.result.itemName + ":"
-	for item in recipe.ingredients:
-		text += " %s %d/%d" % [item.itemName, Inventory.count_of(item), recipe.ingredients[item]]
-	return text
-	
+
 func fill_recipes() -> void:
 	for child in recipeList.get_children():
 		child.queue_free()
 	for recipe in recipes:
+		var row := HBoxContainer.new()
+		recipeList.add_child(row)
+		
+		make_icon(row, recipe.result, recipe.resultCount)
+		var equals := Label.new()
+		equals.text = "="
+		row.add_child(equals)
+		
+		
+		for item in recipe.ingredients:
+			var needed := recipe.ingredients[item]
+			var slot :=  make_icon(row, item, needed)
+			slot.countLabel.text = "%d/%d" % [Inventory.count_of(item), needed]
+		
 		var button := Button.new()
-		button.text = recipe_text(recipe)
+		button.text = "Craft"
 		button.disabled = not Inventory.can_craft(recipe)
 		button.focus_mode = Control.FOCUS_NONE
 		button.pressed.connect(Inventory.craft.bind(recipe))
-		recipeList.add_child(button)
+		row.add_child(button)
+
+func make_icon(row: HBoxContainer, item: ItemData, count: int) -> ItemSlot:
+	var slot: ItemSlot = SLOT_SCENE.instantiate()
+	slot.mouse_filter = Control.MOUSE_FILTER_IGNORE
+	row.add_child(slot)
+	slot.show_item(item, count)
+	return slot

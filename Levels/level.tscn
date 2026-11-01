@@ -75,7 +75,7 @@ waveLength = 240.0
 [node name="DebrisSpawner" type="Node2D" parent="."]
 script = ExtResource("18_jmcc3")
 items = Dictionary[ExtResource("19_fw3l5"), float]({
-ExtResource("21_fw3l5"): 0.5,
+ExtResource("21_fw3l5"): 0.25,
 ExtResource("20_twn60"): 1.0,
 ExtResource("21_r2ueb"): 0.75,
 ExtResource("21_nflnv"): 2.0,

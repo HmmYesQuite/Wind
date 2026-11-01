@@ -73,10 +73,28 @@ func layer_at(x: float) -> CloudLayer:
 func pick_item() -> ItemData:
 	var total := 0.0
 	for item in items:
+		if not can_spawn(item):
+			continue
 		total += items[item]
 	var roll := randf() * total
 	for item in items:
+		if not can_spawn(item):
+			continue
 		if roll < items[item]:
 			return item
 		roll -= items[item]
 	return null
+
+func unique_floating() -> bool:
+	for debris in spawned:
+		if is_instance_valid(debris) and debris.itemData.unique:
+			return true
+	return false
+
+func can_spawn(item: ItemData) -> bool:
+	if not item.unique:
+		return true
+	
+	if Inventory.foundUniques.has(item):
+		return false
+	return not unique_floating()

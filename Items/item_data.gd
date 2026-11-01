@@ -8,3 +8,4 @@ class_name ItemData
 @export var heldScene: PackedScene
 @export var weight: float = 1.0
 @export var maxStack: int = 1
+@export var unique: bool = false

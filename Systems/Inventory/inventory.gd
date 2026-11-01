@@ -4,7 +4,7 @@ signal changed
 
 var pockets: Dictionary[String, ItemContainer] = {}
 var cursor := ItemContainer.new(1)
-
+var foundUniques: Array[ItemData] = []
 
 func _ready() -> void:
 	var left := ItemContainer.new(4)

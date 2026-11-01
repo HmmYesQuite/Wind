@@ -77,7 +77,7 @@ func _physics_process(delta: float) -> void:
 		layer.visibleAmount = move_toward(layer.visibleAmount, visibleTarget, revealSpeed * delta)
 	
 	if state == State.READY:
-		var side := signf(get_global_mouse_position().x - global_position.x)
+		var side := signf(GameInput.get_mouse_position(self).x - global_position.x)
 		if side != 0.0:
 			scale.x = side
 		if GameInput.is_action_just_pressed("use_item"):
@@ -89,7 +89,7 @@ func _physics_process(delta: float) -> void:
 		if absf(dx) > 6: # Deadzone is 6 rn
 			scale.x = signf(dx)
 	
-	var mouse := get_global_mouse_position()
+	var mouse := GameInput.get_mouse_position(self)
 	
 	if not GameInput.is_action_pressed("use_item"):
 		canReel = true
@@ -179,6 +179,8 @@ func end_cast() -> void:
 	# Need to change when proper inventory is added, also need to account for stuff like chests and crates
 	if hooked != null:
 		if hooked.itemData != null and Inventory.add_item(hooked.itemData):
+			if hooked.itemData.unique:
+				Inventory.foundUniques.append(hooked.itemData)
 			hooked.queue_free()
 		else:
 			hooked.hooked = false
