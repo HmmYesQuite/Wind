@@ -2,7 +2,7 @@
 rem Exports each tag of the player .aseprite file to its own horizontal strip: player_<tag>.png
 rem Save in Aseprite first, then double-click this. Add new animation tag names to TAGS.
 set ASEPRITE=C:\dev\aseprite\build\bin\aseprite.exe
-set SOURCE=SpriteWalking.aseprite
+set SOURCE=PlayerSprite.aseprite
 set TAGS=idle walk
 
 cd /d "%~dp0"
