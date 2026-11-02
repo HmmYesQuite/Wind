@@ -11,6 +11,10 @@ const JUMP_STRENGTH = 96.0
 @export var interactionMoveSpeed: float = 0.5
 @export var interactionJumpSpeed: float = 0.5
 
+@export var turnSpeed: float = 8.0
+var facing := 1.0
+
+
 
 func move_prop(delta: float) -> void:
 	
@@ -54,11 +58,20 @@ func move_prop(delta: float) -> void:
 	
 	
 	var sprite: PlayerSprite = visual.get_node("Sprite2D")
+	var hand: Node2D = visual.get_node("Hand")
 	if direction:
 		sprite.play("walk")
-		sprite.flip_h = direction < 0
+		facing = signf(direction)
 	else:
 		sprite.play("idle")
+		if fishingRod != null:
+			facing = fishingRod.facing
+	
+	sprite.scale.x = move_toward(sprite.scale.x, facing, turnSpeed * delta)
+	hand.scale.x = sprite.scale.x
+	
+	
+	
 
 
 func fell_out_of_world() -> void:

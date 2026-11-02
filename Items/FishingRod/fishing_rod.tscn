@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://cgjdqvqqom0cu"]
 
 [ext_resource type="Script" uid="uid://b7xhxrxvbl2re" path="res://Items/FishingRod/fishing_rod.gd" id="1_1n8et"]
-[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/ItemSpriteSheet.png" id="2_nfrxm"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="2_nfrxm"]
 [ext_resource type="Script" uid="uid://j6ki8sq4o0xr" path="res://Systems/Visuals/pixel_line.gd" id="2_np1d5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nfrxm"]

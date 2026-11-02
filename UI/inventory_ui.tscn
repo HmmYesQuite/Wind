@@ -25,6 +25,7 @@ Button/styles/normal = SubResource("StyleBoxFlat_6128g")
 [sub_resource type="AtlasTexture" id="AtlasTexture_7o5sx"]
 atlas = ExtResource("4_6128g")
 region = Rect2(0, 0, 16, 24)
+margin = Rect2(0, 0.25, 0, 0)
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l6l0t"]
 
@@ -89,6 +90,7 @@ offset_left = 6.0
 offset_top = 46.0
 offset_right = 10.0
 offset_bottom = 50.0
+color = Color(0.39599672, 0.37808612, 0.40673035, 1)
 
 [node name="RightPocket" type="ColorRect" parent="Root/Panel/Tabs/Storage/Body"]
 layout_mode = 0
@@ -96,6 +98,7 @@ offset_left = 12.0
 offset_top = 46.0
 offset_right = 16.0
 offset_bottom = 50.0
+color = Color(0.27510273, 0.26520598, 0.25200856, 1)
 
 [node name="Side" type="VBoxContainer" parent="Root/Panel/Tabs/Storage"]
 layout_mode = 2

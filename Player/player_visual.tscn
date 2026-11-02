@@ -10,6 +10,7 @@
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture = ExtResource("3_nms5x")
+offset = Vector2(0, 0.1)
 hframes = 2
 script = ExtResource("1_8j7k5")
 animations = Dictionary[String, Texture2D]({

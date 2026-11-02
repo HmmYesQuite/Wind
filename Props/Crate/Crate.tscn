@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://f8r7fnholr8n"]
 
 [ext_resource type="Script" uid="uid://cpwywdx57xyoa" path="res://Props/Crate/crate.gd" id="1_twtwc"]
-[ext_resource type="Texture2D" uid="uid://buo7gs8xsvhld" path="res://Assets/WindTileSet.png" id="2_gio73"]
+[ext_resource type="Texture2D" uid="uid://buo7gs8xsvhld" path="res://Assets/Tile Sets/WindTileSet.png" id="2_gio73"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3d65w"]
 size = Vector2(8, 8)

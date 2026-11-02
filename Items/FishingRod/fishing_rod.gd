@@ -30,7 +30,6 @@ enum State { READY, CAST }
 @export var attachDuration: float = 0.2
 
 @export var revealSpeed: float = 3.0
-@export var turnSpeed: float = 8.0
 
 var facing := 1.0
 
@@ -66,7 +65,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	
-	scale.x = move_toward(scale.x, facing, turnSpeed * delta)
+	
 	
 	var visibleTarget := 1.0 if state == State.CAST else 0.0
 	for node in get_tree().get_nodes_in_group("cloudLayers"):
@@ -79,7 +78,7 @@ func _physics_process(delta: float) -> void:
 	if state == State.READY:
 		var side := signf(GameInput.get_mouse_position(self).x - global_position.x)
 		if side != 0.0:
-			scale.x = side
+			facing = side
 		if GameInput.is_action_just_pressed("use_item"):
 			cast()
 		return
@@ -87,7 +86,7 @@ func _physics_process(delta: float) -> void:
 		
 		var dx := hookPos.x - global_position.x
 		if absf(dx) > 6: # Deadzone is 6 rn
-			scale.x = signf(dx)
+			facing = signf(dx)
 	
 	var mouse := GameInput.get_mouse_position(self)
 	
@@ -132,7 +131,7 @@ func _physics_process(delta: float) -> void:
 func cast() -> void:
 	state = State.CAST
 	hookPos = tip.global_position
-	hookVel = Vector2(scale.x * throwSpeed, -throwUp)
+	hookVel = Vector2(facing * throwSpeed, -throwUp)
 	hook.global_position = hookPos
 	hook.reset_physics_interpolation()
 	line.visible = true
