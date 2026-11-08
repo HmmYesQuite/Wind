@@ -87,3 +87,33 @@ func merge(index: int, other: ItemContainer, otherIndex: int) -> bool:
 	changed.emit()
 	other.changed.emit()
 	return true
+
+
+func to_save() -> Array:
+	var data := []
+	for i in slots.size():
+		if slots[i] == null:
+			data.append(null)
+		else:
+			data.append({ "item": slots[i].resource_path, "count": counts[i]})
+	
+	return data
+	
+
+
+func load_save(data: Array) -> void:
+	for i in mini(data.size(), slots.size()):
+		var slot = data[i]
+		if slot == null:
+			slots[i] = null
+			counts[i] = 0
+		else:
+			slots[i] = load(slot["item"])
+			counts[i] = int(slot["count"])
+	
+	changed.emit()
+
+func clear() -> void:
+	slots.fill(null)
+	counts.fill(0)
+	changed.emit()

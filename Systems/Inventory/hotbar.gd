@@ -9,10 +9,6 @@ var selectedIndex: int = 0
 
 func _ready() -> void:
 	container.changed.connect(changed.emit)
-	add_item(preload("res://Items/FishingRod/fishing_rod.tres"))
-	
-	
-	#add_item(preload("res://Items/TEST Food/Apple.tres"))
 	
 	
 

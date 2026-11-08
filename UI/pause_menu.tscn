@@ -48,9 +48,17 @@ text = "Paused"
 layout_mode = 2
 text = "Resume"
 
+[node name="Save" type="Button" parent="Root/Center/Buttons"]
+layout_mode = 2
+text = "Save"
+
 [node name="Restart" type="Button" parent="Root/Center/Buttons"]
 layout_mode = 2
 text = "Restart"
+
+[node name="NewGame" type="Button" parent="Root/Center/Buttons"]
+layout_mode = 2
+text = "New Game"
 
 [node name="Quit" type="Button" parent="Root/Center/Buttons"]
 layout_mode = 2

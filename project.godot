@@ -22,6 +22,7 @@ WindDebug="*res://Systems/Wind/wind_debug.gd"
 Hotbar="*res://Systems/Inventory/hotbar.gd"
 Inventory="*res://Systems/Inventory/inventory.gd"
 GameInput="*res://Systems/Input/game_input.gd"
+SaveManager="*res://Systems/Save/save_manager.gd"
 
 [display]
 

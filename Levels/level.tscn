@@ -1,6 +1,7 @@
-[gd_scene load_steps=29 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=30 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
+[ext_resource type="Script" uid="uid://cwgonxwplentd" path="res://Levels/level.gd" id="1_gaktt"]
 [ext_resource type="Script" uid="uid://b4cnns2rfpi67" path="res://Systems/Atmosphere/cloud_field.gd" id="2_t2u7g"]
 [ext_resource type="PackedScene" uid="uid://3nwhxsafyu0m" path="res://Player/player_visual.tscn" id="2_wav5q"]
 [ext_resource type="Texture2D" uid="uid://bor7xkmy66j5s" path="res://Assets/Clouds/Cloud1.png" id="3_dvejp"]
@@ -30,6 +31,7 @@
 [ext_resource type="Resource" uid="uid://b5ppq8nujfruu" path="res://Items/Uniques/Unique Coin.tres" id="24_3kmy4"]
 
 [node name="Level" type="Node2D"]
+script = ExtResource("1_gaktt")
 
 [node name="Atmosphere" type="Node2D" parent="."]
 

@@ -2,6 +2,7 @@ extends Node
 
 signal changed
 
+
 var pockets: Dictionary[String, ItemContainer] = {}
 var cursor := ItemContainer.new(1)
 var foundUniques: Array[ItemData] = []
@@ -19,14 +20,13 @@ func _ready() -> void:
 	# For testing only
 	pockets["LeftPocket"] = left
 	pockets["RightPocket"] = right
-	Hotbar.add_item(preload("res://Items/Placeable/Workbench/Workbench.tres"))
-	for i in 8:
-		Hotbar.add_item(preload("res://Items/Blocks/WoodFrame.tres"))
-		Hotbar.add_item(preload("res://Items/Blocks/WoodPlatform.tres"))
-	workbenchUnlocked = true
+	
+	
 	
 	left.changed.connect(changed.emit)
 	right.changed.connect(changed.emit)
+	
+	give_starting_items()
 
 
 func all_containers() -> Array[ItemContainer]:
@@ -99,6 +99,8 @@ func craft(recipe: Recipe) -> void:
 	
 	for n in recipe.resultCount:
 		add_item(recipe.result)
+	
+	SaveManager.request_save()
 
 
 func near_workbench() -> bool:
@@ -107,3 +109,25 @@ func near_workbench() -> bool:
 		if bench.global_position.distance_to(player.visual.global_position) <= workbenchRange:
 			return true
 	return false
+
+
+func give_starting_items() -> void:
+	
+	Hotbar.add_item(preload("res://Items/FishingRod/fishing_rod.tres"))
+	
+	#test stuff
+	Hotbar.add_item(preload("res://Items/Placeable/Workbench/Workbench.tres"))
+	for i in 8:
+		Hotbar.add_item(preload("res://Items/Blocks/WoodFrame.tres"))
+		Hotbar.add_item(preload("res://Items/Blocks/WoodPlatform.tres"))
+	workbenchUnlocked = true
+
+
+func reset() -> void:
+	for container in all_containers():
+		container.clear()
+	cursor.clear()
+	foundUniques.clear()
+	workbenchUnlocked = false
+	Hotbar.select(0)
+	give_starting_items()

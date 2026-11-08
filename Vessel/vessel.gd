@@ -132,8 +132,53 @@ func add_tile(cell: Vector2i, coords: Vector2i) -> void:
 	
 	zone_hull.set_cell(cell, 0, coords)
 	rebuild_collision()
+	clear_my_proxies()
 	
+	
+
+
+func place_object(item: ItemData, topLeft: Vector2i) -> void:
+	var placedThing: Node2D = item.placeScene.instantiate()
+	props.add_child(placedThing)
+	placedThing.position = Vector2(topLeft * hull.tile_set.tile_size)
+	placedThing.reset_physics_interpolation()
+	placedThing.set_meta("item", item)
+	
+	var size := Vector2i(item.worldSpaceTexture.get_size()) / hull.tile_set.tile_size
+	for x in range(topLeft.x, topLeft.x + size.x):
+		for y in range(topLeft.y, topLeft.y + size.y):
+			placed[Vector2i(x, y)] = placedThing
+
+
+func to_save() -> Dictionary:
+	var objects := []
+	for thing in props.get_children():
+		if thing.has_meta("item"):
+			var item: ItemData = thing.get_meta("item")
+			var cell := Vector2i(thing.position) / hull.tile_set.tile_size
+			objects.append({ "item": item.resource_path, "cell": [cell.x, cell.y] })
+	return { "tiles": Marshalls.raw_to_base64(hull.tile_map_data), "objects": objects }
+
+
+func load_save(data: Dictionary) -> void:
+	var tiles := Marshalls.base64_to_raw(data["tiles"])
+	hull.tile_map_data = tiles
+	zone_hull.tile_map_data = tiles
+	rebuild_collision()
+	clear_my_proxies()
+	
+	for thing in props.get_children():
+		if thing.has_meta("item"):
+			thing.queue_free()
+	placed.clear()
+	for obj in data["objects"]:
+		var cell := Vector2i(int(obj["cell"][0]), int(obj["cell"][1]))
+		place_object(load(obj["item"]), cell)
+
+
+func clear_my_proxies() -> void:
 	for other: Vessel in get_tree().get_nodes_in_group("vessels"):
 		if other.proxies.has(self):
 			other.proxies[self].queue_free()
 			other.proxies.erase(self)
+			

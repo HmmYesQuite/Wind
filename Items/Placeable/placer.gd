@@ -5,6 +5,8 @@ class_name Placer
 @export var gridRadius: int = 3
 @onready var ghost: Sprite2D = $Ghost
 @export var placeRange: int = 4
+@export var placeDelay: float = 0.05
+
 
 var hull: TileMapLayer
 var mouseCell: Vector2i #2i is integer
@@ -13,6 +15,8 @@ var size: Vector2i
 var topLeft: Vector2i
 var canPlace: bool = false
 var vessel: Vessel
+var placeTimer: float = 0.0
+var player: DynamicProp
 
 func _ready() -> void:
 	top_level = true
@@ -21,7 +25,7 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-	var player: DynamicProp = get_tree().get_first_node_in_group("player")
+	player = get_tree().get_first_node_in_group("player")
 	vessel = player.vessel
 	if vessel == null:
 		visible = false
@@ -42,8 +46,12 @@ func _physics_process(delta: float) -> void:
 	else:
 		ghost.modulate = Color(1,0.3,0.3,0.5)
 	
-	if canPlace and GameInput.is_action_just_pressed("use_item"):
+	placeTimer -= delta
+	if not GameInput.is_action_pressed("use_item"):
+		placeTimer = 0
+	if canPlace and GameInput.is_action_pressed("use_item") and placeTimer <= 0:
 		place()
+		placeTimer = placeDelay
 	
 	
 	queue_redraw()
@@ -83,6 +91,13 @@ func can_place() -> bool:
 				return false
 	
 	if item.placesTiles:
+		var body: CollisionShape2D = player.get_node("CollisionShape2D")
+		var playerRect: Rect2 = body.shape.get_rect()
+		playerRect.position += player.position + body.position
+		var tileSize := hull.tile_set.tile_size
+		var tileRect := Rect2(Vector2(mouseCell * tileSize), Vector2(tileSize))
+		if playerRect.intersects(tileRect):
+			return false
 		for dx in range(-1,2):
 			for dy in range(-1, 2):
 				if dx == 0 and dy == 0:
@@ -100,13 +115,7 @@ func place() -> void:
 	if item.placesTiles:
 		vessel.add_tile(mouseCell, item.tileCoords)
 	else:
-		var placedThing: Node2D = item.placeScene.instantiate()
-		vessel.props.add_child(placedThing)
-		placedThing.position = Vector2(topLeft * hull.tile_set.tile_size)
-		placedThing.reset_physics_interpolation()
-		
-		for x in range(topLeft.x, topLeft.x + size.x):
-			for y in range(topLeft.y, topLeft.y + size.y):
-				vessel.placed[Vector2i(x, y)] = placedThing
+		vessel.place_object(item, topLeft)
 	
 	Inventory.remove_item(item, 1)
+	SaveManager.request_save()

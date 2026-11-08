@@ -181,6 +181,7 @@ func end_cast() -> void:
 			if hooked.itemData.unique:
 				Inventory.foundUniques.append(hooked.itemData)
 			hooked.queue_free()
+			SaveManager.request_save()
 		else:
 			hooked.hooked = false
 		hooked = null
