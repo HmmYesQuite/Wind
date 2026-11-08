@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://uu430yu4nd10"]
+
+[ext_resource type="Texture2D" uid="uid://bytvhfyq300hb" path="res://Assets/Tile Sets/PlaceableTiles.png" id="1_b6uem"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpk26"]
+atlas = ExtResource("1_b6uem")
+region = Rect2(0, 0, 16, 16)
+
+[node name="Workbench" type="Node2D" groups=["workbenches"]]
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = SubResource("AtlasTexture_wpk26")
+centered = false

@@ -5,14 +5,25 @@ signal changed
 var pockets: Dictionary[String, ItemContainer] = {}
 var cursor := ItemContainer.new(1)
 var foundUniques: Array[ItemData] = []
+var workbenchRange := 24.0
+
+const WORKBENCH := preload("res://Items/Placeable/Workbench/Workbench.tres")
+var workbenchUnlocked := false
+
 
 func _ready() -> void:
 	var left := ItemContainer.new(4)
 	var right := ItemContainer.new(4)
 	
 	
+	# For testing only
 	pockets["LeftPocket"] = left
 	pockets["RightPocket"] = right
+	Hotbar.add_item(preload("res://Items/Placeable/Workbench/Workbench.tres"))
+	for i in 8:
+		Hotbar.add_item(preload("res://Items/Blocks/WoodFrame.tres"))
+		Hotbar.add_item(preload("res://Items/Blocks/WoodPlatform.tres"))
+	workbenchUnlocked = true
 	
 	left.changed.connect(changed.emit)
 	right.changed.connect(changed.emit)
@@ -68,6 +79,9 @@ func return_cursor() -> void:
 		add_item(item)
 
 func can_craft(recipe: Recipe) -> bool:
+	if recipe.needsWorkbench and not near_workbench():
+		return false
+	
 	for item in recipe.ingredients:
 		var needed := recipe.ingredients[item]
 		if count_of(item) < needed:
@@ -79,5 +93,17 @@ func craft(recipe: Recipe) -> void:
 		return
 	for item in recipe.ingredients:
 		remove_item(item, recipe.ingredients[item])
+	
+	if recipe.result == WORKBENCH:
+		workbenchUnlocked = true
+	
 	for n in recipe.resultCount:
 		add_item(recipe.result)
+
+
+func near_workbench() -> bool:
+	var player: DynamicProp = get_tree().get_first_node_in_group("player")
+	for bench: Node2D in get_tree().get_nodes_in_group("workbenches"):
+		if bench.global_position.distance_to(player.visual.global_position) <= workbenchRange:
+			return true
+	return false

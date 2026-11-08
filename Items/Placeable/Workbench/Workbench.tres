@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3 uid="uid://bhhdkkfjn57hs"]
+
+[ext_resource type="PackedScene" uid="uid://dtgo6n5xxv64b" path="res://Items/Placeable/placer.tscn" id="1_3wt0o"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="1_6clqv"]
+[ext_resource type="PackedScene" uid="uid://uu430yu4nd10" path="res://Items/Placeable/Workbench/workbench.tscn" id="2_3wt0o"]
+[ext_resource type="Texture2D" uid="uid://bytvhfyq300hb" path="res://Assets/Tile Sets/PlaceableTiles.png" id="2_66bgk"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="3_66bgk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vugub"]
+atlas = ExtResource("1_6clqv")
+region = Rect2(16, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66bgk"]
+atlas = ExtResource("2_66bgk")
+region = Rect2(0, 0, 16, 16)
+
+[resource]
+script = ExtResource("3_66bgk")
+itemName = "Workbench"
+icon = SubResource("AtlasTexture_vugub")
+worldSpaceTexture = SubResource("AtlasTexture_66bgk")
+heldScene = ExtResource("1_3wt0o")
+weight = 4.0
+placeScene = ExtResource("2_3wt0o")
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

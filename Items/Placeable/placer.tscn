@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://dtgo6n5xxv64b"]
+
+[ext_resource type="Script" uid="uid://besa1y2ff4l4a" path="res://Items/Placeable/placer.gd" id="1_erqhi"]
+
+[node name="Placer" type="Node2D"]
+script = ExtResource("1_erqhi")
+
+[node name="Ghost" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.5)
+texture_filter = 1
+centered = false

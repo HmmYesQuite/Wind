@@ -15,4 +15,5 @@ ExtResource("2_i7lvy"): 2,
 ExtResource("3_irobw"): 1,
 ExtResource("4_1qk0g"): 4
 })
+needsWorkbench = true
 metadata/_custom_type_script = "uid://ckjts2sxaj8xq"

@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=7 format=3 uid="uid://by44blosnoq5n"]
+
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="1_ivq8k"]
+[ext_resource type="PackedScene" uid="uid://dtgo6n5xxv64b" path="res://Items/Placeable/placer.tscn" id="1_kegi1"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="2_kegi1"]
+[ext_resource type="Texture2D" uid="uid://buo7gs8xsvhld" path="res://Assets/Tile Sets/WindTileSet.png" id="4_np4ag"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aeujs"]
+atlas = ExtResource("1_ivq8k")
+region = Rect2(32, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iqry0"]
+atlas = ExtResource("4_np4ag")
+region = Rect2(32, 0, 8, 8)
+
+[resource]
+script = ExtResource("2_kegi1")
+itemName = "Wood Frame"
+icon = SubResource("AtlasTexture_aeujs")
+worldSpaceTexture = SubResource("AtlasTexture_iqry0")
+heldScene = ExtResource("1_kegi1")
+maxStack = 16
+placesTiles = true
+tileCoords = Vector2i(4, 0)
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

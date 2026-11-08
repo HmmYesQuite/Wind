@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://gto5ylxl6ngq"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_47uo6"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="2_4jpiv"]
+[ext_resource type="Resource" uid="uid://c6bi3r0yi8xmq" path="res://Items/Resources/Wood Plank.tres" id="2_wx86g"]
+[ext_resource type="Resource" uid="uid://7yxu6xtpsu3k" path="res://Items/Resources/String.tres" id="3_wdvlg"]
+[ext_resource type="Resource" uid="uid://drcx6tlbby6er" path="res://Items/Resources/Rock.tres" id="4_ufdfa"]
+[ext_resource type="Resource" uid="uid://bhhdkkfjn57hs" path="res://Items/Placeable/Workbench/Workbench.tres" id="5_gy52r"]
+
+[resource]
+script = ExtResource("2_4jpiv")
+result = ExtResource("5_gy52r")
+ingredients = Dictionary[ExtResource("1_47uo6"), int]({
+ExtResource("2_wx86g"): 4,
+ExtResource("3_wdvlg"): 2,
+ExtResource("4_ufdfa"): 1
+})
+metadata/_custom_type_script = "uid://ckjts2sxaj8xq"

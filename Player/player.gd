@@ -69,7 +69,7 @@ func move_prop(delta: float) -> void:
 	
 	sprite.scale.x = move_toward(sprite.scale.x, facing, turnSpeed * delta)
 	hand.scale.x = sprite.scale.x
-	
+	#Need to setup so other held items have these / similar rules
 	
 	
 

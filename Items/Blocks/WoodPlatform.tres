@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=7 format=3 uid="uid://cl2spllfkvocd"]
+
+[ext_resource type="PackedScene" uid="uid://dtgo6n5xxv64b" path="res://Items/Placeable/placer.tscn" id="1_aeujs"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="1_bihcx"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_whfa8"]
+[ext_resource type="Texture2D" uid="uid://buo7gs8xsvhld" path="res://Assets/Tile Sets/WindTileSet.png" id="4_6mqn2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aeujs"]
+atlas = ExtResource("1_bihcx")
+region = Rect2(16, 48, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wplia"]
+atlas = ExtResource("4_6mqn2")
+region = Rect2(0, 0, 8, 8)
+
+[resource]
+script = ExtResource("1_whfa8")
+itemName = "Wood Platform"
+icon = SubResource("AtlasTexture_aeujs")
+worldSpaceTexture = SubResource("AtlasTexture_wplia")
+heldScene = ExtResource("1_aeujs")
+maxStack = 16
+placesTiles = true
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

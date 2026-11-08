@@ -9,3 +9,6 @@ class_name ItemData
 @export var weight: float = 1.0
 @export var maxStack: int = 1
 @export var unique: bool = false
+@export var placeScene: PackedScene
+@export var placesTiles: bool = false
+@export var tileCoords: Vector2i

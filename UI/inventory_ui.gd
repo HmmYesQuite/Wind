@@ -36,11 +36,12 @@ func show_part(part: String) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	
 	if event.is_action_pressed("inventory"):
 		
-		
-		
 		visible = not visible
+		if visible:
+			refresh()
 		if not visible:
 			Inventory.return_cursor()
 		
@@ -81,6 +82,9 @@ func fill_recipes() -> void:
 	for child in recipeList.get_children():
 		child.queue_free()
 	for recipe in recipes:
+		if recipe.needsWorkbench and not Inventory.workbenchUnlocked:
+			continue
+		
 		var row := HBoxContainer.new()
 		recipeList.add_child(row)
 		
@@ -98,6 +102,8 @@ func fill_recipes() -> void:
 		var button := Button.new()
 		button.text = "Craft"
 		button.disabled = not Inventory.can_craft(recipe)
+		if recipe.needsWorkbench and not Inventory.near_workbench():
+			button.text = "Workbench"
 		button.focus_mode = Control.FOCUS_NONE
 		button.pressed.connect(Inventory.craft.bind(recipe))
 		row.add_child(button)

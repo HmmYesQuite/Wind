@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=5 format=3 uid="uid://bole7uwcg7cgj"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_fc0gb"]
+[ext_resource type="Resource" uid="uid://c6bi3r0yi8xmq" path="res://Items/Resources/Wood Plank.tres" id="2_afup5"]
+[ext_resource type="Resource" uid="uid://cl2spllfkvocd" path="res://Items/Blocks/WoodPlatform.tres" id="3_1r7wc"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="5_k7stf"]
+
+[resource]
+script = ExtResource("5_k7stf")
+result = ExtResource("3_1r7wc")
+ingredients = Dictionary[ExtResource("1_fc0gb"), int]({
+ExtResource("2_afup5"): 1
+})
+needsWorkbench = true
+metadata/_custom_type_script = "uid://ckjts2sxaj8xq"

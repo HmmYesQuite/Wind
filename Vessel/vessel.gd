@@ -25,6 +25,8 @@ var collisionPolys: Array[CollisionPolygon2D] = []
 
 var propCount: int = 0
 
+var placed: Dictionary[Vector2i, Node2D] = {}
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_to_group("vessels")
@@ -123,3 +125,15 @@ func update_proxies() -> void:
 	var toLocal := global_transform.affine_inverse()
 	for other in proxies:
 		proxies[other].transform = toLocal * other.global_transform
+
+
+func add_tile(cell: Vector2i, coords: Vector2i) -> void:
+	hull.set_cell(cell, 0, coords)
+	
+	zone_hull.set_cell(cell, 0, coords)
+	rebuild_collision()
+	
+	for other: Vessel in get_tree().get_nodes_in_group("vessels"):
+		if other.proxies.has(self):
+			other.proxies[self].queue_free()
+			other.proxies.erase(self)
