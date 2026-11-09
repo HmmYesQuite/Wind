@@ -11,9 +11,13 @@ Tab to open and close inventory
 
 1 through 9 to select an inventory slot; using the scroll wheel works as well.
 
-Left mouse button to use an item in your inventory (the only working one is the fishing rod)
+Left mouse button to use an item in your inventory. Fishing rod, blocks, workbenches, axes, etc.
 
 To fish, use Left mouse button to pull the line in, and Right mouse button to lower the line.
+
+To build, hold the item and use Left mouse button. You can only place things near you and that are connected to another block. For the workbench, you can only put it on two empty blocks.
+
+To break, hold down the left mouse button on a block or object that you put down; after a second, you will pick it up.
 
 Esc will open the pause menu
 
@@ -21,9 +25,31 @@ Pressing F1 will show the wind Perlin noise
 
 Pressing F2 will put the player in noclip+flight mode.
 
+Pressing F3 will skip ahead a bit in the day.
+
+
+
+Right now there is a bunch of test items for the sake of the demo; in the full game you will only start with the fishing rod.
+
 
 
 Most recent devlog summary:
+
+WEEK 3:
+
+Changes:
+
+Building - Craft workbenches and wood platforms, and hold them to place them on the ship you are standing on. If it turns red, then you can't place it. It's ranged.
+
+Breaking - Holding the axe lets you break things that you placed down, like the planks or the workbench. It gives you the item back. You have to hold down the left mouse button for it to start breaking.
+
+Saving - A very hardcoded save system; it has an auto-save that triggers on things that you change in the world, like placing, using, moving, etc. It stores it in a JSON file and remembers your progress even if you reload the tab, which I think is pretty neat. I am for sure gonna have to make some big changes to it because I have to manually add a new category every time I want to add something new.
+
+Day Night - 300-second day-night cycle. It cycles through a gradient and tints everything on screen. Pressing F3 skips ahead a bit.
+
+Lanterns - Have a point light now so they look better + new texture.
+
+
 
 WEEK 2:
 
@@ -61,13 +87,6 @@ The main addition was the fishing mechanic. Right now, holding out your fishing 
 
 Items can stack if they allow it, such as apples and pears.
 
-
-How to run:
-Play in browser at: https://hmmquite.itch.io/wind-demo-terra
-From source:
-Use Godot 4.5.1
-Clone the repo
-Import the project.godot
 
 
 Credits:
