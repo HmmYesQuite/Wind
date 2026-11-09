@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://dwqyr2rdn3bd4"]
+[gd_scene load_steps=15 format=3 uid="uid://dwqyr2rdn3bd4"]
 
 [ext_resource type="Script" uid="uid://cvvg0y0n5t06g" path="res://UI/inventory_ui.gd" id="1_4hlgy"]
 [ext_resource type="PackedScene" uid="uid://byfjrtqyl4q5g" path="res://UI/item_slot.tscn" id="2_l6l0t"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://ddtj63qsfv4ql" path="res://Assets/Player/player_idle.png" id="4_6128g"]
 [ext_resource type="Resource" uid="uid://cgbl24pg3sv7l" path="res://Items/Recipes/Wood Frame.tres" id="5_jn8i4"]
 [ext_resource type="Resource" uid="uid://bole7uwcg7cgj" path="res://Items/Recipes/Wood Platform.tres" id="6_nygdy"]
+[ext_resource type="Resource" uid="uid://dgnu1c26se6kb" path="res://Items/Recipes/Stone Axe.tres" id="7_e1gr2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t6nog"]
 content_margin_left = 2.0
@@ -35,7 +36,7 @@ margin = Rect2(0, 0.25, 0, 0)
 [node name="InventoryUi" type="CanvasLayer"]
 layer = 5
 script = ExtResource("1_4hlgy")
-recipes = Array[ExtResource("2_t6nog")]([ExtResource("3_6128g"), ExtResource("4_7o5sx"), ExtResource("5_jn8i4"), ExtResource("6_nygdy")])
+recipes = Array[ExtResource("2_t6nog")]([ExtResource("3_6128g"), ExtResource("4_7o5sx"), ExtResource("5_jn8i4"), ExtResource("6_nygdy"), ExtResource("7_e1gr2")])
 
 [node name="Root" type="Control" parent="."]
 layout_mode = 3

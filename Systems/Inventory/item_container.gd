@@ -117,3 +117,12 @@ func clear() -> void:
 	slots.fill(null)
 	counts.fill(0)
 	changed.emit()
+
+func can_add(item: ItemData) -> bool:
+	for i in slots.size():
+		if slots[i] == null:
+			return true
+		if slots[i] == item and counts[i] < item.maxStack:
+			return true
+	
+	return false

@@ -1,7 +1,7 @@
 extends RigidBody2D
 class_name  Vessel
 
-@onready var hull: TileMapLayer = $Hull
+@onready var hull: HullLayer = $Hull
 @onready var zone_hull: TileMapLayer = $Zone/ZoneHull
 @onready var zone: SubViewport = $Zone
 @onready var props: Node2D = $Props
@@ -26,6 +26,7 @@ var collisionPolys: Array[CollisionPolygon2D] = []
 var propCount: int = 0
 
 var placed: Dictionary[Vector2i, Node2D] = {}
+var builtCell: Dictionary[Vector2i, ItemData] = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -38,6 +39,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+
 func _physics_process(delta: float) -> void:
 	update_proxies()
 	
@@ -127,10 +129,11 @@ func update_proxies() -> void:
 		proxies[other].transform = toLocal * other.global_transform
 
 
-func add_tile(cell: Vector2i, coords: Vector2i) -> void:
-	hull.set_cell(cell, 0, coords)
+func add_tile(cell: Vector2i, item: ItemData) -> void:
+	hull.set_cell(cell, 0, item.tileCoords)
 	
-	zone_hull.set_cell(cell, 0, coords)
+	zone_hull.set_cell(cell, 0, item.tileCoords)
+	builtCell[cell] = item
 	rebuild_collision()
 	clear_my_proxies()
 	
@@ -157,7 +160,13 @@ func to_save() -> Dictionary:
 			var item: ItemData = thing.get_meta("item")
 			var cell := Vector2i(thing.position) / hull.tile_set.tile_size
 			objects.append({ "item": item.resource_path, "cell": [cell.x, cell.y] })
-	return { "tiles": Marshalls.raw_to_base64(hull.tile_map_data), "objects": objects }
+	
+	var built := []
+	for cell in builtCell:
+		built.append({ "item": builtCell[cell].resource_path, "cell": [cell.x, cell.y] })
+	
+	
+	return { "tiles": Marshalls.raw_to_base64(hull.tile_map_data), "objects": objects, "built": built, }
 
 
 func load_save(data: Dictionary) -> void:
@@ -174,6 +183,12 @@ func load_save(data: Dictionary) -> void:
 	for obj in data["objects"]:
 		var cell := Vector2i(int(obj["cell"][0]), int(obj["cell"][1]))
 		place_object(load(obj["item"]), cell)
+	
+	builtCell.clear()
+	if data.has("built"):
+		for b in data["built"]:
+			var cell := Vector2i(int(b["cell"][0]), int(b["cell"][1]))
+			builtCell[cell] = load(b["item"])
 
 
 func clear_my_proxies() -> void:
@@ -182,3 +197,38 @@ func clear_my_proxies() -> void:
 			other.proxies[self].queue_free()
 			other.proxies.erase(self)
 			
+
+
+func break_at(cell: Vector2i) -> ItemData:
+	
+	if placed.has(cell):
+		var object: Node2D = placed[cell]
+		var item: ItemData = object.get_meta("item")
+		for c in placed.keys():
+			if placed[c] == object:
+				placed.erase(c)
+		object.queue_free()
+		return item
+	
+	if builtCell.has(cell):
+		var item: ItemData = builtCell[cell]
+		hull.erase_cell(cell)
+		zone_hull.erase_cell(cell)
+		builtCell.erase(cell)
+		rebuild_collision()
+		clear_my_proxies()
+		return item
+	
+	
+	return null
+
+func item_at(cell: Vector2i) -> ItemData:
+	
+	if placed.has(cell):
+		var object: Node2D = placed[cell]
+		var item: ItemData = object.get_meta("item")
+		
+		return item
+	if builtCell.has(cell):
+		return builtCell[cell]
+	return null

@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://df15l7ndqs7mf"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_5ivol"]
+[ext_resource type="PackedScene" uid="uid://dtgo6n5xxv64b" path="res://Items/Placeable/placer.tscn" id="1_iwi6v"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="1_wrp8a"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwi6v"]
+atlas = ExtResource("1_wrp8a")
+region = Rect2(0, 64, 16, 16)
+
+[resource]
+script = ExtResource("1_5ivol")
+itemName = "Stone Axe"
+icon = SubResource("AtlasTexture_iwi6v")
+heldScene = ExtResource("1_iwi6v")
+breaksTiles = true
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

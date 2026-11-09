@@ -117,6 +117,7 @@ func give_starting_items() -> void:
 	
 	#test stuff
 	Hotbar.add_item(preload("res://Items/Placeable/Workbench/Workbench.tres"))
+	Hotbar.add_item(preload("res://Items/Tools/StoneAxe.tres"))
 	for i in 8:
 		Hotbar.add_item(preload("res://Items/Blocks/WoodFrame.tres"))
 		Hotbar.add_item(preload("res://Items/Blocks/WoodPlatform.tres"))
@@ -131,3 +132,10 @@ func reset() -> void:
 	workbenchUnlocked = false
 	Hotbar.select(0)
 	give_starting_items()
+
+func can_add(item: ItemData) -> bool:
+	
+	for c in all_containers():
+		if c.can_add(item):
+			return true
+	return false

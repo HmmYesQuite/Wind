@@ -12,3 +12,4 @@ class_name ItemData
 @export var placeScene: PackedScene
 @export var placesTiles: bool = false
 @export var tileCoords: Vector2i
+@export var breaksTiles: bool = false
