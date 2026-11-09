@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=33 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://cwgonxwplentd" path="res://Levels/level.gd" id="1_gaktt"]
@@ -29,6 +29,12 @@
 [ext_resource type="PackedScene" uid="uid://dwqyr2rdn3bd4" path="res://UI/inventory_ui.tscn" id="23_1sae0"]
 [ext_resource type="Resource" uid="uid://2rrxkygd64qi" path="res://Items/Uniques/Pocket Watch.tres" id="23_nflnv"]
 [ext_resource type="Resource" uid="uid://b5ppq8nujfruu" path="res://Items/Uniques/Unique Coin.tres" id="24_3kmy4"]
+[ext_resource type="PackedScene" uid="uid://cvpqbls6w4ifh" path="res://Props/TileProps/Lantern/Lantern.tscn" id="25_papoo"]
+[ext_resource type="Script" uid="uid://cdsdqso1ljom5" path="res://Levels/day_night.gd" id="30_3fdi5"]
+
+[sub_resource type="Gradient" id="Gradient_3fdi5"]
+offsets = PackedFloat32Array(0, 0.16346154, 0.50961536, 0.6682692, 0.8798077, 0.9423077, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1, 1, 0.7019608, 0.5411765, 1, 0.22745098, 0.2901961, 0.5019608, 1, 0.22745098, 0.2901961, 0.5019608, 1, 1, 0.7019608, 0.5411765, 1, 1, 1, 1, 1)
 
 [node name="Level" type="Node2D"]
 script = ExtResource("1_gaktt")
@@ -84,6 +90,12 @@ spawnIntervalMax = 4.0
 
 [node name="StarterShip" parent="." instance=ExtResource("21_1sae0")]
 
+[node name="Lantern" parent="StarterShip/Props" index="0" instance=ExtResource("25_papoo")]
+position = Vector2(28, -28)
+
+[node name="Lantern2" parent="StarterShip/Props" index="1" instance=ExtResource("25_papoo")]
+position = Vector2(-28, -28)
+
 [node name="PlayerBody" parent="StarterShip/Zone" index="1" node_paths=PackedStringArray("visual") instance=ExtResource("4_uhyyw")]
 process_physics_priority = 1
 position = Vector2(0, -8)
@@ -101,5 +113,9 @@ process_physics_priority = 10
 position_smoothing_enabled = true
 script = ExtResource("5_uhyyw")
 target = NodePath("../PlayerVisual")
+
+[node name="DayNight" type="CanvasModulate" parent="." groups=["day_night"]]
+script = ExtResource("30_3fdi5")
+colors = SubResource("Gradient_3fdi5")
 
 [editable path="StarterShip"]

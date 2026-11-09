@@ -18,6 +18,8 @@ func _ready() -> void:
 	prompt.position = Vector2(-24, -18)
 	prompt.z_index = 10
 	prompt.visible = false
+	prompt.add_theme_color_override("font_outline_color", Color.DIM_GRAY)
+	prompt.add_theme_constant_override("outline_size", 2)
 	add_child(prompt)
 
 func set_focused(isFocused: bool) -> void:

@@ -1,7 +1,7 @@
 extends Node2D
 class_name Interactor
 
-@export var interactRange: float = 16.0
+@export var interactRange: float = 18.0
 
 var focused: Interactable = null
 

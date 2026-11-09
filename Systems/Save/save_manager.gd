@@ -5,7 +5,15 @@ const SAVE_PATH := "user://save.json"
 var saveQueued := false
 
 func save_game() -> void:
-	var data := {"version": 1, "unlocks": get_unlocks(), "inventory": get_inventory(), "ships": get_ships(), "player": get_player(),}
+	var data := {
+	"version": 1, 
+	"unlocks": get_unlocks(), 
+	"inventory": get_inventory(), 
+	"ships": get_ships(), 
+	"player": get_player(),
+	"time": get_time(),
+	"lanterns": get_lanterns(),
+	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
 
@@ -20,6 +28,10 @@ func load_game() -> void:
 		set_ships(data["ships"])
 	if data.has("player") and not data["player"].is_empty():
 		set_player(data["player"])
+	if data.has("time"):
+		set_time(data["time"])
+	if data.has("lanterns"):
+		set_lanterns(data["lanterns"])
 	#all ^ to help if new version is missing or smth and make sure the game dosnt break
 
 
@@ -108,3 +120,26 @@ func request_save() -> void:
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
 		save_game()
+
+func get_time() -> float:
+	var dayNight: DayNight = get_tree().get_first_node_in_group("day_night")
+	if dayNight == null:
+		return 0.0
+	return dayNight.time
+
+func set_time(time: float) -> void:
+	var dayNight: DayNight = get_tree().get_first_node_in_group("day_night")
+	if dayNight != null:
+		dayNight.time = time
+
+func get_lanterns() -> Dictionary:
+	var lanterns := {}
+	for lantern: Lantern in get_tree().get_nodes_in_group("lanterns"):
+		lanterns[String(lantern.get_path())] = lantern.lit
+	return lanterns
+
+func set_lanterns(lanterns: Dictionary) -> void:
+	for lantern: Lantern in get_tree().get_nodes_in_group("lanterns"):
+		var path := String(lantern.get_path())
+		if lanterns.has(path):
+			lantern.set_lit(lanterns[path])
