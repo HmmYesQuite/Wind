@@ -4,8 +4,9 @@ extends CanvasLayer
 @onready var resumeButton: Button = $Root/Center/Buttons/Resume
 @onready var restartButton: Button = $Root/Center/Buttons/Restart
 @onready var quitButton: Button = $Root/Center/Buttons/Quit
-@onready var newGameButton: Button = $Root/Center/Buttons/NewGame
+@onready var newGameButton: Button = $Root/Center/Buttons/NewGameRow/NewGame
 @onready var saveButton: Button = $Root/Center/Buttons/Save
+@onready var devItemsSwitch: CheckBox = $Root/Center/Buttons/NewGameRow/DevItems
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
@@ -18,7 +19,12 @@ func _ready() -> void:
 	saveButton.pressed.connect(SaveManager.save_game)
 	if OS.has_feature("web"):
 		quitButton.visible = false
+	devItemsSwitch.button_pressed = Inventory.devItems
+	devItemsSwitch.toggled.connect(set_dev_items)
 	
+
+func set_dev_items(on: bool) -> void:
+	Inventory.devItems = on
 
 func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action_pressed("pause"):

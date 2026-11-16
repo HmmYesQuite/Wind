@@ -56,9 +56,16 @@ text = "Save"
 layout_mode = 2
 text = "Restart"
 
-[node name="NewGame" type="Button" parent="Root/Center/Buttons"]
+[node name="NewGameRow" type="HBoxContainer" parent="Root/Center/Buttons"]
+layout_mode = 2
+
+[node name="NewGame" type="Button" parent="Root/Center/Buttons/NewGameRow"]
 layout_mode = 2
 text = "New Game"
+
+[node name="DevItems" type="CheckBox" parent="Root/Center/Buttons/NewGameRow"]
+layout_mode = 2
+text = "Dev items"
 
 [node name="Quit" type="Button" parent="Root/Center/Buttons"]
 layout_mode = 2

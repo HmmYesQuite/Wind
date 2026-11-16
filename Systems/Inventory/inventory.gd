@@ -2,11 +2,12 @@ extends Node
 
 signal changed
 
-
+@export var devItems: bool
 var pockets: Dictionary[String, ItemContainer] = {}
 var cursor := ItemContainer.new(1)
 var foundUniques: Array[ItemData] = []
 var workbenchRange := 24.0
+
 
 const WORKBENCH := preload("res://Items/Placeable/Workbench/Workbench.tres")
 var workbenchUnlocked := false
@@ -116,17 +117,18 @@ func give_starting_items() -> void:
 	Hotbar.add_item(preload("res://Items/FishingRod/fishing_rod.tres"))
 	
 	#test stuff
-	Hotbar.add_item(preload("res://Items/Placeable/Workbench/Workbench.tres"))
-	Hotbar.add_item(preload("res://Items/Placeable/Blueprint Table/BlueprintTable.tres"))
-	Hotbar.add_item(preload("res://Items/Tools/StoneAxe.tres"))
-	Hotbar.add_item(preload("res://Items/Tools/Knifes/StoneKnife.tres"))
-	for i in 8:
-		Hotbar.add_item(preload("res://Items/Placeable/Rope/Rope.tres"))
-		Hotbar.add_item(preload("res://Items/Placeable/Rope/RopeBridge.tres"))
-		Hotbar.add_item(preload("res://Items/Blocks/WoodFrame.tres"))
-		Hotbar.add_item(preload("res://Items/Blocks/WoodPlatform.tres"))
-		Inventory.add_item(preload("res://Items/Resources/Wood Plank.tres"))
-	workbenchUnlocked = true
+	if devItems:
+		Hotbar.add_item(preload("res://Items/Placeable/Workbench/Workbench.tres"))
+		Hotbar.add_item(preload("res://Items/Placeable/Blueprint Table/BlueprintTable.tres"))
+		Hotbar.add_item(preload("res://Items/Tools/StoneAxe.tres"))
+		Hotbar.add_item(preload("res://Items/Tools/Knifes/StoneKnife.tres"))
+		for i in 8:
+			Hotbar.add_item(preload("res://Items/Placeable/Rope/Rope.tres"))
+			Hotbar.add_item(preload("res://Items/Placeable/Rope/RopeBridge.tres"))
+			Hotbar.add_item(preload("res://Items/Blocks/WoodFrame.tres"))
+			Hotbar.add_item(preload("res://Items/Blocks/WoodPlatform.tres"))
+			Inventory.add_item(preload("res://Items/Resources/Wood Plank.tres"))
+		workbenchUnlocked = true
 
 
 func reset() -> void:

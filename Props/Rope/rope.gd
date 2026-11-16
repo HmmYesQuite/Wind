@@ -46,9 +46,16 @@ func _ready() -> void:
 		ropeLength = get_point_a().distance_to(get_point_b())
 	if bridge != null:
 		zoneBridgeA = bridge.duplicate()
+		place_bridge(zoneBridgeA, localA, vesselA.to_local(get_point_b()))
+		
 		vesselA.zone.add_child(zoneBridgeA)
+		
 		zoneBridgeB = bridge.duplicate()
+		place_bridge(zoneBridgeB, vesselB.to_local(get_point_a()), localB)
 		vesselB.zone.add_child(zoneBridgeB)
+		
+		place_bridge(bridge, get_point_a(), get_point_b())
+		
 		boards.texture = ImageTexture.create_from_image(boards.texture.get_image())
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

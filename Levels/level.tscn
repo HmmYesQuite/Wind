@@ -21,7 +21,6 @@
 [ext_resource type="Texture2D" uid="uid://dmb4kaaa0di3b" path="res://Assets/Clouds/CloudLayer2.png" id="20_r2ueb"]
 [ext_resource type="Resource" uid="uid://dcy6x8jp2bpb2" path="res://Items/Resources/Stick.tres" id="20_twn60"]
 [ext_resource type="PackedScene" uid="uid://q5cvbkhefjp6" path="res://Vessel/Ships/starter_ship.tscn" id="21_1sae0"]
-[ext_resource type="Resource" uid="uid://dtx210dfmeff4" path="res://Items/TEST Food/Apple.tres" id="21_fw3l5"]
 [ext_resource type="Resource" uid="uid://7yxu6xtpsu3k" path="res://Items/Resources/String.tres" id="21_nflnv"]
 [ext_resource type="Texture2D" uid="uid://cuv2o5uv4bj63" path="res://Assets/Clouds/CloudLayer3.png" id="21_o8jhj"]
 [ext_resource type="Resource" uid="uid://drcx6tlbby6er" path="res://Items/Resources/Rock.tres" id="21_r2ueb"]
@@ -30,6 +29,7 @@
 [ext_resource type="Resource" uid="uid://2rrxkygd64qi" path="res://Items/Uniques/Pocket Watch.tres" id="23_nflnv"]
 [ext_resource type="Resource" uid="uid://b5ppq8nujfruu" path="res://Items/Uniques/Unique Coin.tres" id="24_3kmy4"]
 [ext_resource type="PackedScene" uid="uid://cvpqbls6w4ifh" path="res://Props/TileProps/Lantern/Lantern.tscn" id="25_papoo"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="29_vawf4"]
 [ext_resource type="Script" uid="uid://cdsdqso1ljom5" path="res://Levels/day_night.gd" id="30_3fdi5"]
 [ext_resource type="PackedScene" uid="uid://desps6wn5jvmq" path="res://UI/blueprint_ui.tscn" id="32_vawf4"]
 
@@ -95,7 +95,6 @@ waveLength = 240.0
 [node name="DebrisSpawner" type="Node2D" parent="."]
 script = ExtResource("18_jmcc3")
 items = Dictionary[ExtResource("19_fw3l5"), float]({
-ExtResource("21_fw3l5"): 0.25,
 ExtResource("20_twn60"): 1.0,
 ExtResource("21_r2ueb"): 0.75,
 ExtResource("21_nflnv"): 2.0,
@@ -129,6 +128,7 @@ inventoryUi = NodePath("../InventoryUi")
 
 [node name="InventoryUi" parent="." instance=ExtResource("23_1sae0")]
 visible = false
+recipes = Array[ExtResource("29_vawf4")]([])
 
 [node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
 
