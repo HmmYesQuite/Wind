@@ -9,6 +9,8 @@ const SLOT_SCENE := preload("res://UI/item_slot.tscn")
 @export var fadeOutSpeed := 0.5
 @export var fadeInSpeed := 4.0
 
+@export var inventoryUi: CanvasLayer
+
 var idleTime: float
 
 func _ready() -> void:
@@ -38,7 +40,7 @@ func rebuild() -> void:
 
 
 func _process(delta: float) -> void:
-	visible = not GameInput.blocked
+	visible = not GameInput.blocked or inventoryUi.visible
 	idleTime += delta
 	if GameInput.blocked:
 		wake()

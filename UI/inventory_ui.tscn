@@ -1,14 +1,18 @@
-[gd_scene load_steps=15 format=3 uid="uid://dwqyr2rdn3bd4"]
+[gd_scene load_steps=19 format=3 uid="uid://dwqyr2rdn3bd4"]
 
 [ext_resource type="Script" uid="uid://cvvg0y0n5t06g" path="res://UI/inventory_ui.gd" id="1_4hlgy"]
 [ext_resource type="PackedScene" uid="uid://byfjrtqyl4q5g" path="res://UI/item_slot.tscn" id="2_l6l0t"]
 [ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="2_t6nog"]
 [ext_resource type="Resource" uid="uid://ia630xkfjyom" path="res://Items/Recipes/Fishing Rod.tres" id="3_6128g"]
 [ext_resource type="Resource" uid="uid://gto5ylxl6ngq" path="res://Items/Recipes/Workbench.tres" id="4_7o5sx"]
-[ext_resource type="Texture2D" uid="uid://ddtj63qsfv4ql" path="res://Assets/Player/player_idle.png" id="4_6128g"]
 [ext_resource type="Resource" uid="uid://cgbl24pg3sv7l" path="res://Items/Recipes/Wood Frame.tres" id="5_jn8i4"]
 [ext_resource type="Resource" uid="uid://bole7uwcg7cgj" path="res://Items/Recipes/Wood Platform.tres" id="6_nygdy"]
 [ext_resource type="Resource" uid="uid://dgnu1c26se6kb" path="res://Items/Recipes/Stone Axe.tres" id="7_e1gr2"]
+[ext_resource type="Resource" uid="uid://i7oq26ivami1" path="res://Items/Recipes/Stone Knife.tres" id="8_dgd3g"]
+[ext_resource type="Resource" uid="uid://dxyuletapjbq0" path="res://Items/Recipes/Rope.tres" id="9_ywkq4"]
+[ext_resource type="Resource" uid="uid://bo0qb72073l2s" path="res://Items/Recipes/Rope Bridge.tres" id="10_a273u"]
+[ext_resource type="Texture2D" uid="uid://dklpnpa4vq2am" path="res://Assets/Ui assets/CraftingMenu.png" id="11_ywkq4"]
+[ext_resource type="Texture2D" uid="uid://cp10lxi8araen" path="res://Assets/Ui assets/StorageSelector.png" id="12_ywkq4"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t6nog"]
 content_margin_left = 2.0
@@ -26,17 +30,14 @@ bg_color = Color(0.3403393, 0.34033936, 0.34033918, 1)
 Button/styles/hover = SubResource("StyleBoxFlat_t6nog")
 Button/styles/normal = SubResource("StyleBoxFlat_6128g")
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_7o5sx"]
-atlas = ExtResource("4_6128g")
-region = Rect2(0, 0, 16, 24)
-margin = Rect2(0, 0.25, 0, 0)
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_a273u"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_l6l0t"]
 
 [node name="InventoryUi" type="CanvasLayer"]
 layer = 5
 script = ExtResource("1_4hlgy")
-recipes = Array[ExtResource("2_t6nog")]([ExtResource("3_6128g"), ExtResource("4_7o5sx"), ExtResource("5_jn8i4"), ExtResource("6_nygdy"), ExtResource("7_e1gr2")])
+recipes = Array[ExtResource("2_t6nog")]([ExtResource("3_6128g"), ExtResource("4_7o5sx"), ExtResource("6_nygdy"), ExtResource("5_jn8i4"), ExtResource("7_e1gr2"), ExtResource("8_dgd3g"), ExtResource("9_ywkq4"), ExtResource("10_a273u")])
 
 [node name="Root" type="Control" parent="."]
 layout_mode = 3
@@ -48,102 +49,118 @@ grow_vertical = 2
 mouse_filter = 2
 theme = SubResource("Theme_7o5sx")
 
-[node name="Panel" type="PanelContainer" parent="Root"]
+[node name="Background" type="TextureRect" parent="Root"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -80.0
+offset_top = -45.0
+offset_right = 80.0
+offset_bottom = 45.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("11_ywkq4")
+
+[node name="Tabs" type="TabContainer" parent="Root/Background"]
+unique_name_in_owner = true
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Tabs" type="TabContainer" parent="Root/Panel"]
-layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxEmpty_a273u")
 current_tab = 0
+tabs_visible = false
 
-[node name="Crafting" type="MarginContainer" parent="Root/Panel/Tabs"]
+[node name="Crafting" type="MarginContainer" parent="Root/Background/Tabs"]
 layout_mode = 2
-theme_override_constants/margin_bottom = 15
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 20
 metadata/_tab_index = 0
 
-[node name="Scroll" type="ScrollContainer" parent="Root/Panel/Tabs/Crafting"]
+[node name="Scroll" type="ScrollContainer" parent="Root/Background/Tabs/Crafting"]
 layout_mode = 2
 horizontal_scroll_mode = 0
 
-[node name="RecipeList" type="VBoxContainer" parent="Root/Panel/Tabs/Crafting/Scroll"]
+[node name="RecipeList" type="VBoxContainer" parent="Root/Background/Tabs/Crafting/Scroll"]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Storage" type="HBoxContainer" parent="Root/Panel/Tabs"]
+[node name="Storage" type="Control" parent="Root/Background/Tabs"]
 visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
-[node name="Body" type="Control" parent="Root/Panel/Tabs/Storage"]
+[node name="Body" type="Control" parent="Root/Background/Tabs/Storage"]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(24, 40)
-layout_mode = 2
-
-[node name="Art" type="TextureRect" parent="Root/Panel/Tabs/Storage/Body"]
-custom_minimum_size = Vector2(32, 48)
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
+anchors_preset = 0
 mouse_filter = 2
-texture = SubResource("AtlasTexture_7o5sx")
-expand_mode = 1
-stretch_mode = 5
 
-[node name="LeftPocket" type="ColorRect" parent="Root/Panel/Tabs/Storage/Body"]
+[node name="LeftPocket" type="ColorRect" parent="Root/Background/Tabs/Storage/Body"]
 layout_mode = 0
-offset_left = 6.0
-offset_top = 46.0
-offset_right = 10.0
-offset_bottom = 50.0
-color = Color(0.39599672, 0.37808612, 0.40673035, 1)
+offset_left = 25.0
+offset_top = 44.0
+offset_right = 29.0
+offset_bottom = 48.0
+color = Color(1, 1, 1, 0)
 
-[node name="RightPocket" type="ColorRect" parent="Root/Panel/Tabs/Storage/Body"]
+[node name="RightPocket" type="ColorRect" parent="Root/Background/Tabs/Storage/Body"]
 layout_mode = 0
-offset_left = 12.0
-offset_top = 46.0
-offset_right = 16.0
-offset_bottom = 50.0
-color = Color(0.27510273, 0.26520598, 0.25200856, 1)
+offset_left = 31.0
+offset_top = 44.0
+offset_right = 35.0
+offset_bottom = 48.0
+color = Color(1, 1, 1, 0)
 
-[node name="Side" type="VBoxContainer" parent="Root/Panel/Tabs/Storage"]
-layout_mode = 2
-
-[node name="PartName" type="Label" parent="Root/Panel/Tabs/Storage/Side"]
+[node name="StorageSelector" type="TextureRect" parent="Root/Background/Tabs/Storage/Body"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(60, 0)
-layout_mode = 2
-autowrap_mode = 3
+visible = false
+layout_mode = 0
+offset_right = 6.0
+offset_bottom = 6.0
+mouse_filter = 2
+texture = ExtResource("12_ywkq4")
 
-[node name="Slots" type="GridContainer" parent="Root/Panel/Tabs/Storage/Side"]
+[node name="Slots" type="Control" parent="Root/Background/Tabs/Storage"]
 unique_name_in_owner = true
-layout_mode = 2
-columns = 4
+anchors_preset = 0
+offset_left = 64.0
+offset_top = 28.0
+offset_right = 64.0
+offset_bottom = 28.0
 
-[node name="HotbarRow" type="HBoxContainer" parent="Root"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.5
-anchor_top = 1.0
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_left = -20.0
-offset_top = -14.0
-offset_right = 20.0
-grow_horizontal = 2
-grow_vertical = 0
-theme_override_constants/separation = 2
-
-[node name="Cursor" parent="Root" instance=ExtResource("2_l6l0t")]
+[node name="CraftingTab" type="Button" parent="Root/Background"]
 unique_name_in_owner = true
 layout_mode = 0
+offset_left = 17.0
+offset_top = 1.0
+offset_right = 48.0
+offset_bottom = 8.0
+focus_mode = 0
+flat = true
+
+[node name="StorageTab" type="Button" parent="Root/Background"]
+unique_name_in_owner = true
+layout_mode = 0
+offset_left = 49.0
+offset_top = 1.0
+offset_right = 79.0
+offset_bottom = 8.0
+focus_mode = 0
+flat = true
+
+[node name="CursorLayer" type="CanvasLayer" parent="."]
+layer = 7
+
+[node name="Cursor" parent="CursorLayer" instance=ExtResource("2_l6l0t")]
+unique_name_in_owner = true
 anchors_preset = 0
 offset_left = 0.0
 offset_top = 0.0

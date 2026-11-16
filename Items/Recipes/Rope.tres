@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=5 format=3 uid="uid://dxyuletapjbq0"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_q8h1j"]
+[ext_resource type="Resource" uid="uid://7yxu6xtpsu3k" path="res://Items/Resources/String.tres" id="2_fuvdm"]
+[ext_resource type="Resource" uid="uid://bggidrmkh8djm" path="res://Items/Placeable/Rope/Rope.tres" id="3_q8h1j"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="5_0luyt"]
+
+[resource]
+script = ExtResource("5_0luyt")
+result = ExtResource("3_q8h1j")
+resultCount = 2
+ingredients = Dictionary[ExtResource("1_q8h1j"), int]({
+ExtResource("2_fuvdm"): 4
+})
+metadata/_custom_type_script = "uid://ckjts2sxaj8xq"

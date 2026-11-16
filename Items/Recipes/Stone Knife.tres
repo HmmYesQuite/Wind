@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=7 format=3 uid="uid://i7oq26ivami1"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_3cvpk"]
+[ext_resource type="Resource" uid="uid://dcy6x8jp2bpb2" path="res://Items/Resources/Stick.tres" id="2_oga0j"]
+[ext_resource type="Resource" uid="uid://drcx6tlbby6er" path="res://Items/Resources/Rock.tres" id="3_lh3fj"]
+[ext_resource type="Resource" uid="uid://7yxu6xtpsu3k" path="res://Items/Resources/String.tres" id="4_hwujm"]
+[ext_resource type="Resource" uid="uid://umygpbyhpugy" path="res://Items/Tools/Knifes/StoneKnife.tres" id="5_3cvpk"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="6_0kuam"]
+
+[resource]
+script = ExtResource("6_0kuam")
+result = ExtResource("5_3cvpk")
+ingredients = Dictionary[ExtResource("1_3cvpk"), int]({
+ExtResource("2_oga0j"): 2,
+ExtResource("3_lh3fj"): 2,
+ExtResource("4_hwujm"): 1
+})
+needsWorkbench = true
+metadata/_custom_type_script = "uid://ckjts2sxaj8xq"

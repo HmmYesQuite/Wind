@@ -167,10 +167,23 @@ func to_save() -> Dictionary:
 		built.append({ "item": builtCell[cell].resource_path, "cell": [cell.x, cell.y] })
 	
 	
-	return { "tiles": Marshalls.raw_to_base64(hull.tile_map_data), "objects": objects, "built": built, }
+	return { 
+		"tiles": Marshalls.raw_to_base64(hull.tile_map_data), 
+		"objects": objects, 
+		"built": built, 
+		"scene": scene_file_path, 
+		"position": [position.x, position.y], 
+		"rotation": rotation,
+		}
 
 
 func load_save(data: Dictionary) -> void:
+	
+	if data.has("position"):
+		position = Vector2(data["position"][0], data["position"][1])
+		rotation = data["rotation"]
+		reset_physics_interpolation()
+	
 	var tiles := Marshalls.base64_to_raw(data["tiles"])
 	hull.tile_map_data = tiles
 	zone_hull.tile_map_data = tiles

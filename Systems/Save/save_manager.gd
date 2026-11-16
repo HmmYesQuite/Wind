@@ -13,6 +13,7 @@ func save_game() -> void:
 	"player": get_player(),
 	"time": get_time(),
 	"lanterns": get_lanterns(),
+	"ropes": get_ropes(),
 	}
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify(data, "\t"))
@@ -32,6 +33,8 @@ func load_game() -> void:
 		set_time(data["time"])
 	if data.has("lanterns"):
 		set_lanterns(data["lanterns"])
+	if data.has("ropes"):
+		set_ropes(data["ropes"])
 	#all ^ to help if new version is missing or smth and make sure the game dosnt break
 
 
@@ -85,9 +88,19 @@ func get_ships() -> Dictionary:
 	return ships
 
 func set_ships(ships: Dictionary) -> void:
-	for vessel: Vessel in get_tree().get_nodes_in_group("vessels"):
-		if ships.has(String(vessel.name)):
-			vessel.load_save(ships[String(vessel.name)])
+	var level := get_tree().current_scene
+	for shipName in ships:
+		var data: Dictionary = ships[shipName]
+		var vessel: Vessel = level.get_node_or_null(shipName)
+		if vessel == null:
+			if not data.has("scene"):
+				continue
+			
+			vessel = load(data["scene"]).instantiate()
+			vessel.name = shipName
+			level.add_child(vessel)
+		
+		vessel.load_save(data)
 
 func get_player() -> Dictionary:
 	var player: DynamicProp = get_tree().get_first_node_in_group("player")
@@ -143,3 +156,32 @@ func set_lanterns(lanterns: Dictionary) -> void:
 		var path := String(lantern.get_path())
 		if lanterns.has(path):
 			lantern.set_lit(lanterns[path])
+
+func get_ropes() -> Array:
+	var ropes := []
+	for rope: Rope in get_tree().get_nodes_in_group("ropes"):
+		ropes.append({
+			"item": rope.item.resource_path,
+			"a": String(rope.vesselA.name),
+			"tileA": [rope.tileA.x, rope.tileA.y],
+			"b": String(rope.vesselB.name),
+			"tileB": [rope.tileB.x, rope.tileB.y],
+			"length": rope.ropeLength,
+		})
+	return ropes
+
+func set_ropes(ropes: Array) -> void:
+	var level := get_tree().current_scene
+	for data in ropes:
+		var item: ItemData = load(data["item"])
+		var rope: Rope = item.placeScene.instantiate()
+		
+		rope.item = item
+		rope.vesselA = level.get_node(data["a"])
+		rope.tileA = Vector2i(int(data["tileA"][0]), int(data["tileA"][1]))
+		
+		rope.vesselB = level.get_node(data["b"])
+		rope.tileB = Vector2i(int(data["tileB"][0]), int(data["tileB"][1]))
+		
+		rope.ropeLength = data["length"]
+		level.add_child(rope)

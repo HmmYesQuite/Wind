@@ -115,13 +115,14 @@ func _process(delta: float) -> void:
 func place() -> void:
 	var vessel: Vessel = placing.scene.instantiate()
 	vessel.position = preview.global_position
-	get_tree().current_scene.add_child(vessel)
+	get_tree().current_scene.add_child(vessel, true)
 	vessel.reset_physics_interpolation()
 	
 	for item in placing.cost:
 		Inventory.remove_item(item, placing.cost[item])
 	
 	stop_placing()
+	SaveManager.request_save()
 
 func stop_placing() -> void:
 	

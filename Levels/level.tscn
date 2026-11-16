@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://bhtmx4blsikxa" path="res://Assets/Clouds/Cloud6.png" id="8_wjjle"]
 [ext_resource type="Script" uid="uid://cg71sca4yrow3" path="res://Systems/Atmosphere/cloud_layer.gd" id="11_ugh17"]
 [ext_resource type="PackedScene" uid="uid://3nbrule747dv" path="res://UI/pause_menu.tscn" id="17_jjxhf"]
-[ext_resource type="PackedScene" path="res://UI/hotbar_ui.tscn" id="17_lybtp"]
+[ext_resource type="PackedScene" uid="uid://bnoqqlu8p3g83" path="res://UI/hotbar_ui.tscn" id="17_lybtp"]
 [ext_resource type="Script" uid="uid://bw6ecmq5tpvie" path="res://Props/Debris/debris_spawner.gd" id="18_jmcc3"]
 [ext_resource type="Texture2D" uid="uid://c060mjerlbwbd" path="res://Assets/Clouds/CloudLayer1.png" id="19_1sae0"]
 [ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="19_fw3l5"]
@@ -124,7 +124,8 @@ process_physics_priority = 1
 position = Vector2(0, -8)
 visual = NodePath("../../../PlayerVisual")
 
-[node name="HotbarUI" parent="." instance=ExtResource("17_lybtp")]
+[node name="HotbarUI" parent="." node_paths=PackedStringArray("inventoryUi") instance=ExtResource("17_lybtp")]
+inventoryUi = NodePath("../InventoryUi")
 
 [node name="InventoryUi" parent="." instance=ExtResource("23_1sae0")]
 visible = false

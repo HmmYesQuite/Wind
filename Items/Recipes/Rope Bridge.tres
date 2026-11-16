@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Recipe" load_steps=6 format=3 uid="uid://bo0qb72073l2s"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_o3nbl"]
+[ext_resource type="Resource" uid="uid://7yxu6xtpsu3k" path="res://Items/Resources/String.tres" id="2_sh1lv"]
+[ext_resource type="Resource" uid="uid://c6bi3r0yi8xmq" path="res://Items/Resources/Wood Plank.tres" id="3_sh1lv"]
+[ext_resource type="Resource" uid="uid://dgy02hrycredl" path="res://Items/Placeable/Rope/RopeBridge.tres" id="4_dkdhn"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="4_eeg3r"]
+
+[resource]
+script = ExtResource("4_eeg3r")
+result = ExtResource("4_dkdhn")
+resultCount = 4
+ingredients = Dictionary[ExtResource("1_o3nbl"), int]({
+ExtResource("2_sh1lv"): 4,
+ExtResource("3_sh1lv"): 2
+})
+metadata/_custom_type_script = "uid://ckjts2sxaj8xq"
