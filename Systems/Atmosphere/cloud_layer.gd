@@ -133,17 +133,20 @@ func update_clouds() -> void:
 		return
 	var visibleRange := get_visible_range()
 	
-	if clouds.is_empty():
-		var count := int(ceil((visibleRange.y - visibleRange.x) / cloudSpacing)) + 2
-		for i in count:
-			var sprite := Sprite2D.new()
-			
-			sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
-			add_child(sprite)
-			clouds.append(sprite)
-			cloudSlots.append(-999999)
-			cloudDepths.append(0.0)
+	
+	
+	
+	
+	var count := int(ceil((visibleRange.y - visibleRange.x) / cloudSpacing)) + 2
+	while clouds.size() < count:
+		var sprite := Sprite2D.new()
 		
+		sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+		add_child(sprite)
+		clouds.append(sprite)
+		cloudSlots.append(-999999)
+		cloudDepths.append(0.0)
+	
 	var camX := get_viewport(). get_camera_2d().get_screen_center_position().x
 	var firstSlot := int(floor(visibleRange.x / cloudSpacing))
 	

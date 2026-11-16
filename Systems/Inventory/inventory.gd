@@ -117,10 +117,15 @@ func give_starting_items() -> void:
 	
 	#test stuff
 	Hotbar.add_item(preload("res://Items/Placeable/Workbench/Workbench.tres"))
+	Hotbar.add_item(preload("res://Items/Placeable/Blueprint Table/BlueprintTable.tres"))
 	Hotbar.add_item(preload("res://Items/Tools/StoneAxe.tres"))
+	Hotbar.add_item(preload("res://Items/Tools/Knifes/StoneKnife.tres"))
 	for i in 8:
+		Hotbar.add_item(preload("res://Items/Placeable/Rope/Rope.tres"))
+		Hotbar.add_item(preload("res://Items/Placeable/Rope/RopeBridge.tres"))
 		Hotbar.add_item(preload("res://Items/Blocks/WoodFrame.tres"))
 		Hotbar.add_item(preload("res://Items/Blocks/WoodPlatform.tres"))
+		Inventory.add_item(preload("res://Items/Resources/Wood Plank.tres"))
 	workbenchUnlocked = true
 
 

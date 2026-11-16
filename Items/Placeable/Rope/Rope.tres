@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=6 format=3 uid="uid://bggidrmkh8djm"]
+
+[ext_resource type="PackedScene" uid="uid://b8txxgogwxn18" path="res://Items/Placeable/Rope/rope_tool.tscn" id="1_yln3y"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="2_7m1fr"]
+[ext_resource type="PackedScene" uid="uid://bw48oqp6gj2tj" path="res://Props/Rope/rope.tscn" id="3_cfrmb"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="3_xxfeo"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aeujs"]
+atlas = ExtResource("2_7m1fr")
+region = Rect2(64, 0, 16, 16)
+
+[resource]
+script = ExtResource("3_xxfeo")
+itemName = "Rope"
+icon = SubResource("AtlasTexture_aeujs")
+heldScene = ExtResource("1_yln3y")
+maxStack = 8
+placeScene = ExtResource("3_cfrmb")
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

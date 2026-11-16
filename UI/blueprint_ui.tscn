@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://desps6wn5jvmq"]
+
+[ext_resource type="Script" uid="uid://bmoa2o63m3c8d" path="res://UI/blueprint_ui.gd" id="1_mf2y3"]
+[ext_resource type="Script" uid="uid://8f12rooxttpg" path="res://Items/Placeable/Blueprint Table/Ship Prefabs/ship_prefab.gd" id="2_f7b0s"]
+[ext_resource type="Resource" uid="uid://dm5vbqp636nnj" path="res://Items/Placeable/Blueprint Table/Ship Prefabs/ShipBasic.tres" id="3_i5k1p"]
+
+[node name="BlueprintUi" type="CanvasLayer"]
+layer = 5
+script = ExtResource("1_mf2y3")
+prefabs = Array[ExtResource("2_f7b0s")]([ExtResource("3_i5k1p")])
+
+[node name="PanelContainer" type="PanelContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer"]
+layout_mode = 2
+
+[node name="Blueprint Table" type="Label" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Blueprint Table"
+
+[node name="PrefabList" type="VBoxContainer" parent="PanelContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Close" type="Button" parent="PanelContainer/VBoxContainer"]
+layout_mode = 2
+text = "Close"

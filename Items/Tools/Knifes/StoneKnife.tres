@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://umygpbyhpugy"]
+
+[ext_resource type="PackedScene" uid="uid://bq61mgcuj3qhm" path="res://Items/Tools/Knifes/knife.tscn" id="1_7l8pl"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="2_nbug2"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="3_36l7y"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwi6v"]
+atlas = ExtResource("2_nbug2")
+region = Rect2(0, 80, 16, 16)
+
+[resource]
+script = ExtResource("3_36l7y")
+itemName = "Stone Knife"
+icon = SubResource("AtlasTexture_iwi6v")
+heldScene = ExtResource("1_7l8pl")
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

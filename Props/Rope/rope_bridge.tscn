@@ -1,0 +1,33 @@
+[gd_scene load_steps=4 format=3 uid="uid://c664ycpixbuyt"]
+
+[ext_resource type="PackedScene" uid="uid://bw48oqp6gj2tj" path="res://Props/Rope/rope.tscn" id="1_p7snx"]
+[ext_resource type="Texture2D" uid="uid://cdctmcrjiw5au" path="res://Assets/Props/BridgeBoard.png" id="2_03cbs"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_p7snx"]
+resource_local_to_scene = true
+
+[node name="Rope" instance=ExtResource("1_p7snx")]
+anchorOnTop = true
+
+[node name="Line2D" parent="." index="0"]
+position = Vector2(0, 2)
+pixelSize = 2.0
+
+[node name="Bridge" type="AnimatableBody2D" parent="." index="1"]
+collision_layer = 2
+collision_mask = 0
+sync_to_physics = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Bridge" index="0"]
+position = Vector2(0, 4)
+shape = SubResource("RectangleShape2D_p7snx")
+one_way_collision = true
+one_way_collision_margin = 4.0
+
+[node name="Boards" type="Sprite2D" parent="Bridge" index="1"]
+texture_filter = 1
+texture_repeat = 2
+position = Vector2(0, 4)
+texture = ExtResource("2_03cbs")
+region_enabled = true
+region_rect = Rect2(0, 4, 0, 0)

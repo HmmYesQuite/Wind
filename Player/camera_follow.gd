@@ -1,21 +1,18 @@
 extends Camera2D
+class_name CameraFollow
 
 @export var target: Node2D
+@export var zoomSpeed: float = 5.0
+var targetZoom := Vector2.ONE
+var targetOffset := Vector2.ZERO
 
-@export var zoomStep: float = 1.1
-@export var minZoom: float = 0.25
-@export var maxZoom: float = 4.0
+func _process(delta: float) -> void:
+	var t := 1.0 - exp(-zoomSpeed * delta)
+	zoom = zoom.lerp(targetZoom, t)
+	offset = offset.lerp(targetOffset, t)
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	global_position = target.global_position
-
-
 #func _unhandled_input(event: InputEvent) -> void:
 	#if event is InputEventMouseButton and event.pressed:
 	#	if event.button_index == MOUSE_BUTTON_WHEEL_UP:

@@ -1,0 +1,21 @@
+[gd_scene load_steps=5 format=3 uid="uid://d1cnu4mtoemur"]
+
+[ext_resource type="Script" uid="uid://dhqrmb3xiobla" path="res://Items/Placeable/Blueprint Table/blueprint_table.gd" id="1_v08o0"]
+[ext_resource type="Texture2D" uid="uid://bytvhfyq300hb" path="res://Assets/Tile Sets/PlaceableTiles.png" id="1_yio0w"]
+[ext_resource type="Script" uid="uid://xo00r8vmyh4o" path="res://Systems/Interaction/interactable.gd" id="2_jol3c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpk26"]
+atlas = ExtResource("1_yio0w")
+region = Rect2(0, 16, 32, 16)
+
+[node name="BlueprintTable" type="Node2D"]
+script = ExtResource("1_v08o0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = SubResource("AtlasTexture_wpk26")
+centered = false
+
+[node name="Interactable" type="Node2D" parent="."]
+position = Vector2(16, 8)
+script = ExtResource("2_jol3c")

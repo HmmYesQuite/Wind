@@ -5,23 +5,17 @@ class_name  Vessel
 @onready var zone_hull: TileMapLayer = $Zone/ZoneHull
 @onready var zone: SubViewport = $Zone
 @onready var props: Node2D = $Props
-@export var hoverStrength: float = 20.0
-@export var hoverDamping: float = 6.0
 @export var rightingStrength: float = 8.0
 @export var rightingDamping: float = 3.0
-@export var bobHeight: float = 5.0
-@export var bobSpeed: float = 1.0
 @export var windDrag: float = 1.0
 @export var massPerTile: float = 0.10
-
-var targetY: float
-var time: float = 0.0
 
 @export var proxyRange: float = 200.0
 var proxies: Dictionary = {}
 
 var current_velocity:Vector2 = Vector2.ZERO
 var collisionPolys: Array[CollisionPolygon2D] = []
+var balloonLift: float = 0.0
 
 var propCount: int = 0
 
@@ -33,7 +27,7 @@ func _ready() -> void:
 	add_to_group("vessels")
 	zone_hull.tile_set = hull.tile_set
 	zone_hull.tile_map_data = hull.tile_map_data # Copies every tile from the visible Hull into the ZoneHull
-	targetY = global_position.y
+	
 	
 	rebuild_collision()
 
@@ -52,6 +46,9 @@ func get_zone_bounds() -> Rect2:
 	return bounds.grow_individual(8, 64, 8, 8) # Need to find way to auto gen this bit
 
 func rebuild_collision() -> void:
+	
+	balloonLift = 0
+	
 	for poly in collisionPolys:
 		poly.queue_free()
 	collisionPolys.clear()
@@ -60,6 +57,9 @@ func rebuild_collision() -> void:
 		var tileData := hull.get_cell_tile_data(cell)
 		if tileData == null:
 			continue
+		
+		balloonLift += tileData.get_custom_data("lift") * massPerTile
+		
 		for i in tileData.get_collision_polygons_count(0):
 			var poly := CollisionPolygon2D.new()
 			poly.polygon = tileData.get_collision_polygon_points(0, i)
@@ -71,15 +71,16 @@ func rebuild_collision() -> void:
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
+	
 	var dt := state.step
-	time += dt
 	var vel := state.linear_velocity
+	var pos := state.transform.origin
 	
+	var density: float = Wind.get_air_density_at(pos)
+	var lift := balloonLift * density * state.total_gravity.y
+	state.apply_central_force(Vector2(0, - lift))
 	
-	var bobTarget := targetY + sin(time * bobSpeed) * bobHeight
-	var heightError := bobTarget - state.transform.origin.y
-	vel.y += (heightError * hoverStrength - vel.y * hoverDamping) * dt
-	vel -= state.total_gravity * dt
+	vel.y -= vel.y * Wind.airDrag * dt
 	
 	var wind: Vector2 = Wind.get_wind_at(state.transform.origin)
 	vel.x += (wind.x -vel.x) * windDrag *dt

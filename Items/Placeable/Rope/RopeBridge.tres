@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=6 format=3 uid="uid://dgy02hrycredl"]
+
+[ext_resource type="PackedScene" uid="uid://b8txxgogwxn18" path="res://Items/Placeable/Rope/rope_tool.tscn" id="1_6yvls"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="2_0n5lg"]
+[ext_resource type="PackedScene" uid="uid://c664ycpixbuyt" path="res://Props/Rope/rope_bridge.tscn" id="3_6yvls"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="4_ty02c"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aeujs"]
+atlas = ExtResource("2_0n5lg")
+region = Rect2(80, 0, 16, 16)
+
+[resource]
+script = ExtResource("4_ty02c")
+itemName = "Rope Bridge"
+icon = SubResource("AtlasTexture_aeujs")
+heldScene = ExtResource("1_6yvls")
+maxStack = 8
+placeScene = ExtResource("3_6yvls")
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

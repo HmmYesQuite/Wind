@@ -13,6 +13,14 @@ var time: float = 0.0
 var noiseWindStrength := FastNoiseLite.new()
 var noiseWindDirection := FastNoiseLite.new()
 
+var neutralHeight: float = 0.0
+var weightEffect: float = 100.0
+var airDrag: float = 3.0
+
+var wavesHeight: float = 5.0
+var wavesSpeed: float = 1.0
+var wavesLength: float = 0.003
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -40,3 +48,8 @@ func get_direction_at(pos: Vector2) -> float:
 func get_wind_at(pos: Vector2) -> Vector2:
 	var windSpeed: float = get_direction_at(pos) * get_strength_at(pos) * maxWindSpeed * windScale
 	return Vector2(windSpeed, 0)
+
+
+func get_air_density_at(pos: Vector2) -> float:
+	var wave := sin(time * wavesSpeed + pos.x * wavesLength) * wavesHeight
+	return maxf(0.0, 1.0 + (pos.y - neutralHeight - wave) / weightEffect)

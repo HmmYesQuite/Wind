@@ -53,8 +53,8 @@ class Cloud:
 
 var clouds: Array[Cloud] = []
 var scattered: bool = false
+var minZoom: float = 0.25
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	process_physics_priority = 20
 	for i in cloudCount:
@@ -77,8 +77,9 @@ func _physics_process(delta: float) -> void:
 	var camera := get_viewport().get_camera_2d()
 	if camera == null or cloudTextures.is_empty():
 		return
+	
 	var camPos := camera.get_screen_center_position()
-	var viewSize := get_viewport_rect().size / camera.zoom
+	var viewSize := get_viewport_rect().size / minZoom
 	
 	if not scattered:
 		for cloud in clouds:

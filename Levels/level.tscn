@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=34 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://cwgonxwplentd" path="res://Levels/level.gd" id="1_gaktt"]
@@ -31,6 +31,7 @@
 [ext_resource type="Resource" uid="uid://b5ppq8nujfruu" path="res://Items/Uniques/Unique Coin.tres" id="24_3kmy4"]
 [ext_resource type="PackedScene" uid="uid://cvpqbls6w4ifh" path="res://Props/TileProps/Lantern/Lantern.tscn" id="25_papoo"]
 [ext_resource type="Script" uid="uid://cdsdqso1ljom5" path="res://Levels/day_night.gd" id="30_3fdi5"]
+[ext_resource type="PackedScene" uid="uid://desps6wn5jvmq" path="res://UI/blueprint_ui.tscn" id="32_vawf4"]
 
 [sub_resource type="Gradient" id="Gradient_3fdi5"]
 offsets = PackedFloat32Array(0, 0.16346154, 0.50961536, 0.6682692, 0.8798077, 0.9423077, 1)
@@ -50,13 +51,29 @@ repeat_size = Vector2(1280, 0)
 scale = Vector2(6, 1)
 texture = ExtResource("1_dvejp")
 
+[node name="ColorRect" type="ColorRect" parent="Atmosphere/Parallax2D"]
+z_index = -10
+offset_left = -625.77515
+offset_top = -464.0
+offset_right = 665.77515
+offset_bottom = 55.0
+color = Color(0.13333334, 0.6156863, 0.9490196, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Atmosphere/Parallax2D"]
+z_index = -10
+offset_left = -626.0
+offset_top = 50.0
+offset_right = 665.5503
+offset_bottom = 512.0
+color = Color(0.43137255, 0.7176471, 0.8901961, 1)
+
 [node name="CloudField" type="Node2D" parent="Atmosphere"]
 script = ExtResource("2_t2u7g")
 cloudTextures = Array[Texture2D]([ExtResource("3_dvejp"), ExtResource("4_3hgmi"), ExtResource("5_vmy0u"), ExtResource("6_jjxhf"), ExtResource("7_lybtp"), ExtResource("8_wjjle")])
 cloudLayers = Array[int]([0, 0, 1, 1, 1, 0])
 tintColor = Color(0.50366473, 0.8746536, 0.98890525, 1)
 tintAmount = 0.1
-cloudCount = 8
+cloudCount = 16
 depthBias = 6.0
 windMultiplier = 12.0
 maxBlur = 0.0
@@ -88,6 +105,12 @@ ExtResource("24_3kmy4"): 0.1
 })
 spawnIntervalMax = 4.0
 
+[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
+process_physics_priority = 10
+position_smoothing_enabled = true
+script = ExtResource("5_uhyyw")
+target = NodePath("../PlayerVisual")
+
 [node name="StarterShip" parent="." instance=ExtResource("21_1sae0")]
 
 [node name="Lantern" parent="StarterShip/Props" index="0" instance=ExtResource("25_papoo")]
@@ -108,14 +131,11 @@ visible = false
 
 [node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
 
-[node name="Camera2D" type="Camera2D" parent="." node_paths=PackedStringArray("target")]
-process_physics_priority = 10
-position_smoothing_enabled = true
-script = ExtResource("5_uhyyw")
-target = NodePath("../PlayerVisual")
-
 [node name="DayNight" type="CanvasModulate" parent="." groups=["day_night"]]
 script = ExtResource("30_3fdi5")
 colors = SubResource("Gradient_3fdi5")
+
+[node name="BlueprintUi" parent="." instance=ExtResource("32_vawf4")]
+visible = false
 
 [editable path="StarterShip"]

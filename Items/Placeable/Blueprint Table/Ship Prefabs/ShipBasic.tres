@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="ShipPrefab" load_steps=5 format=3 uid="uid://dm5vbqp636nnj"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_nynce"]
+[ext_resource type="Resource" uid="uid://c6bi3r0yi8xmq" path="res://Items/Resources/Wood Plank.tres" id="2_hqloj"]
+[ext_resource type="PackedScene" uid="uid://bg5jdjxvsjmeg" path="res://Vessel/Ships/ShipBasic.tscn" id="3_gchr4"]
+[ext_resource type="Script" uid="uid://8f12rooxttpg" path="res://Items/Placeable/Blueprint Table/Ship Prefabs/ship_prefab.gd" id="4_ssq0c"]
+
+[resource]
+script = ExtResource("4_ssq0c")
+prefabName = "Ship Basic"
+scene = ExtResource("3_gchr4")
+cost = Dictionary[ExtResource("1_nynce"), int]({
+ExtResource("2_hqloj"): 1
+})
+metadata/_custom_type_script = "uid://8f12rooxttpg"

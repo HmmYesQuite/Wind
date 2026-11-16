@@ -10,7 +10,7 @@ const SLOT_SCENE := preload("res://UI/item_slot.tscn")
 @onready var cursorSlot: ItemSlot = %Cursor
 
 @export var recipes: Array[Recipe] = []
-@onready var recipeList: VBoxContainer = %Crafting
+@onready var recipeList: VBoxContainer = %RecipeList
 
 var shownPart := ""
 
@@ -107,6 +107,8 @@ func fill_recipes() -> void:
 		button.focus_mode = Control.FOCUS_NONE
 		button.pressed.connect(Inventory.craft.bind(recipe))
 		row.add_child(button)
+	
+	
 
 func make_icon(row: HBoxContainer, item: ItemData, count: int) -> ItemSlot:
 	var slot: ItemSlot = SLOT_SCENE.instantiate()

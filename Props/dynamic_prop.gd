@@ -12,7 +12,7 @@ var airTime: float = 0.0
 @export var solidGrace: float = 0.1
 
 #old var names need to be updated
-@export var playerWeight: float = 20
+@export var playerWeight: float = 50
 @export var stepHeight: int = 4
 @export var stepSmoothing: float = 15.0
 var visualOffset: Vector2 = Vector2.ZERO

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b8txxgogwxn18"]
+
+[ext_resource type="Script" uid="uid://cwmc050gaqmwj" path="res://Items/Placeable/Rope/rope_tool.gd" id="1_nar3a"]
+
+[node name="RopeTool" type="Node2D"]
+script = ExtResource("1_nar3a")

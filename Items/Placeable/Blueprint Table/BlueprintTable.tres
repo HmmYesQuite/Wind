@@ -1,0 +1,25 @@
+[gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3 uid="uid://bq7gkrq8pf4it"]
+
+[ext_resource type="PackedScene" uid="uid://dtgo6n5xxv64b" path="res://Items/Placeable/placer.tscn" id="1_2odo1"]
+[ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="2_drufd"]
+[ext_resource type="PackedScene" uid="uid://d1cnu4mtoemur" path="res://Items/Placeable/Blueprint Table/BlueprintTable.tscn" id="3_2odo1"]
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="4_e2k2m"]
+[ext_resource type="Texture2D" uid="uid://bytvhfyq300hb" path="res://Assets/Tile Sets/PlaceableTiles.png" id="5_8urpt"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vugub"]
+atlas = ExtResource("2_drufd")
+region = Rect2(48, 32, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_66bgk"]
+atlas = ExtResource("5_8urpt")
+region = Rect2(0, 16, 32, 16)
+
+[resource]
+script = ExtResource("4_e2k2m")
+itemName = "Blueprint Table"
+icon = SubResource("AtlasTexture_vugub")
+worldSpaceTexture = SubResource("AtlasTexture_66bgk")
+heldScene = ExtResource("1_2odo1")
+weight = 4.0
+placeScene = ExtResource("3_2odo1")
+metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

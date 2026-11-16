@@ -1,33 +1,23 @@
 extends CanvasLayer
 
 const SLOT_SCENE := preload("res://UI/item_slot.tscn")
+@onready var bar: TextureRect = $Bar
+@onready var slotsBox: HBoxContainer = $Bar/Slots
+@onready var selector: TextureRect= $Bar/Selector
 
-@onready var slotsBox: HBoxContainer = $Slots
+@export var visibleTime := 4.0
+@export var fadeOutSpeed := 0.5
+@export var fadeInSpeed := 4.0
 
-
-var selectedStyle: StyleBoxFlat
-
+var idleTime: float
 
 func _ready() -> void:
 	
-	slotsBox.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	slotsBox.grow_vertical = Control.GROW_DIRECTION_BEGIN
-	
-	
-	selectedStyle = make_style(Color(1, 0.85, 0.3), 1)
 	Hotbar.changed.connect(rebuild)
 	rebuild()
 
-
-func make_style(borderColor: Color, borderWidth: int) -> StyleBoxFlat:
-	var style := StyleBoxFlat.new()
-	style.bg_color = Color(0, 0, 0, 0.45)
-	style.border_color = borderColor
-	style.set_border_width_all(borderWidth)
-	return style
-	
-
 func rebuild() -> void:
+	wake()
 	for child in slotsBox.get_children():
 		child.queue_free()
 	for i in Hotbar.container.slots.size():
@@ -35,14 +25,26 @@ func rebuild() -> void:
 		var slot: ItemSlot = SLOT_SCENE.instantiate()
 		slot.size_flags_vertical = Control.SIZE_SHRINK_END
 		
-		if i == Hotbar.selectedIndex:
-			slot.add_theme_stylebox_override("panel", selectedStyle)
+		
+		slot.custom_minimum_size = Vector2(16, 16)
+		slot.add_theme_stylebox_override("panel", StyleBoxEmpty.new())
+		
 		slotsBox.add_child(slot)
 		slot.container = Hotbar.container
 		slot.index = i
 		slot.show_item(Hotbar.container.slots[i], Hotbar.container.counts[i])
 		
+	selector.position = Vector2(16 + 16 * Hotbar.selectedIndex, 16)
 
 
 func _process(delta: float) -> void:
 	visible = not GameInput.blocked
+	idleTime += delta
+	if GameInput.blocked:
+		wake()
+	var targetAlpha := 1.0 if visibleTime > idleTime else 0.0
+	var speed := fadeInSpeed if targetAlpha == 1.0 else fadeOutSpeed
+	bar.modulate.a = move_toward(bar.modulate.a, targetAlpha, speed * delta)
+
+func wake() -> void:
+	idleTime = 0

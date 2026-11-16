@@ -58,15 +58,23 @@ grow_vertical = 2
 
 [node name="Tabs" type="TabContainer" parent="Root/Panel"]
 layout_mode = 2
-current_tab = 1
+current_tab = 0
 
-[node name="Crafting" type="VBoxContainer" parent="Root/Panel/Tabs"]
-unique_name_in_owner = true
-visible = false
+[node name="Crafting" type="MarginContainer" parent="Root/Panel/Tabs"]
 layout_mode = 2
+theme_override_constants/margin_bottom = 15
 metadata/_tab_index = 0
 
+[node name="Scroll" type="ScrollContainer" parent="Root/Panel/Tabs/Crafting"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="RecipeList" type="VBoxContainer" parent="Root/Panel/Tabs/Crafting/Scroll"]
+unique_name_in_owner = true
+layout_mode = 2
+
 [node name="Storage" type="HBoxContainer" parent="Root/Panel/Tabs"]
+visible = false
 layout_mode = 2
 metadata/_tab_index = 1
 
