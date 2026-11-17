@@ -160,7 +160,7 @@ func fill_recipes() -> void:
 
 func craft_click(event: InputEvent, recipe: Recipe) -> void:
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
-		Inventory.can_craft(recipe)
+		Inventory.craft(recipe)
 
 
 func make_icon(row: HBoxContainer, item: ItemData, count: int) -> ItemSlot:

@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://uph8qc5lhmyu"]
+[gd_scene load_steps=33 format=3 uid="uid://uph8qc5lhmyu"]
 
 [ext_resource type="Texture2D" uid="uid://doikek1n6wd22" path="res://Assets/Clouds/SkyBackground.png" id="1_dvejp"]
 [ext_resource type="Script" uid="uid://cwgonxwplentd" path="res://Levels/level.gd" id="1_gaktt"]
@@ -29,7 +29,6 @@
 [ext_resource type="Resource" uid="uid://2rrxkygd64qi" path="res://Items/Uniques/Pocket Watch.tres" id="23_nflnv"]
 [ext_resource type="Resource" uid="uid://b5ppq8nujfruu" path="res://Items/Uniques/Unique Coin.tres" id="24_3kmy4"]
 [ext_resource type="PackedScene" uid="uid://cvpqbls6w4ifh" path="res://Props/TileProps/Lantern/Lantern.tscn" id="25_papoo"]
-[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="29_vawf4"]
 [ext_resource type="Script" uid="uid://cdsdqso1ljom5" path="res://Levels/day_night.gd" id="30_3fdi5"]
 [ext_resource type="PackedScene" uid="uid://desps6wn5jvmq" path="res://UI/blueprint_ui.tscn" id="32_vawf4"]
 
@@ -128,7 +127,6 @@ inventoryUi = NodePath("../InventoryUi")
 
 [node name="InventoryUi" parent="." instance=ExtResource("23_1sae0")]
 visible = false
-recipes = Array[ExtResource("29_vawf4")]([])
 
 [node name="PauseMenu" parent="." instance=ExtResource("17_jjxhf")]
 
