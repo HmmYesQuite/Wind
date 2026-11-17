@@ -1,6 +1,7 @@
 Submission for Terra Hackathon.
 This is the most recent version of the Wind Demo: https://hmmquite.itch.io/wind-demo-terra
 
+
 Controls:
 
 WASD for movement
@@ -17,7 +18,9 @@ To fish, use Left mouse button to pull the line in, and Right mouse button to lo
 
 To build, hold the item and use Left mouse button. You can only place things near you and that are connected to another block. For the workbench, you can only put it on two empty blocks.
 
-To break, hold down the left mouse button on a block or object that you put down; after a second, you will pick it up.
+To break a block or object you placed, hold down the left mouse button on it; after a second, you will pick it up.
+
+To place new ships, use the blueprint table to pick a prefab to place in the world.
 
 Esc will open the pause menu
 
@@ -34,6 +37,21 @@ Right now there is a bunch of test items for the sake of the demo; in the full g
 
 
 Most recent devlog summary:
+
+
+WEEK 4:
+
+Changes:
+
+Ships - The blueprint table is a new placable that, when you press E to interact with it, shows a list of prefabs to place in your world. The screen zooms out to let you place the ship in the world. Once the ship is placed, it's fully interactable. The ships now have better float physics; they use a lift and weight system, where the balloons actually count towards their lift.
+
+Ropes - Rope is now able to be used and crafted; click the starting point and then click the end point. It only works on two separate ships. Use the knife item to cut the rope and get it back. Rope bridges are a variation of rope; however, you can walk on them, and they don't sag. All these new items have recipes as well.
+
+UI - New 8-slot custom hotbar texture, with a selected slot indicator. The hotbar now fades away after a couple of seconds of no interaction. The inventory now has new art, just more polished versions of the original default textures. Pause menu has a "dev" items switch that lets you toggle if you want the test items when you start a new game.
+
+Save system - All the new things are hooked up with the save system; still plan on reworking it soon.
+
+
 
 WEEK 3:
 
@@ -93,4 +111,4 @@ Credits:
 
 Pixel font: https://managore.itch.io/m3x6
 
-Fruit sprite sheet: https://melancholyg.itch.io/16x16-pixel-art-food-sprites​
+Fruit sprite sheet: https://melancholyg.itch.io/16x16-pixel-art-food-sprites
