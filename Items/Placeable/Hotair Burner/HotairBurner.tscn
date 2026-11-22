@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://6lscygo7taed"]
+
+[ext_resource type="Script" uid="uid://bjbqyykem1bbi" path="res://Items/Placeable/Hotair Burner/hotair_burner.gd" id="1_tybhp"]
+[ext_resource type="Texture2D" uid="uid://bytvhfyq300hb" path="res://Assets/Tile Sets/PlaceableTiles.png" id="2_0hnqn"]
+[ext_resource type="Script" uid="uid://xo00r8vmyh4o" path="res://Systems/Interaction/interactable.gd" id="3_sq0qk"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_wpk26"]
+atlas = ExtResource("2_0hnqn")
+region = Rect2(32, 16, 16, 16)
+
+[node name="BlueprintTable" type="Node2D" unique_id=915190512]
+script = ExtResource("1_tybhp")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1475723321]
+texture_filter = 1
+texture = SubResource("AtlasTexture_wpk26")
+centered = false
+
+[node name="Interactable" type="Node2D" parent="." unique_id=1502978686]
+position = Vector2(8, 8)
+script = ExtResource("3_sq0qk")

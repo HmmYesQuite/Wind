@@ -11,5 +11,6 @@ class_name ItemData
 @export var unique: bool = false
 @export var placeScene: PackedScene
 @export var placesTiles: bool = false
+@export var placeConnectedTo: int = 1
 @export var tileCoords: Vector2i
 @export var breaksTiles: bool = false

@@ -14,8 +14,8 @@ var noiseWindStrength := FastNoiseLite.new()
 var noiseWindDirection := FastNoiseLite.new()
 
 var neutralHeight: float = 0.0
-var weightEffect: float = 100.0
-var airDrag: float = 3.0
+var weightEffect: float = 200.0
+var airDrag: float = 5.0
 
 var wavesHeight: float = 5.0
 var wavesSpeed: float = 1.0

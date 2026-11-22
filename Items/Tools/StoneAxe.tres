@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=5 format=3 uid="uid://df15l7ndqs7mf"]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://df15l7ndqs7mf"]
 
 [ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_5ivol"]
 [ext_resource type="PackedScene" uid="uid://dtgo6n5xxv64b" path="res://Items/Placeable/placer.tscn" id="1_iwi6v"]

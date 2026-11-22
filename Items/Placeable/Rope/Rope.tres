@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=6 format=3 uid="uid://bggidrmkh8djm"]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bggidrmkh8djm"]
 
 [ext_resource type="PackedScene" uid="uid://b8txxgogwxn18" path="res://Items/Placeable/Rope/rope_tool.tscn" id="1_yln3y"]
 [ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="2_7m1fr"]

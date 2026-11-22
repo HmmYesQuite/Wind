@@ -13,7 +13,7 @@ class_name Placer
 @export var settleSpeed: float = 10.0
 
 
-var hull: HullLayer
+var hull: TileMapLayer
 var mouseCell: Vector2i #2i is integer
 var item: ItemData
 var size: Vector2i
@@ -45,17 +45,22 @@ func _ready() -> void:
 func _physics_process(delta: float) -> void:
 	player = get_tree().get_first_node_in_group("player")
 	vessel = player.vessel
-	if vessel == null:
-		visible = false
-		stop_breaking()
-		return
+	var targetHull: TileMapLayer
+	if vessel != null:
+		targetHull = vessel.hull
+	else:
+		targetHull = get_tree().get_first_node_in_group("terrain")
+		if targetHull == null or not item.placesTiles:
+			visible = false
+			stop_breaking()
+			return
 	var justAppeared := not visible
 	visible = true
 	
-	if hull != vessel.hull:
+	if hull != targetHull:
 		stop_breaking()
 	
-	hull = vessel.hull
+	hull = targetHull
 	global_transform = hull.global_transform
 	
 	
@@ -162,10 +167,19 @@ func can_place() -> bool:
 	if not place_requirements():
 		return false
 	
+	
+	
 	if not item.placesTiles:
-		var belowY := mouseCell.y + 1
+		
+		var connectedY := mouseCell.y
+		if item.placeConnectedTo != 1:
+			connectedY -= 2
+		else:
+			connectedY += 1
+		
+		
 		for x in range(topLeft.x, topLeft.x + size.x):
-			var data := hull.get_cell_tile_data(Vector2i(x, belowY))
+			var data := hull.get_cell_tile_data(Vector2i(x, connectedY))
 			if data == null or data.get_collision_polygons_count(0) == 0:
 				return false
 	
@@ -173,7 +187,10 @@ func can_place() -> bool:
 	if item.placesTiles:
 		var body: CollisionShape2D = player.get_node("CollisionShape2D")
 		var playerRect: Rect2 = body.shape.get_rect()
-		playerRect.position += player.position + body.position
+		if vessel == null:
+			playerRect.position += hull.to_local(player.global_position)
+		else:
+			playerRect.position += player.position + body.position
 		var tileSize := hull.tile_set.tile_size
 		var tileRect := Rect2(Vector2(mouseCell * tileSize), Vector2(tileSize))
 		if playerRect.intersects(tileRect):
@@ -192,10 +209,12 @@ func can_place() -> bool:
 func place_requirements() -> bool:
 	
 	
+	
+	
 	for x in range(topLeft.x, topLeft.x + size.x):
 		for y in range(topLeft.y, topLeft.y + size.y):
 			var cell := Vector2i(x, y)
-			if hull.get_cell_source_id(cell) != -1 or vessel.placed.has(cell):
+			if hull.get_cell_source_id(cell) != -1 or (vessel != null and vessel.placed.has(cell)):
 				return false
 	
 	#only for normal placing of objects
@@ -211,7 +230,10 @@ func range_check() -> bool:
 
 func place() -> void:
 	
-	if item.placesTiles:
+	if vessel == null:
+		hull.set_cell(mouseCell, 0, item.tileCoords)
+	
+	elif item.placesTiles:
 		vessel.add_tile(mouseCell, item)
 	else:
 		vessel.place_object(item, topLeft)
@@ -233,8 +255,7 @@ func stop_breaking() -> void:
 			breakingThing = null
 		ghost.visible = false
 		
-		if is_instance_valid(hull):
-			
+		if is_instance_valid(hull) and hull is HullLayer:
 			hull.show_cells()
 
 func _exit_tree() -> void:

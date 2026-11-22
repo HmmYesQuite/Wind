@@ -4,3 +4,5 @@
 
 # Downloaded by Godot Super-Wakatime
 addons/godot_super-wakatime/ouch*
+/ouch-*
+.DS_Store

@@ -19,6 +19,9 @@ var balloonLift: float = 0.0
 
 var propCount: int = 0
 
+var balloonLiftMultiplier: float = 1.0 # min of 0 for no lift, it just has normal weight
+#max of 1 for multiplier of 2. each ballon allready has lift of 2 so make sure to subtract 1 (actual block weight)
+
 var placed: Dictionary[Vector2i, Node2D] = {}
 var builtCell: Dictionary[Vector2i, ItemData] = {}
 
@@ -58,7 +61,14 @@ func rebuild_collision() -> void:
 		if tileData == null:
 			continue
 		
-		balloonLift += tileData.get_custom_data("lift") * massPerTile
+		
+		var scaledLift: float = 0.0
+		if tileData.get_custom_data("lift") > 0:
+			scaledLift = (tileData.get_custom_data("lift") * massPerTile) * balloonLiftMultiplier
+			balloonLift += scaledLift
+		# scaled lift gets the additional tiles that should be lifted and adds a multiplier
+		# on them, then the actuall lift adds back the starting weight + the mult
+		
 		
 		for i in tileData.get_collision_polygons_count(0):
 			var poly := CollisionPolygon2D.new()
@@ -68,6 +78,10 @@ func rebuild_collision() -> void:
 			add_child(poly)
 			collisionPolys.append(poly)
 	mass = maxf(1.0, collisionPolys.size() * massPerTile)
+
+func set_lift_multiplier(value: float) -> void:
+	balloonLiftMultiplier = clampf(value, 0.0 , 2.0)
+	rebuild_collision()
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:

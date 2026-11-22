@@ -8,11 +8,15 @@
 
 config_version=5
 
+[animation]
+
+compatibility/default_parent_skeleton_in_mesh_instance_3d=true
+
 [application]
 
 config/name="Wind"
 run/main_scene="uid://uph8qc5lhmyu"
-config/features=PackedStringArray("4.5", "Forward Plus")
+config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://Assets/icon.svg"
 
 [autoload]
@@ -42,11 +46,17 @@ enabled=PackedStringArray("res://addons/godot_super-wakatime/plugin.cfg")
 
 folder_colors={
 "res://Assets/": "purple",
+"res://Assets/Tile Sets/": "green",
+"res://Assets/palettes/": "pink",
+"res://Items/Blocks/": "teal",
+"res://Items/Placeable/Blueprint Table/": "blue",
+"res://Items/Placeable/Hotair Burner/": "orange",
 "res://Items/TEST Food/": "red",
 "res://Player/": "blue",
 "res://Props/Debris/": "gray",
 "res://Systems/Atmosphere/": "teal",
-"res://Systems/Inventory/": "orange"
+"res://Systems/Inventory/": "orange",
+"res://Terrain/": "orange"
 }
 
 [gui]

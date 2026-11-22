@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://cji67hnohg1f1"]
+
+[ext_resource type="Script" uid="uid://ca8ivc5f8gjtb" path="res://UI/hotair_burner_ui.gd" id="1_jj4f0"]
+
+[node name="HotairBurnerUI" type="CanvasLayer" unique_id=1702499262]
+layer = 5
+script = ExtResource("1_jj4f0")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=657324051]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer" unique_id=360055473]
+layout_mode = 2
+
+[node name="Increase" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1010344648]
+layout_mode = 2
+text = "+ Lift"
+
+[node name="Decrease" type="Button" parent="PanelContainer/VBoxContainer" unique_id=548898131]
+layout_mode = 2
+text = "- Lift"
+
+[node name="Close" type="Button" parent="PanelContainer/VBoxContainer" unique_id=677992130]
+layout_mode = 2
+text = "Close"

@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ItemData" load_steps=8 format=3 uid="uid://bq7gkrq8pf4it"]
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://bq7gkrq8pf4it"]
 
 [ext_resource type="PackedScene" uid="uid://dtgo6n5xxv64b" path="res://Items/Placeable/placer.tscn" id="1_2odo1"]
 [ext_resource type="Texture2D" uid="uid://b7rk2pcpf5hoo" path="res://Assets/Tile Sets/ItemSpriteSheet.png" id="2_drufd"]
