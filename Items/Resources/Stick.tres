@@ -13,4 +13,5 @@ itemName = "Stick"
 icon = SubResource("AtlasTexture_utnls")
 weight = 0.5
 maxStack = 16
+burnTime = 30.0
 metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

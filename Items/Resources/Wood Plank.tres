@@ -13,4 +13,5 @@ itemName = "Wood Plank"
 icon = SubResource("AtlasTexture_4vgmx")
 weight = 1.5
 maxStack = 4
+burnTime = 60.0
 metadata/_custom_type_script = "uid://bx4s8uqq5gh5e"

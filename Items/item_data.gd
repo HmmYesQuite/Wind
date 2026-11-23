@@ -14,3 +14,4 @@ class_name ItemData
 @export var placeConnectedTo: int = 1
 @export var tileCoords: Vector2i
 @export var breaksTiles: bool = false
+@export var burnTime: float = 0

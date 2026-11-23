@@ -64,7 +64,7 @@ func rebuild_collision() -> void:
 		
 		var scaledLift: float = 0.0
 		if tileData.get_custom_data("lift") > 0:
-			scaledLift = (tileData.get_custom_data("lift") * massPerTile) * balloonLiftMultiplier
+			scaledLift = (tileData.get_custom_data("lift") * massPerTile)
 			balloonLift += scaledLift
 		# scaled lift gets the additional tiles that should be lifted and adds a multiplier
 		# on them, then the actuall lift adds back the starting weight + the mult
@@ -81,7 +81,7 @@ func rebuild_collision() -> void:
 
 func set_lift_multiplier(value: float) -> void:
 	balloonLiftMultiplier = clampf(value, 0.0 , 2.0)
-	rebuild_collision()
+	
 
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
@@ -91,7 +91,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	var pos := state.transform.origin
 	
 	var density: float = Wind.get_air_density_at(pos)
-	var lift := balloonLift * density * state.total_gravity.y
+	var lift := balloonLift * density * state.total_gravity.y * balloonLiftMultiplier
 	state.apply_central_force(Vector2(0, - lift))
 	
 	vel.y -= vel.y * Wind.airDrag * dt

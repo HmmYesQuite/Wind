@@ -7,7 +7,7 @@ class_name HotairBurnerUI
 
 #need to only change the lift of each vessel. Eventually setup a max and min lift.
 
-var vessel: Vessel
+var burner: hotair_burner
 
 func _ready() -> void:
 	add_to_group("hotair_burner_ui")
@@ -18,16 +18,16 @@ func _ready() -> void:
 	
 
 func increase_lift() -> void:
-	vessel.set_lift_multiplier(vessel.balloonLiftMultiplier + 0.1)
+	burner.change_target(0.1)
 func decrease_lift() -> void:
-	vessel.set_lift_multiplier(vessel.balloonLiftMultiplier - 0.1)
+	burner.change_target(-0.1)
 
-func open(target: Vessel) -> void:
-	vessel = target
+func open(target: hotair_burner) -> void:
+	burner = target
 	visible = true
 	GameInput.blocked = true
 
 func close() -> void:
-	vessel = null
+	burner = null
 	visible = false
 	GameInput.blocked = false
