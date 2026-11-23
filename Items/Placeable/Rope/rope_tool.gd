@@ -37,20 +37,20 @@ func _process(delta: float) -> void:
 func find_cell(mouse: Vector2) -> void:
 	hoverVessel = null
 	for vessel: Vessel in get_tree().get_nodes_in_group("vessels"):
-		var cell := vessel.hull.local_to_map(vessel.hull.to_local(mouse))
-		if vessel.hull.get_cell_source_id(cell) != -1:
+		var cell := vessel.buildLayer.local_to_map(vessel.buildLayer.to_local(mouse))
+		if vessel.buildLayer.get_cell_source_id(cell) != -1:
 			hoverVessel = vessel
 			hoverCell = cell
 			return
 	var terrain: TerrainGenerator = get_tree().get_first_node_in_group("terrain")
 	if terrain != null:
-		var cell := terrain.hull.local_to_map(terrain.hull.to_local(mouse))
-		if terrain.hull.get_cell_source_id(cell) != -1:
+		var cell := terrain.buildLayer.local_to_map(terrain.buildLayer.to_local(mouse))
+		if terrain.buildLayer.get_cell_source_id(cell) != -1:
 			hoverVessel = terrain
 			hoverCell = cell
 
 func anchor_point(vessel, cell: Vector2i) -> Vector2:
-	return vessel.to_global(vessel.hull.map_to_local(cell))
+	return vessel.to_global(vessel.buildLayer.map_to_local(cell))
 
 
 func in_range() -> bool:

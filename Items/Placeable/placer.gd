@@ -13,7 +13,7 @@ class_name Placer
 @export var settleSpeed: float = 10.0
 
 
-var hull: TileMapLayer
+var buildLayer: TileMapLayer
 var mouseCell: Vector2i #2i is integer
 var item: ItemData
 var size: Vector2i
@@ -47,7 +47,7 @@ func _physics_process(delta: float) -> void:
 	vessel = player.vessel
 	var targetHull: TileMapLayer
 	if vessel != null:
-		targetHull = vessel.hull
+		targetHull = vessel.buildLayer
 	else:
 		targetHull = get_tree().get_first_node_in_group("terrain")
 		if targetHull == null:
@@ -57,17 +57,17 @@ func _physics_process(delta: float) -> void:
 	var justAppeared := not visible
 	visible = true
 	
-	if hull != targetHull:
+	if buildLayer != targetHull:
 		stop_breaking()
 	
-	hull = targetHull
-	global_transform = hull.global_transform
+	buildLayer = targetHull
+	global_transform = buildLayer.global_transform
 	
 	
-	mouseCell = hull.local_to_map(hull.to_local(GameInput.get_mouse_position(self)))
+	mouseCell = buildLayer.local_to_map(buildLayer.to_local(GameInput.get_mouse_position(self)))
 	
 	if not item.breaksTiles:
-		var tileSize := hull.tile_set.tile_size
+		var tileSize := buildLayer.tile_set.tile_size
 		size = Vector2i(ghost.texture.get_size()) / tileSize
 		@warning_ignore("integer_division")
 		topLeft = Vector2i(mouseCell.x - (size.x / 2), mouseCell.y - size.y + 1)
@@ -91,7 +91,7 @@ func _physics_process(delta: float) -> void:
 		if vessel != null:
 			builder = vessel
 		else:
-			builder = hull
+			builder = buildLayer
 		
 		var holding := GameInput.is_action_pressed("use_item")
 		var target : ItemData = builder.item_at(mouseCell)
@@ -118,9 +118,9 @@ func _physics_process(delta: float) -> void:
 				breakingThing = object
 			else:
 				ghost.texture = builder.builtCell[mouseCell].worldSpaceTexture
-				ghost.position = hull.map_to_local(mouseCell)
+				ghost.position = buildLayer.map_to_local(mouseCell)
 				ghost.visible = true
-				hull.hide_cell(mouseCell)
+				buildLayer.hide_cell(mouseCell)
 			
 			var hits := int(breakProgress * hitCount)
 			if hits > lastHits:
@@ -153,9 +153,9 @@ func _physics_process(delta: float) -> void:
 
 
 func _draw() -> void:
-	if hull == null:
+	if buildLayer == null:
 		return
-	var tileSize := Vector2(hull.tile_set.tile_size)
+	var tileSize := Vector2(buildLayer.tile_set.tile_size)
 	var left := mouseCell.x - gridRadius
 	var right := mouseCell.x + gridRadius + 1
 	var top := mouseCell.y - gridRadius
@@ -185,7 +185,7 @@ func can_place() -> bool:
 		
 		
 		for x in range(topLeft.x, topLeft.x + size.x):
-			var data := hull.get_cell_tile_data(Vector2i(x, connectedY))
+			var data := buildLayer.get_cell_tile_data(Vector2i(x, connectedY))
 			if data == null or data.get_collision_polygons_count(0) == 0:
 				return false
 	
@@ -194,10 +194,10 @@ func can_place() -> bool:
 		var body: CollisionShape2D = player.get_node("CollisionShape2D")
 		var playerRect: Rect2 = body.shape.get_rect()
 		if vessel == null:
-			playerRect.position += hull.to_local(player.global_position) + body.position
+			playerRect.position += buildLayer.to_local(player.global_position) + body.position
 		else:
 			playerRect.position += player.position + body.position
-		var tileSize := hull.tile_set.tile_size
+		var tileSize := buildLayer.tile_set.tile_size
 		var tileRect := Rect2(Vector2(mouseCell * tileSize), Vector2(tileSize))
 		if playerRect.intersects(tileRect):
 			return false
@@ -205,7 +205,7 @@ func can_place() -> bool:
 			for dy in range(-1, 2):
 				if dx == 0 and dy == 0:
 					continue #skip center
-				var data := hull.get_cell_tile_data(mouseCell + Vector2i(dx, dy))
+				var data := buildLayer.get_cell_tile_data(mouseCell + Vector2i(dx, dy))
 				if data != null and data.get_collision_polygons_count(0) > 0:
 					return true
 		return false
@@ -218,13 +218,13 @@ func place_requirements() -> bool:
 	if vessel != null:
 		placedCells = vessel.placed
 	else:
-		placedCells = (hull as TerrainGenerator).placed
+		placedCells = (buildLayer as TerrainGenerator).placed
 	
 	
 	for x in range(topLeft.x, topLeft.x + size.x):
 		for y in range(topLeft.y, topLeft.y + size.y):
 			var cell := Vector2i(x, y)
-			if hull.get_cell_source_id(cell) != -1 or placedCells.has(cell):
+			if buildLayer.get_cell_source_id(cell) != -1 or placedCells.has(cell):
 				return false
 	
 	#only for normal placing of objects
@@ -232,7 +232,7 @@ func place_requirements() -> bool:
 	return true
 
 func range_check() -> bool:
-	var playerCell := hull.local_to_map(hull.to_local(get_parent().global_position))
+	var playerCell := buildLayer.local_to_map(buildLayer.to_local(get_parent().global_position))
 	if absi(mouseCell.x - playerCell.x) > placeRange or absi(mouseCell.y - playerCell.y) > placeRange:
 		return false
 	return true
@@ -241,25 +241,14 @@ func range_check() -> bool:
 func place() -> void:
 	
 	if vessel == null:
+		var terrain := buildLayer as TerrainGenerator
 		if item.placesTiles:
-			hull.set_cell(mouseCell, 0, item.tileCoords)
-			
-			(hull as TerrainGenerator).builtCell[mouseCell] = item
-			#for now only things that we place can be broken, for sure want to change
-			#in future but this is simpler for now.
-			
+			terrain.add_tile(mouseCell, item)
 		else:
-			var thing: Node2D = item.placeScene.instantiate()
-			hull.get_node("Props").add_child(thing)
-			thing.position = Vector2(topLeft * hull.tile_set.tile_size)
-			thing.reset_physics_interpolation()
-			thing.set_meta("item", item) #for saving later
-			
-			var terrain := hull as TerrainGenerator
-			for x in range(topLeft.x, topLeft.x + size.x):
-				for y in range(topLeft.y, topLeft.y + size.y):
-					terrain.placed[Vector2i(x, y)] = thing
-					
+			terrain.place_object(item, topLeft)
+		#for now only things that we place can be broken, for sure want to change
+		#in future but this is simpler for now.
+		
 	elif item.placesTiles:
 		vessel.add_tile(mouseCell, item)
 	else:
@@ -282,8 +271,8 @@ func stop_breaking() -> void:
 			breakingThing = null
 		ghost.visible = false
 		
-		if is_instance_valid(hull) and hull is HullLayer:
-			hull.show_cells()
+		if is_instance_valid(buildLayer) and buildLayer is HullLayer:
+			buildLayer.show_cells()
 
 func _exit_tree() -> void:
 	stop_breaking()

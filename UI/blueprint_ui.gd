@@ -77,10 +77,10 @@ func choose(prefab: ShipPrefab) -> void:
 	visible = false
 	placing = prefab
 	var ship := prefab.scene.instantiate()
-	var hull: TileMapLayer = ship.get_node("Hull")
+	var buildLayer: TileMapLayer = ship.get_node("Hull")
 	preview = TileMapLayer.new()
-	preview.tile_set = hull.tile_set
-	preview.tile_map_data = hull.tile_map_data
+	preview.tile_set = buildLayer.tile_set
+	preview.tile_map_data = buildLayer.tile_map_data
 	preview.modulate = Color(1, 1, 1, 0.5)
 	preview.collision_enabled = false
 	preview.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
@@ -142,6 +142,6 @@ func world_rect(layer: TileMapLayer) -> Rect2:
 func can_place() -> bool:
 	var previewRect := world_rect(preview).grow(8)
 	for vessel: Vessel in get_tree().get_nodes_in_group("vessels"):
-		if previewRect.intersects(world_rect(vessel.hull)):
+		if previewRect.intersects(world_rect(vessel.buildLayer)):
 			return false
 	return true

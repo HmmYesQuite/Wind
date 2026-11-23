@@ -10,6 +10,7 @@ func save_game() -> void:
 	"unlocks": get_unlocks(), 
 	"inventory": get_inventory(), 
 	"ships": get_ships(), 
+	"terrain": get_terrain(),
 	"player": get_player(),
 	"time": get_time(),
 	"lanterns": get_lanterns(),
@@ -27,6 +28,8 @@ func load_game() -> void:
 		set_inventory(data["inventory"])
 	if data.has("ships"):
 		set_ships(data["ships"])
+	if data.has("terrain"):
+		set_terrain(data["terrain"])
 	if data.has("player") and not data["player"].is_empty():
 		set_player(data["player"])
 	if data.has("time"):
@@ -185,3 +188,12 @@ func set_ropes(ropes: Array) -> void:
 		
 		rope.ropeLength = data["length"]
 		level.add_child(rope)
+
+func get_terrain() -> Dictionary:
+	var terrain: TerrainGenerator = get_tree().get_first_node_in_group("terrain")
+	return terrain.to_save() if terrain else {}
+
+func set_terrain(data: Dictionary) -> void:
+	var terrain: TerrainGenerator = get_tree().get_first_node_in_group("terrain")
+	if terrain and not data.is_empty():
+		terrain.load_save(data)

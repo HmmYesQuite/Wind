@@ -101,12 +101,12 @@ func place_bridge(body: AnimatableBody2D, from: Vector2, to: Vector2) -> void:
 
 
 func get_anchor_point(vessel, tile: Vector2i) -> Vector2:
-	if vessel.hull.get_cell_source_id(tile) == -1:
+	if vessel.buildLayer.get_cell_source_id(tile) == -1:
 		push_warning("Rope: Missing tile %s on vessel %s" % [tile, vessel.name]) #for debug
 	
-	var point: Vector2 = vessel.hull.map_to_local(tile)
+	var point: Vector2 = vessel.buildLayer.map_to_local(tile)
 	if anchorOnTop:
-		point.y -= vessel.hull.tile_set.tile_size.y / 2.0
+		point.y -= vessel.buildLayer.tile_set.tile_size.y / 2.0
 	return point
 
 func get_point_a() -> Vector2:

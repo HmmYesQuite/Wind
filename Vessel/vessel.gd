@@ -1,7 +1,7 @@
 extends RigidBody2D
 class_name  Vessel
 
-@onready var hull: HullLayer = $Hull
+@onready var buildLayer: HullLayer = $Hull
 @onready var zone_hull: TileMapLayer = $Zone/ZoneHull
 @onready var zone: SubViewport = $Zone
 @onready var props: Node2D = $Props
@@ -28,8 +28,8 @@ var builtCell: Dictionary[Vector2i, ItemData] = {}
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_to_group("vessels")
-	zone_hull.tile_set = hull.tile_set
-	zone_hull.tile_map_data = hull.tile_map_data # Copies every tile from the visible Hull into the ZoneHull
+	zone_hull.tile_set = buildLayer.tile_set
+	zone_hull.tile_map_data = buildLayer.tile_map_data # Copies every tile from the visible Hull into the ZoneHull
 	
 	
 	rebuild_collision()
@@ -56,8 +56,8 @@ func rebuild_collision() -> void:
 		poly.queue_free()
 	collisionPolys.clear()
 	
-	for cell in hull.get_used_cells():
-		var tileData := hull.get_cell_tile_data(cell)
+	for cell in buildLayer.get_used_cells():
+		var tileData := buildLayer.get_cell_tile_data(cell)
 		if tileData == null:
 			continue
 		
@@ -74,7 +74,7 @@ func rebuild_collision() -> void:
 			var poly := CollisionPolygon2D.new()
 			poly.polygon = tileData.get_collision_polygon_points(0, i)
 			poly.one_way_collision = tileData.is_collision_polygon_one_way(0, i)
-			poly.position = hull.map_to_local(cell)
+			poly.position = buildLayer.map_to_local(cell)
 			add_child(poly)
 			collisionPolys.append(poly)
 	mass = maxf(1.0, collisionPolys.size() * massPerTile)
@@ -145,7 +145,7 @@ func update_proxies() -> void:
 
 
 func add_tile(cell: Vector2i, item: ItemData) -> void:
-	hull.set_cell(cell, 0, item.tileCoords)
+	buildLayer.set_cell(cell, 0, item.tileCoords)
 	
 	zone_hull.set_cell(cell, 0, item.tileCoords)
 	builtCell[cell] = item
@@ -158,11 +158,11 @@ func add_tile(cell: Vector2i, item: ItemData) -> void:
 func place_object(item: ItemData, topLeft: Vector2i) -> void:
 	var placedThing: Node2D = item.placeScene.instantiate()
 	props.add_child(placedThing)
-	placedThing.position = Vector2(topLeft * hull.tile_set.tile_size)
+	placedThing.position = Vector2(topLeft * buildLayer.tile_set.tile_size)
 	placedThing.reset_physics_interpolation()
 	placedThing.set_meta("item", item)
 	
-	var size := Vector2i(item.worldSpaceTexture.get_size()) / hull.tile_set.tile_size
+	var size := Vector2i(item.worldSpaceTexture.get_size()) / buildLayer.tile_set.tile_size
 	for x in range(topLeft.x, topLeft.x + size.x):
 		for y in range(topLeft.y, topLeft.y + size.y):
 			placed[Vector2i(x, y)] = placedThing
@@ -173,7 +173,7 @@ func to_save() -> Dictionary:
 	for thing in props.get_children():
 		if thing.has_meta("item"):
 			var item: ItemData = thing.get_meta("item")
-			var cell := Vector2i(thing.position) / hull.tile_set.tile_size
+			var cell := Vector2i(thing.position) / buildLayer.tile_set.tile_size
 			objects.append({ "item": item.resource_path, "cell": [cell.x, cell.y] })
 	
 	var built := []
@@ -182,7 +182,7 @@ func to_save() -> Dictionary:
 	
 	
 	return { 
-		"tiles": Marshalls.raw_to_base64(hull.tile_map_data), 
+		"tiles": Marshalls.raw_to_base64(buildLayer.tile_map_data), 
 		"objects": objects, 
 		"built": built, 
 		"scene": scene_file_path, 
@@ -199,7 +199,7 @@ func load_save(data: Dictionary) -> void:
 		reset_physics_interpolation()
 	
 	var tiles := Marshalls.base64_to_raw(data["tiles"])
-	hull.tile_map_data = tiles
+	buildLayer.tile_map_data = tiles
 	zone_hull.tile_map_data = tiles
 	rebuild_collision()
 	clear_my_proxies()
@@ -240,7 +240,7 @@ func break_at(cell: Vector2i) -> ItemData:
 	
 	if builtCell.has(cell):
 		var item: ItemData = builtCell[cell]
-		hull.erase_cell(cell)
+		buildLayer.erase_cell(cell)
 		zone_hull.erase_cell(cell)
 		builtCell.erase(cell)
 		rebuild_collision()
