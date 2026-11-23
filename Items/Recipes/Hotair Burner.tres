@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="Recipe" format=3 uid="uid://dvgq1vqo07xjq"]
+
+[ext_resource type="Script" uid="uid://bx4s8uqq5gh5e" path="res://Items/item_data.gd" id="1_q70gg"]
+[ext_resource type="Resource" uid="uid://dcy6x8jp2bpb2" path="res://Items/Resources/Stick.tres" id="2_bl58s"]
+[ext_resource type="Resource" uid="uid://drcx6tlbby6er" path="res://Items/Resources/Rock.tres" id="3_xj8qf"]
+[ext_resource type="Resource" uid="uid://brrpjdw1tav48" path="res://Items/Placeable/Hotair Burner/HotairBurner.tres" id="4_mmhee"]
+[ext_resource type="Script" uid="uid://ckjts2sxaj8xq" path="res://Items/recipe.gd" id="6_tuw4k"]
+
+[resource]
+script = ExtResource("6_tuw4k")
+result = ExtResource("4_mmhee")
+ingredients = Dictionary[ExtResource("1_q70gg"), int]({
+ExtResource("3_xj8qf"): 6,
+ExtResource("2_bl58s"): 2
+})
+needsWorkbench = true
+metadata/_custom_type_script = "uid://ckjts2sxaj8xq"

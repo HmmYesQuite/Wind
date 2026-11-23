@@ -18,11 +18,11 @@ layout_mode = 2
 
 [node name="Increase" type="Button" parent="PanelContainer/VBoxContainer" unique_id=1010344648]
 layout_mode = 2
-text = "+ Lift"
+text = "+ Lift (Max of 2)"
 
 [node name="Decrease" type="Button" parent="PanelContainer/VBoxContainer" unique_id=548898131]
 layout_mode = 2
-text = "- Lift"
+text = "- Lift (Min of 0)"
 
 [node name="Close" type="Button" parent="PanelContainer/VBoxContainer" unique_id=677992130]
 layout_mode = 2
