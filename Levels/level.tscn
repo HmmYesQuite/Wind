@@ -158,4 +158,6 @@ script = ExtResource("34_tse5p")
 pieces = Array[Object]([ExtResource("35_t2rts"), ExtResource("36_4j6tw"), ExtResource("37_deov6"), ExtResource("38_41m28")])
 centerTile = ExtResource("38_8usd7")
 
+[node name="Props" type="Node2D" parent="Mountain/TileMapLayer" unique_id=1784093196]
+
 [editable path="StarterShip"]

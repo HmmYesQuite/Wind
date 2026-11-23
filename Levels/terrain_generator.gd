@@ -1,13 +1,15 @@
-extends TileMapLayer
+extends HullLayer
 class_name TerrainGenerator
 
 @export var pieces: Array[CliffPiece] = []
 @export var height: int = 20
 @export var pieceSize := Vector2i(16, 16)
 @export var centerTile: CliffPiece
+@onready var hull: HullLayer = self
 
 var grid: Dictionary[Vector2i, CliffPiece] = {}
-
+var placed: Dictionary[Vector2i, Node2D] = {}
+var builtCell: Dictionary[Vector2i, ItemData] = {}
 
 func _ready() -> void:
 	
@@ -64,3 +66,36 @@ func pick_weighted(options: Array[CliffPiece], rng: RandomNumberGenerator) -> Cl
 		if roll <= 0.0:
 			return p
 	return options.back()
+
+
+func break_at(cell: Vector2i) -> ItemData:
+	
+	if placed.has(cell):
+		var object: Node2D = placed[cell]
+		var item: ItemData = object.get_meta("item")
+		for c in placed.keys():
+			if placed[c] == object:
+				placed.erase(c)
+		object.queue_free()
+		return item
+	
+	if builtCell.has(cell):
+		var item: ItemData = builtCell[cell]
+		erase_cell(cell)
+		
+		builtCell.erase(cell)
+		
+	
+	return null
+
+
+func item_at(cell: Vector2i) -> ItemData:
+	
+	if placed.has(cell):
+		var object: Node2D = placed[cell]
+		var item: ItemData = object.get_meta("item")
+		
+		return item
+	if builtCell.has(cell):
+		return builtCell[cell]
+	return null

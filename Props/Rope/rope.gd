@@ -1,9 +1,9 @@
 extends Node2D
 class_name  Rope
 
-@export var vesselA: Vessel
+@export var vesselA: Node2D
 @export var tileA: Vector2i
-@export var vesselB: Vessel
+@export var vesselB: Node2D
 @export var tileB: Vector2i
 
 @export var ropeLength: float = 0.0 # 0 = use the distance at the start
@@ -45,14 +45,16 @@ func _ready() -> void:
 	if ropeLength <= 0.0:
 		ropeLength = get_point_a().distance_to(get_point_b())
 	if bridge != null:
-		zoneBridgeA = bridge.duplicate()
-		place_bridge(zoneBridgeA, localA, vesselA.to_local(get_point_b()))
 		
-		vesselA.zone.add_child(zoneBridgeA)
+		if vesselA is Vessel:
+			zoneBridgeA = bridge.duplicate()
+			place_bridge(zoneBridgeA, localA, vesselA.to_local(get_point_b()))
+			vesselA.zone.add_child(zoneBridgeA)
 		
-		zoneBridgeB = bridge.duplicate()
-		place_bridge(zoneBridgeB, vesselB.to_local(get_point_a()), localB)
-		vesselB.zone.add_child(zoneBridgeB)
+		if vesselB is Vessel:
+			zoneBridgeB = bridge.duplicate()
+			place_bridge(zoneBridgeB, vesselB.to_local(get_point_a()), localB)
+			vesselB.zone.add_child(zoneBridgeB)
 		
 		place_bridge(bridge, get_point_a(), get_point_b())
 		
@@ -72,15 +74,19 @@ func _physics_process(delta: float) -> void:
 		var tension := maxf(stretch * stiffness + seperatingSpeed * damping, 0.0)
 		tension = minf(tension, maxTension)
 		var force := dir * tension
-		vesselA.apply_force(force, pointA - vesselA.global_position)
-		vesselB.apply_force(-force, pointB - vesselB.global_position)
+		if vesselA is RigidBody2D:
+			vesselA.apply_force(force, pointA - vesselA.global_position)
+		if vesselB is RigidBody2D:
+			vesselB.apply_force(-force, pointB - vesselB.global_position)
 	
 	update_visual(pointA, pointB, distance)
 	
 	if bridge != null:
 		place_bridge(bridge, pointA, pointB)
-		place_bridge(zoneBridgeA, localA, vesselA.to_local(pointB))
-		place_bridge(zoneBridgeB, vesselB.to_local(pointA), localB)
+		if zoneBridgeA != null:
+			place_bridge(zoneBridgeA, localA, vesselA.to_local(pointB))
+		if zoneBridgeB != null:
+			place_bridge(zoneBridgeB, vesselB.to_local(pointA), localB)
 		
 		var planks := maxi(1, roundi(distance / 8.0))
 		boards.region_rect = Rect2(0, 0, planks * 8, 8)
@@ -94,11 +100,11 @@ func place_bridge(body: AnimatableBody2D, from: Vector2, to: Vector2) -> void:
 	shape.size = Vector2(from.distance_to(to), 8)
 
 
-func get_anchor_point(vessel: Vessel, tile: Vector2i) -> Vector2:
+func get_anchor_point(vessel, tile: Vector2i) -> Vector2:
 	if vessel.hull.get_cell_source_id(tile) == -1:
 		push_warning("Rope: Missing tile %s on vessel %s" % [tile, vessel.name]) #for debug
 	
-	var point := vessel.hull.map_to_local(tile)
+	var point: Vector2 = vessel.hull.map_to_local(tile)
 	if anchorOnTop:
 		point.y -= vessel.hull.tile_set.tile_size.y / 2.0
 	return point
@@ -108,8 +114,10 @@ func get_point_a() -> Vector2:
 func get_point_b() -> Vector2:
 	return vesselB.to_global(localB)
 
-func get_point_velocity(vessel: Vessel, globalPoint: Vector2) -> Vector2:
-	var r := globalPoint -vessel.global_position
+func get_point_velocity(vessel, globalPoint: Vector2) -> Vector2:
+	if not vessel is RigidBody2D:
+		return Vector2.ZERO
+	var r: Vector2 = globalPoint - vessel.global_position
 	return vessel.linear_velocity + Vector2(-r.y, r.x) * vessel.angular_velocity
 
 func update_visual(pointA: Vector2, pointB: Vector2, distance: float) -> void:

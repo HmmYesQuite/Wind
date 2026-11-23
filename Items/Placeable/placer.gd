@@ -50,7 +50,7 @@ func _physics_process(delta: float) -> void:
 		targetHull = vessel.hull
 	else:
 		targetHull = get_tree().get_first_node_in_group("terrain")
-		if targetHull == null or not item.placesTiles:
+		if targetHull == null:
 			visible = false
 			stop_breaking()
 			return
@@ -87,8 +87,14 @@ func _physics_process(delta: float) -> void:
 			placeTimer = placeDelay
 	else:
 		
+		var builder
+		if vessel != null:
+			builder = vessel
+		else:
+			builder = hull
+		
 		var holding := GameInput.is_action_pressed("use_item")
-		var target := vessel.item_at(mouseCell)
+		var target : ItemData = builder.item_at(mouseCell)
 		var canBreak := range_check() and target != null and Inventory.can_add(target)
 		
 		if not holding or not canBreak or mouseCell != breakCell:
@@ -102,16 +108,16 @@ func _physics_process(delta: float) -> void:
 			
 			var ghostAppeared := not ghost.visible
 			
-			if vessel.placed.has(mouseCell):
+			if builder.placed.has(mouseCell):
 				
-				var object = vessel.placed[mouseCell]
+				var object = builder.placed[mouseCell]
 				ghost.texture = object.get_meta("item").worldSpaceTexture
 				ghost.position = object.position + (ghost.texture.get_size() / 2)
 				ghost.visible = true
 				object.visible = false
 				breakingThing = object
 			else:
-				ghost.texture = vessel.builtCell[mouseCell].worldSpaceTexture
+				ghost.texture = builder.builtCell[mouseCell].worldSpaceTexture
 				ghost.position = hull.map_to_local(mouseCell)
 				ghost.visible = true
 				hull.hide_cell(mouseCell)
@@ -129,7 +135,7 @@ func _physics_process(delta: float) -> void:
 				ghost.reset_physics_interpolation()
 		
 		if breakProgress >= 1:
-			var gotItem := vessel.break_at(mouseCell)
+			var gotItem: ItemData = builder.break_at(mouseCell)
 			breakProgress = 0
 			breakingThing = null
 			ghost.visible = false
@@ -188,7 +194,7 @@ func can_place() -> bool:
 		var body: CollisionShape2D = player.get_node("CollisionShape2D")
 		var playerRect: Rect2 = body.shape.get_rect()
 		if vessel == null:
-			playerRect.position += hull.to_local(player.global_position)
+			playerRect.position += hull.to_local(player.global_position) + body.position
 		else:
 			playerRect.position += player.position + body.position
 		var tileSize := hull.tile_set.tile_size
@@ -208,13 +214,17 @@ func can_place() -> bool:
 
 func place_requirements() -> bool:
 	
-	
+	var placedCells: Dictionary
+	if vessel != null:
+		placedCells = vessel.placed
+	else:
+		placedCells = (hull as TerrainGenerator).placed
 	
 	
 	for x in range(topLeft.x, topLeft.x + size.x):
 		for y in range(topLeft.y, topLeft.y + size.y):
 			var cell := Vector2i(x, y)
-			if hull.get_cell_source_id(cell) != -1 or (vessel != null and vessel.placed.has(cell)):
+			if hull.get_cell_source_id(cell) != -1 or placedCells.has(cell):
 				return false
 	
 	#only for normal placing of objects
@@ -231,8 +241,25 @@ func range_check() -> bool:
 func place() -> void:
 	
 	if vessel == null:
-		hull.set_cell(mouseCell, 0, item.tileCoords)
-	
+		if item.placesTiles:
+			hull.set_cell(mouseCell, 0, item.tileCoords)
+			
+			(hull as TerrainGenerator).builtCell[mouseCell] = item
+			#for now only things that we place can be broken, for sure want to change
+			#in future but this is simpler for now.
+			
+		else:
+			var thing: Node2D = item.placeScene.instantiate()
+			hull.get_node("Props").add_child(thing)
+			thing.position = Vector2(topLeft * hull.tile_set.tile_size)
+			thing.reset_physics_interpolation()
+			thing.set_meta("item", item) #for saving later
+			
+			var terrain := hull as TerrainGenerator
+			for x in range(topLeft.x, topLeft.x + size.x):
+				for y in range(topLeft.y, topLeft.y + size.y):
+					terrain.placed[Vector2i(x, y)] = thing
+					
 	elif item.placesTiles:
 		vessel.add_tile(mouseCell, item)
 	else:

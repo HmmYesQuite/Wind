@@ -162,9 +162,9 @@ func get_ropes() -> Array:
 	for rope: Rope in get_tree().get_nodes_in_group("ropes"):
 		ropes.append({
 			"item": rope.item.resource_path,
-			"a": String(rope.vesselA.name),
+			"a": String(get_tree().current_scene.get_path_to(rope.vesselA)),
 			"tileA": [rope.tileA.x, rope.tileA.y],
-			"b": String(rope.vesselB.name),
+			"b": String(get_tree().current_scene.get_path_to(rope.vesselB)),
 			"tileB": [rope.tileB.x, rope.tileB.y],
 			"length": rope.ropeLength,
 		})

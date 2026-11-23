@@ -4,9 +4,9 @@ extends Node2D
 @export var maxRopeLength: float = 64.0
 
 var item: ItemData
-var hoverVessel: Vessel = null
+var hoverVessel: Node2D = null
 var hoverCell: Vector2i
-var firstVessel: Vessel = null
+var firstVessel: Node2D = null
 var firstCell: Vector2i
 #first is for the vessel the player is currently on (or the one they clicked first)
 #hover is vice versa
@@ -42,8 +42,14 @@ func find_cell(mouse: Vector2) -> void:
 			hoverVessel = vessel
 			hoverCell = cell
 			return
+	var terrain: TerrainGenerator = get_tree().get_first_node_in_group("terrain")
+	if terrain != null:
+		var cell := terrain.hull.local_to_map(terrain.hull.to_local(mouse))
+		if terrain.hull.get_cell_source_id(cell) != -1:
+			hoverVessel = terrain
+			hoverCell = cell
 
-func anchor_point(vessel: Vessel, cell: Vector2i) -> Vector2:
+func anchor_point(vessel, cell: Vector2i) -> Vector2:
 	return vessel.to_global(vessel.hull.map_to_local(cell))
 
 
