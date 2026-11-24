@@ -22,6 +22,8 @@ To break a block or object you placed, hold down the left mouse button on it; af
 
 To place new ships, use the blueprint table to pick a prefab to place in the world.
 
+To use the Hot Air Burner, interact with E, it lets you increase or decrease the lift. Lift is currently by default at max.
+
 Esc will open the pause menu
 
 Pressing F1 will show the wind Perlin noise
@@ -32,11 +34,25 @@ Pressing F3 will skip ahead a bit in the day.
 
 
 
-Right now there is a bunch of test items for the sake of the demo; in the full game you will only start with the fishing rod.
-
 
 
 Most recent devlog summary:
+
+WEEK 5:
+
+Week 5 notice: Some very unfortunate circumstances made this week a little lower quality than I would have liked. Recently, my PC's RAM unexpectedly broke during the worst possible time in history. So I had to dig up a semi-old Mac and try to get everything set up on it in time. So if some parts of this week's submission are a bit weaker compared to my other weeks, hopefully this should explain it.
+
+Changes:
+
+Terrain - There is now a giant cliff on the right side of the player. It goes up 20 * 16 tiles. Right now there is nothing important at the top; eventually there will be. The terrain can be collided with on the vessels; however, there is a bug where, if you are standing on a vessel, the player can get clipped into the terrain. This is because the terrain doesn't have a collision proxy yet. 
+
+Terrain Interaction - You can place tiles, break tiles (only ones you've placed), place objects, tie rope between ships and terrain, and collide with the terrain. Eventually, I will add a pickaxe that lets you break the stone.
+
+Hot air Burner - There is a new object you can place on the vessels. Its main goal is to let you change how much lift your vessel has. Pressing + and - raises and lowers its height. There is a minimum and maximum amount of lift. Important notice: right now the default value is set to max, so pressing + won't appear to do anything until you lower yourself. Also, the burners' lift doesn't get saved in the save file yet; it will next week.
+
+Cleanup - changed some outdated values and variable names.
+
+Save system - added the terrain, and placing/ breaking to the save system.
 
 
 WEEK 4:
