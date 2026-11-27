@@ -1,45 +1,40 @@
 extends Node
 
-const SAVE_PATH := "user://save.json"
+const SAVE_PATH := "user://save.dat"
+const VERSION := 2 #just in case someone had an old save file and they need to be updated.
 
 var saveQueued := false
 
+
 func save_game() -> void:
+	var fixed := {}
+	
+	for node in get_tree().get_nodes_in_group("persist"):
+		fixed[node.save_key()] = node.to_save()
+	
 	var data := {
-	"version": 1, 
-	"unlocks": get_unlocks(), 
-	"inventory": get_inventory(), 
-	"ships": get_ships(), 
-	"terrain": get_terrain(),
-	"player": get_player(),
-	"time": get_time(),
-	"lanterns": get_lanterns(),
-	"ropes": get_ropes(),
+		"version": VERSION,
+		"fixed": fixed,
 	}
+	
 	var file := FileAccess.open(SAVE_PATH, FileAccess.WRITE)
-	file.store_string(JSON.stringify(data, "\t"))
+	file.store_var(data)
 
 func load_game() -> void:
 	if not FileAccess.file_exists(SAVE_PATH):
-		return
-	var data: Dictionary = JSON.parse_string(FileAccess.get_file_as_string(SAVE_PATH))
-	set_unlocks(data["unlocks"])
-	if data.has("inventory"):
-		set_inventory(data["inventory"])
-	if data.has("ships"):
-		set_ships(data["ships"])
-	if data.has("terrain"):
-		set_terrain(data["terrain"])
-	if data.has("player") and not data["player"].is_empty():
-		set_player(data["player"])
-	if data.has("time"):
-		set_time(data["time"])
-	if data.has("lanterns"):
-		set_lanterns(data["lanterns"])
-	if data.has("ropes"):
-		set_ropes(data["ropes"])
-	#all ^ to help if new version is missing or smth and make sure the game dosnt break
-
+		return #save path is not found
+	
+	var file := FileAccess.open(SAVE_PATH, FileAccess.READ)
+	var data = file.get_var() #has to be = not := cus it can be any type
+	
+	if not(data is Dictionary) or data.get("version") != VERSION:
+		return # different version or wrong data type (version should allready check this)
+	
+	var fixed: Dictionary = data["fixed"]
+	for node in get_tree().get_nodes_in_group("persist"):
+		var key: String = node.save_key()
+		if fixed.has(key):
+			node.load_save(fixed[key])
 
 func get_unlocks() -> Dictionary:
 	var uniques: Array[String] = []
@@ -53,28 +48,6 @@ func set_unlocks(unlocks: Dictionary) -> void:
 	Inventory.foundUniques.clear()
 	for path in unlocks["foundUniques"]:
 		Inventory.foundUniques.append(load(path))
-
-
-func get_inventory() -> Dictionary:
-	var pockets := {}
-	for pocketName in Inventory.pockets:
-		pockets[pocketName] = Inventory.pockets[pocketName].to_save()
-	return {
-		"hotbar": Hotbar.container.to_save(),
-		"pockets": pockets,
-		"cursor": Inventory.cursor.to_save(),
-		"selected": Hotbar.selectedIndex,
-	}
-
-
-func set_inventory(inventory: Dictionary) -> void:
-	Hotbar.container.load_save(inventory["hotbar"])
-	for pocketName in inventory["pockets"]:
-		if Inventory.pockets.has(pocketName):
-			Inventory.pockets[pocketName].load_save(inventory["pockets"][pocketName])
-	
-	Inventory.cursor.load_save(inventory["cursor"])
-	Hotbar.select(int(inventory["selected"]))
 
 
 func new_game() -> void:

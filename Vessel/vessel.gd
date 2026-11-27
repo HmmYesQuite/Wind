@@ -28,6 +28,7 @@ var builtCell: Dictionary[Vector2i, ItemData] = {}
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_to_group("vessels")
+	add_to_group("persist")
 	zone_hull.tile_set = buildLayer.tile_set
 	zone_hull.tile_map_data = buildLayer.tile_map_data # Copies every tile from the visible Hull into the ZoneHull
 	
@@ -155,7 +156,7 @@ func add_tile(cell: Vector2i, item: ItemData) -> void:
 	
 
 
-func place_object(item: ItemData, topLeft: Vector2i) -> void:
+func place_object(item: ItemData, topLeft: Vector2i) -> Node2D:
 	var placedThing: Node2D = item.placeScene.instantiate()
 	props.add_child(placedThing)
 	placedThing.position = Vector2(topLeft * buildLayer.tile_set.tile_size)
@@ -166,9 +167,10 @@ func place_object(item: ItemData, topLeft: Vector2i) -> void:
 	for x in range(topLeft.x, topLeft.x + size.x):
 		for y in range(topLeft.y, topLeft.y + size.y):
 			placed[Vector2i(x, y)] = placedThing
+	return placedThing
 
 
-func to_save() -> Dictionary:
+func to_saveOLD() -> Dictionary:
 	var objects := []
 	for thing in props.get_children():
 		if thing.has_meta("item"):
@@ -191,7 +193,7 @@ func to_save() -> Dictionary:
 		}
 
 
-func load_save(data: Dictionary) -> void:
+func load_saveOLD(data: Dictionary) -> void:
 	
 	if data.has("position"):
 		position = Vector2(data["position"][0], data["position"][1])
@@ -260,3 +262,58 @@ func item_at(cell: Vector2i) -> ItemData:
 	if builtCell.has(cell):
 		return builtCell[cell]
 	return null
+
+func save_key() -> String:
+	return String(name)
+
+func to_save() -> Dictionary:
+	
+	var objects := []
+	for thing in props.get_children():
+		if thing.has_meta("item"):
+			var item: ItemData = thing.get_meta("item")
+			var entry := {
+				"item": item.resource_path,
+				"cell": Vector2i(thing.position) / buildLayer.tile_set.tile_size,
+			}
+			
+			if thing.has_method("to_save"): # only for objects that have functions attached, others dont care
+				entry["data"] = thing.to_save()
+			objects.append(entry)
+	
+	var built := []
+	for cell in builtCell:
+		built.append({ "item": builtCell[cell].resource_path, "cell": cell })
+	
+	return {
+		"tiles" : buildLayer.tile_map_data,
+		"objects": objects, 
+		"built": built, 
+		"scene": scene_file_path, 
+		"position": position,
+		"rotation": rotation,
+	}
+
+func load_save(data: Dictionary) -> void:
+	position = data["position"]
+	rotation = data["rotation"]
+	reset_physics_interpolation()
+	
+	buildLayer.tile_map_data = data["tiles"]
+	zone_hull.tile_map_data = data["tiles"]
+	rebuild_collision()
+	clear_my_proxies()
+	
+	for thing in props.get_children():
+		if thing.has_meta("item"):
+			thing.queue_free()
+	
+	placed.clear()
+	for obj in data["objects"]:
+		var thing := place_object(load(obj["item"]), obj["cell"])
+		if obj.has("data"):
+			thing.load_save(obj["data"])
+	
+	builtCell.clear()
+	for b in data["built"]:
+		builtCell[b["cell"]] = load(b["item"])

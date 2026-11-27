@@ -129,7 +129,7 @@ position_smoothing_enabled = true
 script = ExtResource("5_uhyyw")
 target = NodePath("../PlayerVisual")
 
-[node name="StarterShip" parent="." unique_id=1304830959 instance=ExtResource("21_1sae0")]
+[node name="StarterShip" parent="." unique_id=1304830959 groups=["persist"] instance=ExtResource("21_1sae0")]
 
 [node name="Lantern" parent="StarterShip/Props" index="0" unique_id=1733964767 instance=ExtResource("25_papoo")]
 position = Vector2(28, -28)

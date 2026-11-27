@@ -10,7 +10,7 @@ var selectedIndex: int = 0
 func _ready() -> void:
 	container.changed.connect(changed.emit)
 	
-	
+	add_to_group("persist")
 
 func add_item(item: ItemData) -> bool:
 	return container.add_item(item)
@@ -54,3 +54,14 @@ func select(index: int) -> void:
 
 func get_selected_item() -> ItemData:
 	return container.slots[selectedIndex]
+
+func save_key() -> String:
+	return "hotbar"
+func to_save() -> Dictionary:
+	return {
+		"hotbar": container.to_save(),
+		"selected": selectedIndex,
+	}
+func load_save(data: Dictionary) -> void:
+	container.load_save(data["hotbar"])
+	select(data["selected"])

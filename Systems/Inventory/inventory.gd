@@ -28,6 +28,8 @@ func _ready() -> void:
 	right.changed.connect(changed.emit)
 	
 	give_starting_items()
+	
+	add_to_group("persist")
 
 
 func all_containers() -> Array[ItemContainer]:
@@ -147,3 +149,34 @@ func can_add(item: ItemData) -> bool:
 		if c.can_add(item):
 			return true
 	return false
+
+func save_key() -> String:
+	return "inventory"
+func to_save() -> Dictionary:
+	var pocketData := {}
+	for pocketName in pockets:
+		pocketData[pocketName] = pockets[pocketName].to_save()
+	
+	var uniques: Array[String] = []
+	for item in foundUniques:
+		uniques.append(item.resource_path)
+	
+	return {
+		"pockets": pocketData,
+		"cursor": cursor.to_save(),
+		"workbench": workbenchUnlocked,
+		"foundUniques": uniques,
+	}
+func load_save(data: Dictionary) -> void:
+	
+	for pocketName in data["pockets"]:
+		if pockets.has(pocketName):
+			pockets[pocketName].load_save(data["pockets"][pocketName])
+	
+	cursor.load_save(data["cursor"])
+	
+	workbenchUnlocked = data["workbench"]
+	foundUniques.clear()
+	for path in data["foundUniques"]:
+		foundUniques.append(load(path))
+	

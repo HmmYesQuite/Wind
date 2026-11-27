@@ -76,3 +76,31 @@ func move_prop(delta: float) -> void:
 
 func fell_out_of_world() -> void:
 	get_tree().reload_current_scene()
+
+func save_key() -> String:
+	return "player"
+	
+func to_save() -> Dictionary:
+	if vessel == null:
+		return {}
+	return {
+		"ship": String(vessel.name),
+		"position": position,
+	}
+func load_save(data: Dictionary) -> void:
+	if data.is_empty():
+		return
+	var ship: Vessel = get_tree().current_scene.get_node_or_null(data["ship"])
+	
+	if ship == null: # on terrain or mid air
+		return
+	
+	if vessel != ship:
+		transfer_to(ship)
+	
+	
+	position = data["position"]
+	velocity = Vector2.ZERO
+	reset_physics_interpolation()
+	visual.global_position = ship.to_global(position)
+	visual.reset_physics_interpolation()

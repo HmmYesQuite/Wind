@@ -15,3 +15,13 @@ func _process(delta: float) -> void:
 	if time >= 1.0:
 		time -= 1.0
 	color = colors.sample(time)
+
+func _ready() -> void:
+	add_to_group("persist")
+
+func save_key() -> String:
+	return "time"
+func to_save() -> Dictionary:
+	return { "time": time }
+func load_save(data: Dictionary) -> void:
+	time = data["time"]
