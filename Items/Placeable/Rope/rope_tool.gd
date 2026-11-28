@@ -65,7 +65,10 @@ func tie() -> void:
 	rope.tileA = firstCell
 	rope.vesselB = hoverVessel
 	rope.tileB = hoverCell
-	get_tree().current_scene.add_child(rope)
+	
+	#having to call save manager to spawn the rope is a little incovnient, might change
+	SaveManager.spawn(rope, get_tree().current_scene)
+	rope.setup()
 	
 	Inventory.remove_item(item, 1)
 	firstVessel = null

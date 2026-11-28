@@ -170,57 +170,6 @@ func place_object(item: ItemData, topLeft: Vector2i) -> Node2D:
 	return placedThing
 
 
-func to_saveOLD() -> Dictionary:
-	var objects := []
-	for thing in props.get_children():
-		if thing.has_meta("item"):
-			var item: ItemData = thing.get_meta("item")
-			var cell := Vector2i(thing.position) / buildLayer.tile_set.tile_size
-			objects.append({ "item": item.resource_path, "cell": [cell.x, cell.y] })
-	
-	var built := []
-	for cell in builtCell:
-		built.append({ "item": builtCell[cell].resource_path, "cell": [cell.x, cell.y] })
-	
-	
-	return { 
-		"tiles": Marshalls.raw_to_base64(buildLayer.tile_map_data), 
-		"objects": objects, 
-		"built": built, 
-		"scene": scene_file_path, 
-		"position": [position.x, position.y], 
-		"rotation": rotation,
-		}
-
-
-func load_saveOLD(data: Dictionary) -> void:
-	
-	if data.has("position"):
-		position = Vector2(data["position"][0], data["position"][1])
-		rotation = data["rotation"]
-		reset_physics_interpolation()
-	
-	var tiles := Marshalls.base64_to_raw(data["tiles"])
-	buildLayer.tile_map_data = tiles
-	zone_hull.tile_map_data = tiles
-	rebuild_collision()
-	clear_my_proxies()
-	
-	for thing in props.get_children():
-		if thing.has_meta("item"):
-			thing.queue_free()
-	placed.clear()
-	for obj in data["objects"]:
-		var cell := Vector2i(int(obj["cell"][0]), int(obj["cell"][1]))
-		place_object(load(obj["item"]), cell)
-	
-	builtCell.clear()
-	if data.has("built"):
-		for b in data["built"]:
-			var cell := Vector2i(int(b["cell"][0]), int(b["cell"][1]))
-			builtCell[cell] = load(b["item"])
-
-
 func clear_my_proxies() -> void:
 	for other: Vessel in get_tree().get_nodes_in_group("vessels"):
 		if other.proxies.has(self):
@@ -277,8 +226,7 @@ func to_save() -> Dictionary:
 				"cell": Vector2i(thing.position) / buildLayer.tile_set.tile_size,
 			}
 			
-			if thing.has_method("to_save"): # only for objects that have functions attached, others dont care
-				entry["data"] = thing.to_save()
+			entry["data"] = SaveManager.collect(thing)
 			objects.append(entry)
 	
 	var built := []
@@ -312,7 +260,7 @@ func load_save(data: Dictionary) -> void:
 	for obj in data["objects"]:
 		var thing := place_object(load(obj["item"]), obj["cell"])
 		if obj.has("data"):
-			thing.load_save(obj["data"])
+			SaveManager.apply(thing, obj["data"])
 	
 	builtCell.clear()
 	for b in data["built"]:

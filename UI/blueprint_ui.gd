@@ -115,7 +115,7 @@ func _process(delta: float) -> void:
 func place() -> void:
 	var vessel: Vessel = placing.scene.instantiate()
 	vessel.position = preview.global_position
-	get_tree().current_scene.add_child(vessel, true)
+	SaveManager.spawn(vessel, get_tree().current_scene)
 	vessel.reset_physics_interpolation()
 	
 	for item in placing.cost:

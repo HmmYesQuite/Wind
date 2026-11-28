@@ -13,7 +13,9 @@ var builtCell: Dictionary[Vector2i, ItemData] = {}
 
 func _ready() -> void:
 	
+	
 	add_to_group("terrain")
+	add_to_group("persist")
 	generate(1)
 
 func generate(genSeed: int) -> void:
@@ -85,6 +87,7 @@ func break_at(cell: Vector2i) -> ItemData:
 		
 		builtCell.erase(cell)
 		
+		return item
 	
 	return null
 
@@ -104,7 +107,7 @@ func add_tile(cell: Vector2i, item: ItemData) -> void:
 	set_cell(cell, 0, item.tileCoords)
 	builtCell[cell] = item
 
-func place_object(item: ItemData, topLeft: Vector2i) -> void:
+func place_object(item: ItemData, topLeft: Vector2i) -> Node2D:
 	var thing: Node2D = item.placeScene.instantiate()
 	$Props.add_child(thing)
 	thing.position = Vector2(topLeft * tile_set.tile_size)
@@ -115,12 +118,16 @@ func place_object(item: ItemData, topLeft: Vector2i) -> void:
 	for x in range(topLeft.x, topLeft.x + size.x):
 		for y in range(topLeft.y, topLeft.y + size.y):
 			placed[Vector2i(x, y)] = thing
+	
+	return thing
 
 
+func save_key() -> String:
+	return "terrain"
 func to_save() -> Dictionary:
 	var built := []
 	for cell in builtCell:
-		built.append({ "item": builtCell[cell].resource_path, "cell": [cell.x, cell.y] })
+		built.append({ "item": builtCell[cell].resource_path, "cell": cell })
 	
 	var objects := []
 	for thing in $Props.get_children():
@@ -128,14 +135,15 @@ func to_save() -> Dictionary:
 			var item: ItemData = thing.get_meta("item")
 			var cell := Vector2i(thing.position) / tile_set.tile_size
 			
-			objects.append({ "item": item.resource_path, "cell": [cell.x, cell.y] })
+			objects.append({ "item": item.resource_path, "cell": cell, "data": SaveManager.collect(thing) })
 	
 	return { "built": built, "objects": objects }
-
+	
 func load_save(data: Dictionary) -> void:
 	for b in data["built"]:
-		add_tile(Vector2i(int(b["cell"][0]), int(b["cell"][1])), load(b["item"]))
+		add_tile(b["cell"], load(b["item"]))
 	
 	for o in data["objects"]:
-		place_object(load(o["item"]), Vector2i(int(o["cell"][0]), int(o["cell"][1])))
-	# all the ints needed cus json gives decimals back. Switch over when new system is added
+		var thing := place_object(load(o["item"]), o["cell"])
+		if o.has("data"):
+			SaveManager.apply(thing, o["data"])

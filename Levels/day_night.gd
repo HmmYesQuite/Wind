@@ -4,7 +4,9 @@ class_name DayNight
 @export var dayLength: float = 300.0
 @export var colors: Gradient
 
-var time: float = 0.0
+@export_storage var time: float = 0.0
+#exports now are what get saved, so have to remake all needed vars
+
 
 func _process(delta: float) -> void:
 	time += delta / dayLength
@@ -18,10 +20,3 @@ func _process(delta: float) -> void:
 
 func _ready() -> void:
 	add_to_group("persist")
-
-func save_key() -> String:
-	return "time"
-func to_save() -> Dictionary:
-	return { "time": time }
-func load_save(data: Dictionary) -> void:
-	time = data["time"]

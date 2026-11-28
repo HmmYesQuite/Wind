@@ -167,6 +167,7 @@ func to_save() -> Dictionary:
 		"workbench": workbenchUnlocked,
 		"foundUniques": uniques,
 	}
+
 func load_save(data: Dictionary) -> void:
 	
 	for pocketName in data["pockets"]:

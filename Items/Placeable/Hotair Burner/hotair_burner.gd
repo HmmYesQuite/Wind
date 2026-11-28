@@ -4,12 +4,12 @@ class_name hotair_burner
 @onready var interactable: Interactable = $Interactable
 
 var vessel: Vessel
-var fuelItem: ItemData
-var fuelCount: int = 0
-var burnLeft: float = 0.0
-var heat: float = 0.0
-var targetLift: float = 1.0
-var currentLift: float = 1.0
+@export_storage var fuelItem: ItemData
+@export_storage var fuelCount: int = 0
+@export_storage var burnLeft: float = 0.0
+@export_storage var heat: float = 0.0
+@export_storage var targetLift: float = 1.0
+@export_storage var currentLift: float = 1.0
 
 @export var heatSpeed: float = 0.2
 @export var liftSpeed: float = 0.5

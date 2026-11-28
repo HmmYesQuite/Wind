@@ -26,10 +26,15 @@ var item: ItemData
 var localA: Vector2
 var localB: Vector2
 
-# Called when the node enters the scene tree for the first time.
+var isSetup := false # check to see if its been placed in the world and is ready for physics
+
+
 func _ready() -> void:
 	add_to_group("ropes")
 	z_index = -1
+	
+
+func setup() -> void:
 	localA = get_anchor_point(vesselA, tileA)
 	localB = get_anchor_point(vesselB, tileB)
 	
@@ -59,9 +64,16 @@ func _ready() -> void:
 		place_bridge(bridge, get_point_a(), get_point_b())
 		
 		boards.texture = ImageTexture.create_from_image(boards.texture.get_image())
+	
+	isSetup = true
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
+
+
 func _physics_process(delta: float) -> void:
+	
+	if not isSetup:
+		return
+	
 	var pointA := get_point_a()
 	var pointB := get_point_b()
 	var offset := pointB - pointA
@@ -139,3 +151,26 @@ func _exit_tree() -> void:
 		zoneBridgeA.queue_free()
 	if is_instance_valid(zoneBridgeB):
 		zoneBridgeB.queue_free()
+
+
+func to_save() -> Dictionary:
+	var level := get_tree().current_scene
+	
+	return {
+		"item": item.resource_path,
+		"a": level.get_path_to(vesselA),
+		"tileA": tileA,
+		"b": level.get_path_to(vesselB),
+		"tileB": tileB,
+		"length": ropeLength,
+	}
+
+func load_save(data: Dictionary) -> void:
+	var level := get_tree().current_scene
+	item = load(data["item"])
+	vesselA = level.get_node(data["a"])
+	tileA = data["tileA"]
+	vesselB = level.get_node(data["b"])
+	tileB = data["tileB"]
+	ropeLength = data["length"]
+	setup.call_deferred()
