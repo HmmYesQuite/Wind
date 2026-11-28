@@ -10,7 +10,7 @@ class_name  Rope
 @export var stiffness: float = 40.0
 @export var damping: float = 8.0
 @export var sagSegments: int = 12
-@export var maxTension: float = 500.0
+
 
 @onready var boards: Sprite2D = get_node_or_null("Bridge/Boards")
 @onready var bridge: AnimatableBody2D = get_node_or_null("Bridge")
@@ -29,9 +29,21 @@ var localB: Vector2
 var isSetup := false # check to see if its been placed in the world and is ready for physics
 
 
+@export var maxTension: float = 500.0
+@export var breakTension := 400.0
+@export var breakTime := 0.5
+@export var maxStretch := 32.0
+var strain := 0.0
+var tension := 0.0
+
+@export var strainColor := Color(0.9, 0.2, 0.1)
+var baseColor: Color
+
 func _ready() -> void:
 	add_to_group("ropes")
 	z_index = -1
+	
+	baseColor = line.color
 	
 
 func setup() -> void:
@@ -74,22 +86,40 @@ func _physics_process(delta: float) -> void:
 	if not isSetup:
 		return
 	
+	if anchor_missing(vesselA, tileA) or anchor_missing(vesselB, tileB):
+		snap() #if one of the blocks is broken that supports the rope it snaps, might give the item back to the player
+		return
+	
+	
 	var pointA := get_point_a()
 	var pointB := get_point_b()
 	var offset := pointB - pointA
 	var distance := offset.length()
+	tension = 0.0
 	
 	if distance > ropeLength and distance > 0.0:
 		var dir := offset / distance
 		var stretch := distance - ropeLength
+		
 		var seperatingSpeed := (get_point_velocity(vesselB, pointB) - get_point_velocity(vesselA, pointA)).dot(dir)
-		var tension := maxf(stretch * stiffness + seperatingSpeed * damping, 0.0)
-		tension = minf(tension, maxTension)
-		var force := dir * tension
+		tension = maxf(stretch * stiffness + seperatingSpeed * damping, 0.0)
+		
+		
+		var force := dir * minf(tension, maxTension)
 		if vesselA is RigidBody2D:
 			vesselA.apply_force(force, pointA - vesselA.global_position)
 		if vesselB is RigidBody2D:
 			vesselB.apply_force(-force, pointB - vesselB.global_position)
+	
+	
+	if tension > breakTension:
+		strain += delta
+	else:
+		strain = move_toward(strain, 0.0, delta)
+	
+	if strain >= breakTime or distance - ropeLength > maxStretch:
+		snap()
+		return
 	
 	update_visual(pointA, pointB, distance)
 	
@@ -103,6 +133,18 @@ func _physics_process(delta: float) -> void:
 		var planks := maxi(1, roundi(distance / 8.0))
 		boards.region_rect = Rect2(0, 0, planks * 8, 8)
 		boards.scale.x = distance / (planks * 8.0)
+
+
+func snap() -> void:
+	isSetup = false #stops physics just incase it tries to run while the rope is snapped
+	
+	queue_free()
+	SaveManager.request_save()
+
+
+func anchor_missing(vessel, tile: Vector2i) -> bool:
+	return not is_instance_valid(vessel) or vessel.buildLayer.get_cell_source_id(tile) == -1 #-1 means the tile is missing
+
 
 func place_bridge(body: AnimatableBody2D, from: Vector2, to: Vector2) -> void:
 	body.position = (from + to) / 2.0
@@ -134,6 +176,8 @@ func get_point_velocity(vessel, globalPoint: Vector2) -> Vector2:
 
 func update_visual(pointA: Vector2, pointB: Vector2, distance: float) -> void:
 	var sag := 0.0
+	var ropeStrainWarn := clampf(remap(tension, breakTension * 0.5, breakTension, 0.0, 1.0), 0.0, 1.0)
+	
 	if distance < ropeLength:
 		
 		if distance < ropeLength and bridge == null: #the bridge wont have sag for now, cus the collisions would prob be glitchy
@@ -145,6 +189,7 @@ func update_visual(pointA: Vector2, pointB: Vector2, distance: float) -> void:
 		var p := pointA.lerp(pointB, t) + Vector2(0, sag * 4.0 * t * (1.0 - t))
 		points.append(to_local(p))
 	line.points = points
+	line.color = baseColor.lerp(strainColor, ropeStrainWarn)
 
 func _exit_tree() -> void:
 	if is_instance_valid(zoneBridgeA):

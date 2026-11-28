@@ -14,6 +14,7 @@ var vessel: Vessel
 @export var heatSpeed: float = 0.2
 @export var liftSpeed: float = 0.5
 
+@onready var glow: PointLight2D = $Glow
 
 func _ready() -> void:
 	add_to_group("burners")
@@ -48,6 +49,7 @@ func add_fuel(item: ItemData) -> bool:
 
 func _physics_process(delta: float) -> void:
 	
+	glow.energy = clampf(remap(heat, 0.5, 1.0, 0.0, 1.0), 0.0, 1.0) / 2
 	if vessel == null:
 		return
 	

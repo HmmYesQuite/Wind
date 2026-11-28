@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cvpqbls6w4ifh"]
+[gd_scene format=3 uid="uid://cvpqbls6w4ifh"]
 
 [ext_resource type="Script" uid="uid://bdnejctewij0q" path="res://Props/TileProps/Lantern/lantern.gd" id="1_l086v"]
 [ext_resource type="Texture2D" uid="uid://buo7gs8xsvhld" path="res://Assets/Tile Sets/WindTileSet.png" id="2_l086v"]
@@ -14,21 +14,21 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(1, 0.5)
 
-[node name="Lantern" type="Node2D"]
+[node name="Lantern" type="Node2D" unique_id=1533670892]
 position = Vector2(-4, -4)
 script = ExtResource("1_l086v")
 
-[node name="Sprite2D" type="Sprite2D" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=727019315]
 texture_filter = 1
 texture = ExtResource("2_l086v")
 region_enabled = true
 region_rect = Rect2(0, 16, 8, 8)
 
-[node name="Interactable" type="Node2D" parent="."]
+[node name="Interactable" type="Node2D" parent="." unique_id=227696119]
 script = ExtResource("3_60trt")
 promptText = "Toggle"
 
-[node name="PointLight2D" type="PointLight2D" parent="."]
+[node name="PointLight2D" type="PointLight2D" parent="." unique_id=1717392757]
 energy = 0.5
 texture = SubResource("GradientTexture2D_e862e")
 texture_scale = 2.0

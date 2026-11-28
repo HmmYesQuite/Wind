@@ -8,7 +8,17 @@
 atlas = ExtResource("2_0hnqn")
 region = Rect2(32, 16, 16, 16)
 
-[node name="BlueprintTable" type="Node2D" unique_id=915190512]
+[sub_resource type="Gradient" id="Gradient_l086v"]
+offsets = PackedFloat32Array(0, 0.26595744, 0.69148934, 1)
+colors = PackedColorArray(1.1805121, 0.85072815, 0.3900775, 1, 0.75296634, 0.49337038, 9.844134e-07, 1, 0.3610504, 0.22737539, 1.4439226e-07, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tybhp"]
+gradient = SubResource("Gradient_l086v")
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1, 0.5)
+
+[node name="HotairBurner" type="Node2D" unique_id=915190512]
 script = ExtResource("1_tybhp")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1475723321]
@@ -19,3 +29,9 @@ centered = false
 [node name="Interactable" type="Node2D" parent="." unique_id=1502978686]
 position = Vector2(8, 8)
 script = ExtResource("3_sq0qk")
+
+[node name="Glow" type="PointLight2D" parent="." unique_id=548802919]
+position = Vector2(8, 8)
+energy = 0.0
+texture = SubResource("GradientTexture2D_tybhp")
+texture_scale = 2.0
