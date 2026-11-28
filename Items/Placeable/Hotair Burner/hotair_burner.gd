@@ -16,6 +16,7 @@ var vessel: Vessel
 
 
 func _ready() -> void:
+	add_to_group("burners")
 	vessel = get_vessel()
 	interactable.interacted.connect(_on_interacted)
 
@@ -67,15 +68,13 @@ func _physics_process(delta: float) -> void:
 	var goal := minf(targetLift, maxLift)
 	currentLift = move_toward(currentLift, goal, liftSpeed * delta)
 	
-	vessel.set_lift_multiplier(currentLift)
 	
 
 func change_target(amount: float) -> void:
 	targetLift = clampf(targetLift + amount, 0.0, 2.0)
 
 func _exit_tree() -> void:
-	if vessel != null:
-		vessel.set_lift_multiplier(1.0) # go back to default of 1 if burner is broken
-		var ui: HotairBurnerUI = get_tree().get_first_node_in_group("hotair_burner_ui")
-		if ui != null and ui.burner == self:
-			ui.close()
+	
+	var ui: HotairBurnerUI = get_tree().get_first_node_in_group("hotair_burner_ui")
+	if ui != null and ui.burner == self:
+		ui.close()

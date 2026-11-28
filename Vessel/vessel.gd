@@ -84,6 +84,14 @@ func set_lift_multiplier(value: float) -> void:
 	balloonLiftMultiplier = clampf(value, 0.0 , 2.0)
 	
 
+func get_lift_multiplier() -> float:
+	var extra := 0.0
+	
+	for burner: hotair_burner in get_tree().get_nodes_in_group("burners"):
+		if burner.vessel == self:
+			extra += burner.currentLift - 1.0 # if default is changed make sure to change this
+	return clampf(1.0 + extra, 0.0, 2.0) #2.0 is max, change if needed
+
 
 func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	
@@ -92,7 +100,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D) -> void:
 	var pos := state.transform.origin
 	
 	var density: float = Wind.get_air_density_at(pos)
-	var lift := balloonLift * density * state.total_gravity.y * balloonLiftMultiplier
+	var lift := balloonLift * density * state.total_gravity.y * get_lift_multiplier()
 	state.apply_central_force(Vector2(0, - lift))
 	
 	vel.y -= vel.y * Wind.airDrag * dt
