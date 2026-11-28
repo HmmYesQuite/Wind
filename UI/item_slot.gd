@@ -1,6 +1,8 @@
 extends Panel
 class_name ItemSlot
 
+signal clicked
+
 @onready var icon: TextureRect = $Icon
 @onready var countLabel: Label = $Count
 
@@ -24,6 +26,10 @@ func _gui_input(event: InputEvent) -> void:
 	if not GameInput.blocked:
 		return
 	if event is InputEventMouseButton and event.pressed and event.button_index == MOUSE_BUTTON_LEFT:
+		
+		if container == null:
+			clicked.emit()
+			return
 		
 		if not container.merge(index, Inventory.cursor, 0):
 			container.swap(index, Inventory.cursor, 0)
